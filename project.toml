@@ -1,0 +1,6 @@
+[project]
+name = "plugin-name"
+version = "0.0.2"
+description = "description"
+author = "Mist"
+email = "mist.zzh@gmail.com"

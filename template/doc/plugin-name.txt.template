@@ -1,0 +1,4 @@
+**{{project.name}}** {{project.description}} 
+
+Author: {{project.author}} <{{project.email}}>
+version: {{project.version}} 

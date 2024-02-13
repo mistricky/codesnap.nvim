@@ -1,0 +1,31 @@
+name: Lint
+
+on: push
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+
+      - name: Setup nodejs
+        uses: actions/setup-node@v4
+        with:
+          node-version: latest
+
+      - name: Install commit message convention lib
+        run: npm i commitlint-config-wizardoc -D
+
+      - name: Check commit message
+        uses: wagoid/commitlint-github-action@v4
+
+      - name: Check code style
+        uses: JohnnyMorganz/stylua-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          version: latest 
+          args: --check .
