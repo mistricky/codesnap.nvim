@@ -1,6 +1,6 @@
 [project]
-name = "plugin-name"
-version = "0.0.2"
-description = "description"
+name = "codesnap.nvim"
+version = "0.0.1"
+description = "Make pretty code snapshot just one command"
 author = "Mist"
 email = "mist.zzh@gmail.com"
