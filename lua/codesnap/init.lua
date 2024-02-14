@@ -1,5 +1,6 @@
 local table_utils = require("utils.table")
-local static = require("plugin-name.static")
+local static = require("codesnap.static")
+
 local main = {}
 
 function main.setup(config)
