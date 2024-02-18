@@ -1,0 +1,15 @@
+[package]
+name = "snap-server"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+actix = "0.13.3"
+actix-web = "4.5.1"
+actix-web-actors = "4.3.0"
+neovim-lib = "0.6.1"
+rand = "0.8.5"
+serde = {version = "1.0.196", features = ["derive", "serde_derive", "std"]}
+serde_json = "1.0.113"
