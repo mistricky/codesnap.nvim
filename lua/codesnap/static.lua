@@ -9,4 +9,5 @@ return {
     },
     watermark = "CodeSnap.nvim",
   },
+  preview_switch = false,
 }
