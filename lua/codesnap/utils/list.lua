@@ -20,4 +20,14 @@ function list_utils.includes(list, value)
   end) ~= nil
 end
 
+function list_utils.map(list, fn)
+  local result = {}
+
+  for i, value in ipairs(list) do
+    table.insert(result, fn(value, i))
+  end
+
+  return result
+end
+
 return list_utils

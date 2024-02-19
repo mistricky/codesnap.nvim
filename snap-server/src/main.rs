@@ -11,7 +11,7 @@ use actix_web::{
     App, Error, HttpRequest, HttpResponse, HttpServer,
 };
 use actix_web_actors::ws;
-use event_handler::neovim::Neovim;
+use event_handler::{neovim::Neovim, Config};
 use event_handler::{EventHandler, Message};
 use server::Server;
 use session::Session;
@@ -43,3 +43,21 @@ async fn main() -> std::io::Result<()> {
     .run()
     .await
 }
+
+// fn main() {
+//     let data = r#"
+//         {
+//             "breadcrumbs":true,
+//             "watermark":"CodeSnap.nvim",
+//             "mac_window_bar":true,
+//             "column_number":true,
+//             "auto_load":true,
+//             "background":{
+//                 "grandient":true
+//             }
+//         }"#;
+//
+//     let config: Config = serde_json::from_str(data).unwrap();
+//
+//     println!("{:?}", config)
+// }

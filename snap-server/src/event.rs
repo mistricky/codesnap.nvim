@@ -13,8 +13,11 @@ impl<T> Event<T>
 where
     T: Serialize,
 {
-    pub fn new(name: String, data: T) -> Event<T> {
-        Event { name, data }
+    pub fn new(name: &str, data: T) -> Event<T> {
+        Event {
+            name: name.to_string(),
+            data,
+        }
     }
 }
 

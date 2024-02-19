@@ -1,11 +1,15 @@
 use actix::{Actor, Context, Handler, Message, Recipient};
 use rand::{rngs::ThreadRng, Rng};
+use serde::Serialize;
 use std::{
     collections::HashMap,
     sync::{Arc, Mutex},
 };
 
-use crate::event_handler::neovim::Neovim;
+use crate::{
+    event::Event,
+    event_handler::{neovim::Neovim, Config},
+};
 
 type SessionID = usize;
 
@@ -31,10 +35,17 @@ pub struct ClientMessage {
     pub msg: String,
 }
 
+#[derive(Message)]
+#[rtype(result = "()")]
+pub struct ConfigSetupMessage {
+    pub msg: String,
+}
+
 pub struct Server {
     rng: ThreadRng,
     sessions: HashMap<SessionID, Recipient<ServerMessage>>,
     neovim: Arc<Mutex<Neovim>>,
+    config: Option<Config>,
 }
 
 impl Server {
@@ -43,6 +54,7 @@ impl Server {
             rng: rand::thread_rng(),
             sessions: HashMap::new(),
             neovim,
+            config: None,
         }
     }
 
@@ -50,6 +62,14 @@ impl Server {
         for (_, session) in &self.sessions {
             session.do_send(ServerMessage(message.to_string()))
         }
+    }
+
+    fn send_event_to_clients<T>(&self, event: Event<T>)
+    where
+        T: Serialize,
+    {
+        let stringify_event: String = event.into();
+        self.send_message_to_clients(stringify_event.as_str())
     }
 }
 
@@ -64,6 +84,10 @@ impl Handler<Connect> for Server {
         let id = self.rng.gen::<SessionID>();
 
         self.sessions.insert(id, msg.addr);
+
+        if let Some(config) = &self.config {
+            self.send_event_to_clients(Event::new("config_setup", config));
+        }
 
         id
     }
@@ -82,5 +106,16 @@ impl Handler<ClientMessage> for Server {
 
     fn handle(&mut self, msg: ClientMessage, _: &mut Self::Context) -> Self::Result {
         self.send_message_to_clients(&msg.msg)
+    }
+}
+
+impl Handler<ConfigSetupMessage> for Server {
+    type Result = ();
+
+    fn handle(&mut self, msg: ConfigSetupMessage, _: &mut Self::Context) -> Self::Result {
+        let config = Config::from(msg.msg.as_str());
+
+        self.config = Some(config.clone());
+        self.send_event_to_clients(Event::new("config_setup", config));
     }
 }
