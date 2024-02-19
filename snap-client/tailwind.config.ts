@@ -2,8 +2,19 @@ import type { Config } from "tailwindcss";
 
 export default {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
-  theme: {
-    extend: {},
+  plugins: [require("daisyui"), require("@tailwindcss/typography")],
+  daisyui: {
+    themes: ["dark"],
   },
-  plugins: [],
+  theme: {
+    fontFamily: {
+      caskaydiacove: "CaskaydiaCove Nerd Font",
+    },
+    extend: {
+      colors: {
+        "one-dark-base": "#282C34",
+        "border-color": "#545F64",
+      },
+    },
+  },
 } satisfies Config;

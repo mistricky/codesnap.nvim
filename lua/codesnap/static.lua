@@ -1,13 +1,11 @@
 return {
   config = {
-    breadcrumbs = false,
+    breadcrumbs = true,
     column_number = true,
     mac_window_bar = true,
-    background = {
-      color = "#ff0000",
-      grandient = true,
-    },
+    opacity = true,
     watermark = "CodeSnap.nvim",
+    auto_load = true,
   },
-  preview_switch = false,
+  preview_switch = true,
 }
