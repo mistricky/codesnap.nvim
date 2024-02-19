@@ -10,14 +10,7 @@ import { ControlBar, Editor, Frame, Panel } from "./components";
 import { useConfig, useEvent } from "./hooks";
 import { toPng, toJpeg, toBlob, toPixelData, toSvg } from "html-to-image";
 
-const CODE_EMPTY_PLACEHOLDER = `
- ██████╗ ██████╗ ██████╗ ███████╗███████╗███╗   ██╗ █████╗ ██████╗ 
-██╔════╝██╔═══██╗██╔══██╗██╔════╝██╔════╝████╗  ██║██╔══██╗██╔══██╗
-██║     ██║   ██║██║  ██║█████╗  ███████╗██╔██╗ ██║███████║██████╔╝
-██║     ██║   ██║██║  ██║██╔══╝  ╚════██║██║╚██╗██║██╔══██║██╔═══╝ 
-╚██████╗╚██████╔╝██████╔╝███████╗███████║██║ ╚████║██║  ██║██║     
- ╚═════╝ ╚═════╝ ╚═════╝ ╚══════╝╚══════╝╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝     
-`;
+const CODE_EMPTY_PLACEHOLDER = `print "Hello, CodeSnap.nvim!"`;
 
 function App() {
   const [socketUrl] = useState("ws://127.0.0.1:8080/ws");
