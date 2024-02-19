@@ -1,4 +1,4 @@
-**plugin-name** description 
+**codesnap.nvim** Make pretty code snapshot just one command 
 
 Author: Mist <mist.zzh@gmail.com>
-version: 0.0.2 
+version: 0.0.1 
