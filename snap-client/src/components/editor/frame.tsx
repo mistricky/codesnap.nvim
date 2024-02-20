@@ -6,7 +6,7 @@ export interface FrameProps {
 
 export const Frame = forwardRef<HTMLDivElement, PropsWithChildren<FrameProps>>(
   ({ children, watermark }, ref) => (
-    <div ref={ref} className="bg-stripe min-w-[800px] p-20">
+    <div ref={ref} className="bg-relay min-w-[800px] p-20">
       {children}
       {watermark && (
         <p className="pacifico-regular text-xl opacity-50 font-bold text-white text-center w-full mt-14">
