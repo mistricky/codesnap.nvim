@@ -1,18 +1,26 @@
-import { ColorPicker } from "./color-picker";
+import { ConnectionStatus } from "./connection-status";
+import { ReadyState } from "react-use-websocket";
 
 interface ControlBarProps {
   onCopyClick(): void;
+  onExportClick(): void;
+  readyState: ReadyState;
 }
 
-export const ControlBar = ({ onCopyClick }: ControlBarProps) => {
+export const ControlBar = ({
+  onCopyClick,
+  onExportClick,
+  readyState,
+}: ControlBarProps) => {
   return (
     <div
       className="bg-neutral rounded-xl mb-2 p-1 flex flex-row items-center"
       onClick={onCopyClick}
     >
-      <ColorPicker></ColorPicker>
+      <ConnectionStatus readyState={readyState} />
       <div className="flex flex-row items-center">
-        <button className="btn mr-1">
+        {/*
+        * <button className="btn mr-1">
           <svg
             role="img"
             className="h-4 w-4 fill-neutral-500"
@@ -23,7 +31,8 @@ export const ControlBar = ({ onCopyClick }: ControlBarProps) => {
             <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z" />
           </svg>
         </button>
-        <button className="btn mr-1">
+        */}
+        <button className="btn mr-1" onClick={onExportClick}>
           Export
           <svg
             className="fill-neutral-content"
