@@ -2,8 +2,6 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Debug, Deserialize, Clone)]
 pub struct Config {
-    breadcrumbs: bool,
-    column_number: bool,
     mac_window_bar: bool,
     opacity: bool,
     watermark: Option<String>,

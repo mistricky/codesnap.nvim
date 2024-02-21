@@ -1,19 +1,19 @@
 local codesnap = require("codesnap")
-local static = require("codesnap.static")
-local client = require("codesnap.client")
+-- local client = require("codesnap.client")
 
--- snap code
-vim.api.nvim_create_user_command("CodeSnap", function() end, {})
+-- vim.api.nvim_create_user_command("CodeSnap", function()
+--   client:send("copy")
+-- end, {})
 
-vim.api.nvim_create_user_command("CodeSnapPreviewOn", function() end, {})
-
-vim.api.nvim_create_user_command("CodeSnapPreviewOff", function() end, {})
+vim.api.nvim_create_user_command("CodeSnapPreviewOn", function()
+  codesnap.open_preview()
+end, {})
 
 vim.api.nvim_create_autocmd({ "CursorMoved" }, {
   callback = function()
     local mode = vim.api.nvim_get_mode().mode
 
-    if mode ~= "v" or not static.preview_switch then
+    if mode ~= "v" or not codesnap.preview_switch then
       return
     end
 
@@ -24,6 +24,6 @@ vim.api.nvim_create_autocmd({ "CursorMoved" }, {
 vim.api.nvim_create_autocmd({ "VimLeavePre" }, {
   pattern = "*",
   callback = function()
-    client:stop()
+    codesnap.stop_client()
   end,
 })

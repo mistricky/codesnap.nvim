@@ -4,6 +4,7 @@ import { Config } from "./use-config";
 export enum EventType {
   CONFIG_SETUP = "config_setup",
   CODE = "code",
+  COPY = "copy",
 }
 
 type CodeMessage = {
@@ -14,6 +15,7 @@ type CodeMessage = {
 type ParsedConfig = {
   [EventType.CODE]: CodeMessage;
   [EventType.CONFIG_SETUP]: Config;
+  [EventType.COPY]: undefined;
 };
 
 export const useEvent = (

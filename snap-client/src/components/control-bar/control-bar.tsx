@@ -2,6 +2,7 @@ import { ConnectionStatus } from "./connection-status";
 import { ReadyState } from "react-use-websocket";
 
 interface ControlBarProps {
+  isCopyButtonDisabled: boolean;
   onCopyClick(): void;
   onExportClick(): void;
   readyState: ReadyState;
@@ -10,13 +11,11 @@ interface ControlBarProps {
 export const ControlBar = ({
   onCopyClick,
   onExportClick,
+  isCopyButtonDisabled,
   readyState,
 }: ControlBarProps) => {
   return (
-    <div
-      className="bg-neutral rounded-xl mb-2 p-1 flex flex-row items-center"
-      onClick={onCopyClick}
-    >
+    <div className="bg-neutral rounded-xl mb-2 p-1 flex flex-row items-center">
       <ConnectionStatus readyState={readyState} />
       <div className="flex flex-row items-center">
         {/*
@@ -44,7 +43,11 @@ export const ControlBar = ({
             <path d="M480-320 280-520l56-58 104 104v-326h80v326l104-104 56 58-200 200ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z" />
           </svg>
         </button>
-        <button className="btn">
+        <button
+          onClick={onCopyClick}
+          id="copy"
+          className={`btn ${isCopyButtonDisabled && "btn-disabled"}`}
+        >
           Copy
           <svg
             className="fill-neutral-content"

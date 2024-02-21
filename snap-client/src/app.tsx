@@ -1,34 +1,37 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { ControlBar, Editor, Frame, Panel } from "./components";
 import { useConfig, useEvent } from "./hooks";
-import { toPng, toJpeg, toBlob, toPixelData, toSvg } from "html-to-image";
+import { toPng, toBlob } from "html-to-image";
 import download from "downloadjs";
 
 const CODE_EMPTY_PLACEHOLDER = `print "Hello, CodeSnap.nvim!"`;
 
 function App() {
-  const [socketUrl] = useState("ws://127.0.0.1:8080/ws");
+  const [socketUrl] = useState(`ws://${window.location.host}/ws`);
   const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
   const event = useEvent(lastMessage);
   const config = useConfig(event?.config_setup);
   const frameRef = useRef<HTMLDivElement | null>(null);
+  const [isCopyButtonDisabled, setIsCopyButtonDisabled] = useState(false);
 
   const handleCopyButtonClick = useCallback(async () => {
     if (!frameRef.current) {
       return;
     }
 
-    const blob = await toBlob(frameRef.current);
-    const clipboardItem = new ClipboardItem({ "image/png": blob! });
+    setIsCopyButtonDisabled(true);
 
-    navigator.clipboard.write([clipboardItem]);
+    try {
+      const blob = await toBlob(frameRef.current);
+      const clipboardItem = new ClipboardItem({ "image/png": blob! });
+
+      navigator.clipboard.write([clipboardItem]);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsCopyButtonDisabled(false);
+    }
   }, []);
 
   const handleExportClick = useCallback(async () => {
@@ -41,6 +44,24 @@ function App() {
     download(dataURL, "codesnap.png");
   }, []);
 
+  const notifyCopyCommand = useCallback(async () => {
+    if (!frameRef.current) {
+      return;
+    }
+
+    const dataURL = await toPng(frameRef.current);
+
+    sendMessage(dataURL);
+  }, [sendMessage]);
+
+  useEffect(() => {
+    if (readyState !== ReadyState.OPEN || !event?.copy) {
+      return;
+    }
+
+    notifyCopyCommand();
+  }, [event, readyState, notifyCopyCommand]);
+
   return (
     <div className="w-full h-full flex flex-col items-center bg-deep-gray">
       <p className="rainbow-text text-4xl font-extrabold mt-20">
@@ -48,11 +69,12 @@ function App() {
       </p>
       <Panel>
         <ControlBar
+          isCopyButtonDisabled={isCopyButtonDisabled}
           onExportClick={handleExportClick}
           onCopyClick={handleCopyButtonClick}
           readyState={readyState}
         />
-        <div className="rounded-xl overflow-hidden">
+        <div id="frame" className="rounded-xl overflow-hidden">
           <Frame ref={frameRef} watermark={config?.watermark}>
             <Editor
               language={event?.code?.language}
