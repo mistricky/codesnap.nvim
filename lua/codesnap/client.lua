@@ -1,15 +1,17 @@
 local logger = require("codesnap.utils.logger")
-local path_utils = require("codesnap.utils.path")
+local static = require("codesnap.static")
 
 local client = {
   job_id = 0,
 }
 
+local cwd = static.cwd .. "/snap-server"
+
 function client:connect()
   return vim.fn.jobstart({
-    path_utils.back(path_utils.back(debug.getinfo(1, "S").source:sub(2):match("(.*[/\\])")))
-      .. "/snap-server/target/debug/snap-server",
+    cwd .. "/target/release/snap-server",
   }, {
+    cwd = cwd,
     stderr_buffered = true,
     rpc = true,
     on_stderr = function(_, err)

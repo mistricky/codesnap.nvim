@@ -1,4 +1,4 @@
-use crate::server::{ClientMessage, Connect, Disconnect, Server, ServerMessage};
+use crate::server::{Connect, Disconnect, Server, ServerMessage};
 use actix::{
     dev::ContextFutureSpawner, fut, Actor, ActorContext, ActorFutureExt, Addr, AsyncContext,
     Handler, Running, StreamHandler, WrapFuture,
@@ -12,6 +12,10 @@ use std::{
 
 const HEARTBEAT_INTERVAL: Duration = Duration::from_secs(5);
 const CLIENT_TIMEOUT: Duration = Duration::from_secs(30);
+
+fn is_valid_base64_image(base64_image: &str) -> bool {
+    base64_image.starts_with("data:image/png;base64")
+}
 
 pub struct Session {
     id: usize,
@@ -30,7 +34,6 @@ impl Session {
 
     fn heartbeat(&self, ctx: &mut ws::WebsocketContext<Self>) {
         ctx.run_interval(HEARTBEAT_INTERVAL, |act, ctx| {
-            // check client heartbeats
             if Instant::now().duration_since(act.heartbeat) > CLIENT_TIMEOUT {
                 act.server.do_send(Disconnect { id: act.id });
 
@@ -89,9 +92,13 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for Session {
                 self.heartbeat = Instant::now();
             }
             Ok(ws::Message::Text(text)) => {
-                self.server.do_send(ClientMessage {
-                    msg: "aaaaa".to_string(),
-                });
+                // let image = text.to_string();
+
+                // if !is_valid_base64_image(&image) {
+                ctx.text(text)
+                // }
+
+                // copy_base64_image_into_clipboard(image);
             }
             Ok(ws::Message::Binary(bin)) => ctx.binary(bin),
             _ => (),

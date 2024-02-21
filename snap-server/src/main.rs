@@ -1,18 +1,27 @@
+mod clipboard;
 mod event;
 mod event_handler;
+mod port;
 mod server;
 mod session;
 
-use std::sync::{Arc, Mutex};
+use std::{
+    net::TcpListener,
+    sync::{Arc, Mutex},
+};
 
-use actix::{Actor, Addr, Arbiter, StreamHandler};
+use actix::{Actor, Addr, Arbiter};
+use actix_files::{Files, NamedFile};
 use actix_web::{
     web::{self, Data, Payload},
-    App, Error, HttpRequest, HttpResponse, HttpServer,
+    App, Error, HttpRequest, HttpResponse, HttpServer, Responder,
 };
 use actix_web_actors::ws;
-use event_handler::{neovim::Neovim, Config};
-use event_handler::{EventHandler, Message};
+use clipboard::copy_memory_image_into_clipboard;
+use event_handler::neovim::Neovim;
+use event_handler::EventHandler;
+use headless_chrome::{protocol::cdp::Page, Browser, Tab};
+use port::get_available_port;
 use server::Server;
 use session::Session;
 
@@ -24,40 +33,33 @@ async fn index(
     ws::start(Session::new(server), &req, stream)
 }
 
+async fn root() -> impl Responder {
+    NamedFile::open_async("./public/index.html").await.unwrap()
+}
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     let neovim = Arc::new(Mutex::new(Neovim::new()));
     let server = Arc::new(Server::new(neovim.clone()).start());
     let cloned_server = Arc::clone(&server);
+    let cloned_neovim = neovim.clone();
+    let available_port = get_available_port().unwrap();
 
-    Arbiter::new().spawn(async {
-        EventHandler::new(neovim, cloned_server).start();
+    Arbiter::new().spawn(async move {
+        EventHandler::new(cloned_neovim.clone(), cloned_server.clone(), available_port).start();
     });
 
-    HttpServer::new(move || {
+    let _ = HttpServer::new(move || {
         App::new()
             .app_data(web::Data::new(server.clone()))
             .route("/ws", web::get().to(index))
+            .service(web::resource("/").to(root))
+            .service(Files::new("/public", "./public"))
+            .service(Files::new("/static", "./public/static"))
     })
-    .bind(("127.0.0.1", 8080))?
+    .bind(("127.0.0.1", available_port))?
     .run()
-    .await
-}
+    .await;
 
-// fn main() {
-//     let data = r#"
-//         {
-//             "breadcrumbs":true,
-//             "watermark":"CodeSnap.nvim",
-//             "mac_window_bar":true,
-//             "column_number":true,
-//             "auto_load":true,
-//             "background":{
-//                 "grandient":true
-//             }
-//         }"#;
-//
-//     let config: Config = serde_json::from_str(data).unwrap();
-//
-//     println!("{:?}", config)
-// }
+    Ok(())
+}

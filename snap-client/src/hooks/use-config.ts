@@ -1,8 +1,6 @@
 import { useLocalStorage } from "./use-storage";
 
 export interface Config {
-  breadcrumbs: boolean;
-  column_number: boolean;
   mac_window_bar: boolean;
   opacity: boolean;
   watermark: string;
