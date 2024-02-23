@@ -13,10 +13,6 @@ use std::{
 const HEARTBEAT_INTERVAL: Duration = Duration::from_secs(5);
 const CLIENT_TIMEOUT: Duration = Duration::from_secs(30);
 
-fn is_valid_base64_image(base64_image: &str) -> bool {
-    base64_image.starts_with("data:image/png;base64")
-}
-
 pub struct Session {
     id: usize,
     server: Arc<Addr<Server>>,
@@ -91,15 +87,7 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for Session {
             Ok(ws::Message::Pong(_)) => {
                 self.heartbeat = Instant::now();
             }
-            Ok(ws::Message::Text(text)) => {
-                // let image = text.to_string();
-
-                // if !is_valid_base64_image(&image) {
-                ctx.text(text)
-                // }
-
-                // copy_base64_image_into_clipboard(image);
-            }
+            Ok(ws::Message::Text(text)) => ctx.text(text),
             Ok(ws::Message::Binary(bin)) => ctx.binary(bin),
             _ => (),
         }

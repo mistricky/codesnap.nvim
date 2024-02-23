@@ -1,14 +1,10 @@
-mod clipboard;
 mod event;
 mod event_handler;
 mod port;
 mod server;
 mod session;
 
-use std::{
-    net::TcpListener,
-    sync::{Arc, Mutex},
-};
+use std::sync::{Arc, Mutex};
 
 use actix::{Actor, Addr, Arbiter};
 use actix_files::{Files, NamedFile};
@@ -17,10 +13,8 @@ use actix_web::{
     App, Error, HttpRequest, HttpResponse, HttpServer, Responder,
 };
 use actix_web_actors::ws;
-use clipboard::copy_memory_image_into_clipboard;
 use event_handler::neovim::Neovim;
 use event_handler::EventHandler;
-use headless_chrome::{protocol::cdp::Page, Browser, Tab};
 use port::get_available_port;
 use server::Server;
 use session::Session;
