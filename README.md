@@ -51,7 +51,7 @@ CodeSnap # Take a code snap and copy it into the clipboard
 ## Configuration
 Define your custom config using `setup` function
 ```lua
-require("codesnap.nvim").setup({...})
+require("codesnap").setup({...})
 ```
 
 There is a default config:
