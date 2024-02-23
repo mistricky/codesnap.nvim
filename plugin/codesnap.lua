@@ -12,9 +12,8 @@ end, {})
 local validModes = {
   ["v"] = true,
   ["V"] = true,
-  ["^V"] = true,
 }
-vim.api.nvim_create_autocmd({ "CursorMoved" }, {
+vim.api.nvim_create_autocmd({ "CursorMoved", "ModeChanged" }, {
   callback = function()
     local mode = vim.api.nvim_get_mode().mode
 
