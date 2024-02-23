@@ -9,11 +9,16 @@ vim.api.nvim_create_user_command("CodeSnapPreviewOn", function()
   codesnap.open_preview()
 end, {})
 
+local validModes = {
+  ["v"] = true,
+  ["V"] = true,
+  ["^V"] = true,
+}
 vim.api.nvim_create_autocmd({ "CursorMoved" }, {
   callback = function()
     local mode = vim.api.nvim_get_mode().mode
 
-    if mode ~= "v" or not codesnap.preview_switch then
+    if not validModes[mode] or not codesnap.preview_switch then
       return
     end
 
