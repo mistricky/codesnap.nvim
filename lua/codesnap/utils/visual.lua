@@ -9,6 +9,13 @@ function visual_utils.get_selected_text()
   else
     -- 如果选中的是多行文本，则需要分别获取每一行的文本
     local selected_text = {}
+
+    -- We switch the start and end positions if the start position is after the end position
+    -- This way we can always select from the top down
+    if start_pos[2] > end_pos[2] then
+      start_pos, end_pos = end_pos, start_pos
+    end
+    
     for i = start_pos[2], end_pos[2] do
       -- 使用 vim.api.nvim_buf_get_lines() 函数获取选中的文本
       local line_text = vim.api.nvim_buf_get_lines(0, i - 1, i, false)[1]
