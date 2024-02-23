@@ -6,6 +6,7 @@ import { toPng, toBlob } from "html-to-image";
 import download from "downloadjs";
 
 const CODE_EMPTY_PLACEHOLDER = `print "Hello, CodeSnap.nvim!"`;
+const WATER_MARK_PLACEHOLDER = "CodeSnap.nvim";
 
 function App() {
   const [socketUrl] = useState(`ws://${window.location.host}/ws`);
@@ -65,7 +66,7 @@ function App() {
   return (
     <div className="w-full h-full flex flex-col items-center bg-deep-gray">
       <p className="rainbow-text text-4xl font-extrabold mt-20">
-        CodeSnap.nvim
+        {config?.watermark ?? WATER_MARK_PLACEHOLDER}
       </p>
       <Panel>
         <ControlBar
