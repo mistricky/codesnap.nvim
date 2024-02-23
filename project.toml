@@ -1,6 +1,6 @@
 [project]
 name = "codesnap.nvim"
-version = "0.0.6"
+version = "0.0.7"
 description = "Make pretty code snapshot just one command"
 author = "Mist"
 email = "mist.zzh@gmail.com"
