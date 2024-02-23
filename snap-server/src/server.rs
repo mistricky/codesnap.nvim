@@ -44,16 +44,17 @@ pub struct ConfigSetupMessage {
 pub struct Server {
     rng: ThreadRng,
     sessions: HashMap<SessionID, Recipient<ServerMessage>>,
-    neovim: Arc<Mutex<Neovim>>,
+    // The neovim instance used for send message to neovim client
+    _neovim: Arc<Mutex<Neovim>>,
     config: Option<Config>,
 }
 
 impl Server {
-    pub fn new(neovim: Arc<Mutex<Neovim>>) -> Server {
+    pub fn new(_neovim: Arc<Mutex<Neovim>>) -> Server {
         Server {
             rng: rand::thread_rng(),
             sessions: HashMap::new(),
-            neovim,
+            _neovim,
             config: None,
         }
     }
