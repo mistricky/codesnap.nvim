@@ -1,5 +1,20 @@
 local visual_utils = {}
 
+-- Get all the lines from "from" to "to" and return them as a single string
+-- If "from" and "to" are the same, return the line at "from"
+
+local function get_whole_lines(from, to)
+  local lines = {}
+  if from == to then
+    table.insert(lines, vim.api.nvim_buf_get_lines(0, from - 1, from, false)[1])
+  else
+    for i = from, to do
+      table.insert(lines, vim.api.nvim_buf_get_lines(0, i - 1, i, false)[1])
+    end
+  end
+  return table.concat(lines, "\n")
+end
+
 function visual_utils.get_selected_text()
   local start_pos = vim.fn.getpos("v")
   local end_pos = vim.fn.getpos(".")
@@ -8,6 +23,10 @@ function visual_utils.get_selected_text()
   -- This way we can always select from the top down and from left to right
   if start_pos[2] > end_pos[2] or start_pos[3] > end_pos[3] then
     start_pos, end_pos = end_pos, start_pos
+  end
+
+  if vim.api.nvim_get_mode().mode == 'V' then
+    return get_whole_lines(start_pos[2], end_pos[2])
   end
 
   if start_pos[2] == end_pos[2] then
