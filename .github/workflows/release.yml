@@ -2,6 +2,8 @@ name: Release
 
 on:
   push:
+    paths:
+      project.toml
     branches:
       - main
 
