@@ -5,6 +5,7 @@ return {
     mac_window_bar = true,
     opacity = true,
     watermark = "CodeSnap.nvim",
+    preview_title = "CodeSnap.nvim",
     auto_load = true,
   },
   cwd = path_utils.back(path_utils.back(debug.getinfo(1, "S").source:sub(2):match("(.*[/\\])"))),

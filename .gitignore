@@ -19,4 +19,4 @@ node_modules
 
 # build
 output.css
-public
+snap-server/public
