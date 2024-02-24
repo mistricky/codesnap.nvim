@@ -66,7 +66,7 @@ function App() {
   return (
     <div className="w-full h-full flex flex-col items-center bg-deep-gray">
       <p className="rainbow-text text-4xl font-extrabold mt-20">
-        {config?.watermark ?? WATER_MARK_PLACEHOLDER}
+        CodeSnap.nvim
       </p>
       <Panel>
         <ControlBar
@@ -76,7 +76,10 @@ function App() {
           readyState={readyState}
         />
         <div id="frame" className="rounded-xl overflow-hidden">
-          <Frame ref={frameRef} watermark={config?.watermark}>
+          <Frame
+            ref={frameRef}
+            watermark={config?.watermark ?? WATER_MARK_PLACEHOLDER}
+          >
             <Editor
               language={event?.code?.language}
               macStyleTitleBar={config?.mac_window_bar}
