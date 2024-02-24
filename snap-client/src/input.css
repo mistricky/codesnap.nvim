@@ -22,10 +22,6 @@ html, body, #root {
     box-shadow: 0 20px 68px rgba(0, 0, 0, 0.55);
   }
 
-  .code * {
-    font-family: 'CaskaydiaCove Nerd Font';
-  }
-
   .pacifico-regular {
     font-family: "Pacifico", cursive;
     font-weight: 400;

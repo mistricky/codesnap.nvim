@@ -84,9 +84,11 @@ function App() {
         <div id="frame" className="rounded-xl overflow-hidden">
           <Frame
             ref={frameRef}
+            watermarkFontFamily={config?.watermark_font_family}
             watermark={config?.watermark ?? WATER_MARK_PLACEHOLDER}
           >
             <Editor
+              codeFontFamily={config?.editor_font_family}
               language={event?.code?.language}
               macStyleTitleBar={config?.mac_window_bar}
             >
