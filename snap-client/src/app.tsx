@@ -4,12 +4,13 @@ import { ControlBar, Editor, Frame, Panel } from "./components";
 import { useConfig, useEvent } from "./hooks";
 import { toPng, toBlob } from "html-to-image";
 import download from "downloadjs";
+import { getWebsocketHost } from "./utils";
 
 const CODE_EMPTY_PLACEHOLDER = `print "Hello, CodeSnap.nvim!"`;
 const WATER_MARK_PLACEHOLDER = "CodeSnap.nvim";
 
 function App() {
-  const [socketUrl] = useState(`ws://${window.location.host}/ws`);
+  const [socketUrl] = useState(`ws://${getWebsocketHost()}/ws`);
   const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
   const event = useEvent(lastMessage);
   const config = useConfig(event?.config_setup);
