@@ -50,6 +50,7 @@ async fn main() -> std::io::Result<()> {
             .service(web::resource("/").to(root))
             .service(Files::new("/public", "./public"))
             .service(Files::new("/static", "./public/static"))
+            .service(Files::new("/styles", "./public/styles"))
     })
     .bind(("127.0.0.1", available_port))?
     .run()

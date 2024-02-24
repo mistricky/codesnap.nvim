@@ -74,7 +74,9 @@ function App() {
     const theme = config?.highlight_theme ?? DEFAULT_THEME;
     const cssLink = document.createElement("link");
     cssLink.rel = "stylesheet";
-    cssLink.href = "https://cdn.jsdelivr.net/npm/highlight.js/styles/" + theme + ".css";
+
+    // add a ref to node_modules/highlight.js/styles/{theme}.css so you dont have to get it from the internet
+    cssLink.href = `./styles/${theme}.css`;
     document.head.appendChild(cssLink);
     return () => {
       document.head.removeChild(cssLink);

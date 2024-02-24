@@ -11,3 +11,4 @@ build_server:
 
 make_static_files:
 	cp -r snap-client/build snap-server/public
+	cp -r snap-client/node_modules/highlight.js/styles/ snap-server/public/
