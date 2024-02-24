@@ -29,7 +29,11 @@ vim.api.nvim_create_autocmd({ "CursorMoved", "ModeChanged" }, {
   end,
 })
 
-vim.api.nvim_create_autocmd({ "VimLeavePre" }, {
+vim.api.nvim_create_autocmd({
+  "VimLeavePre",
+  "BufDelete",
+  "InsertEnter",
+}, {
   pattern = "*",
   callback = function()
     codesnap.stop_client()
