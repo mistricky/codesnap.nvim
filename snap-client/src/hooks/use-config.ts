@@ -8,6 +8,7 @@ export interface Config {
   preview_title: string;
   watermark_font_family: string;
   editor_font_family: string;
+  highlight_theme: string;
 }
 
 const CONFIG_STORAGE_KEY = "CONFIG_STORAGE_KEY";

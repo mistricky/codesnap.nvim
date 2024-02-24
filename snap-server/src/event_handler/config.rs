@@ -9,6 +9,7 @@ pub struct Config {
     preview_title: String,
     watermark_font_family: String,
     editor_font_family: String,
+    highlight_theme: String,
 }
 
 impl From<&str> for Config {

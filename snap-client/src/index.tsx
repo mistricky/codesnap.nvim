@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./output.css";
-import "highlight.js/styles/atom-one-dark.css";
 import App from "./app";
 import reportWebVitals from "./reportWebVitals";
 

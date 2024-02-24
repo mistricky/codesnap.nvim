@@ -63,6 +63,7 @@ There is a default config:
     preview_title = "CodeSnap.nvim", -- (Optional) preview page title
     editor_font_family = "CaskaydiaCove Nerd Font", -- (Optional) preview code font family
     watermark_font_family = "Pacifico", -- (Optional) watermark font family
+    highlight_theme = "atom-one-dark", -- (Optional) theme for code highlights
 }
 ```
 

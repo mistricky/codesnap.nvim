@@ -8,6 +8,7 @@ return {
     preview_title = "CodeSnap.nvim",
     editor_font_family = "CaskaydiaCove Nerd Font",
     watermark_font_family = "Pacifico",
+    highlight_theme = "atom-one-dark",
     auto_load = true,
   },
   cwd = path_utils.back(path_utils.back(debug.getinfo(1, "S").source:sub(2):match("(.*[/\\])"))),

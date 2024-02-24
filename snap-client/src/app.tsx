@@ -9,6 +9,7 @@ import { getWebsocketHost } from "./utils";
 const CODE_EMPTY_PLACEHOLDER = `print "Hello, CodeSnap.nvim!"`;
 const WATER_MARK_PLACEHOLDER = "CodeSnap.nvim";
 const PREVIEW_TITLE_PLACEHOLDER = "CodeSnap.nvim";
+const DEFAULT_THEME = "atom-one-dark";
 
 function App() {
   const [socketUrl] = useState(`ws://${getWebsocketHost()}/ws`);
@@ -69,6 +70,18 @@ function App() {
     document.title = config?.preview_title ?? PREVIEW_TITLE_PLACEHOLDER;
   }, []);
 
+  useEffect(() => {
+    const theme = config?.highlight_theme ?? DEFAULT_THEME;
+    const cssLink = document.createElement("link");
+    cssLink.rel = "stylesheet";
+    cssLink.href = "https://cdn.jsdelivr.net/npm/highlight.js/styles/" + theme + ".css";
+    document.head.appendChild(cssLink);
+    return () => {
+      document.head.removeChild(cssLink);
+    };
+  }
+  , [config?.highlight_theme]);
+  
   return (
     <div className="w-full h-full flex flex-col items-center bg-deep-gray">
       <p className="rainbow-text text-4xl font-extrabold mt-20">
