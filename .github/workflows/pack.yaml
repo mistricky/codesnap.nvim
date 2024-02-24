@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Setup nodejs
-      - uses: actions/setup-node@v4
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
