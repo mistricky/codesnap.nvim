@@ -11,6 +11,7 @@ jobs:
     steps:
       - name: Setup nodejs
         uses: actions/setup-node@v4
+        working-directory: snap-client
         with:
           node-version: 20
           cache: npm
