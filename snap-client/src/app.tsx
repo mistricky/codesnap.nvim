@@ -8,6 +8,7 @@ import { getWebsocketHost } from "./utils";
 
 const CODE_EMPTY_PLACEHOLDER = `print "Hello, CodeSnap.nvim!"`;
 const WATER_MARK_PLACEHOLDER = "CodeSnap.nvim";
+const PREVIEW_TITLE_PLACEHOLDER = "CodeSnap.nvim";
 
 function App() {
   const [socketUrl] = useState(`ws://${getWebsocketHost()}/ws`);
@@ -63,6 +64,10 @@ function App() {
 
     notifyCopyCommand();
   }, [event, readyState, notifyCopyCommand]);
+
+  useEffect(() => {
+    document.title = config?.preview_title ?? PREVIEW_TITLE_PLACEHOLDER;
+  }, []);
 
   return (
     <div className="w-full h-full flex flex-col items-center bg-deep-gray">

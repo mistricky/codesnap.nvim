@@ -6,6 +6,7 @@ pub struct Config {
     opacity: bool,
     watermark: Option<String>,
     auto_load: bool,
+    preview_title: String,
 }
 
 impl From<&str> for Config {

@@ -5,6 +5,7 @@ export interface Config {
   opacity: boolean;
   watermark: string;
   auto_load: boolean;
+  preview_title: string;
 }
 
 const CONFIG_STORAGE_KEY = "CONFIG_STORAGE_KEY";
