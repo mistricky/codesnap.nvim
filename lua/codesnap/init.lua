@@ -27,6 +27,7 @@ function main.open_preview()
 end
 
 function main.stop_client()
+  client:send("stop_client")
   client:stop()
 end
 

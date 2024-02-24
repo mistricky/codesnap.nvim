@@ -9,6 +9,10 @@ vim.api.nvim_create_user_command("CodeSnapPreviewOn", function()
   codesnap.open_preview()
 end, {})
 
+vim.api.nvim_create_user_command("CodeSnapPreviewOff", function()
+  codesnap.stop_client()
+end, {})
+
 local validModes = {
   ["v"] = true,
   ["V"] = true,
