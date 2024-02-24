@@ -1,0 +1,29 @@
+name: Pack
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  pack:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup nodejs
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install deps
+        working-directory: snap-client
+        run: npm i
+
+      - name: Build package 
+        working-directory: snap-client
+        run: npm run build
+
+      - name: Move into public folder
+        run: cp -r snap-client/build snap-server/public
+
+
