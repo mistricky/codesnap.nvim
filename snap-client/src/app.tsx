@@ -67,7 +67,7 @@ function App() {
 
   useEffect(() => {
     document.title = config?.preview_title ?? PREVIEW_TITLE_PLACEHOLDER;
-  }, []);
+  }, [config?.preview_title]);
 
   return (
     <div className="w-full h-full flex flex-col items-center bg-deep-gray">
