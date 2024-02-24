@@ -25,7 +25,7 @@ function visual_utils.get_selected_text()
     start_pos, end_pos = end_pos, start_pos
   end
 
-  if vim.api.nvim_get_mode().mode == 'V' then
+  if vim.api.nvim_get_mode().mode == "V" then
     return get_whole_lines(start_pos[2], end_pos[2])
   end
 
