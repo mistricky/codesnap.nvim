@@ -6,6 +6,8 @@ export interface Config {
   watermark: string;
   auto_load: boolean;
   preview_title: string;
+  watermark_font_family: string;
+  editor_font_family: string;
 }
 
 const CONFIG_STORAGE_KEY = "CONFIG_STORAGE_KEY";

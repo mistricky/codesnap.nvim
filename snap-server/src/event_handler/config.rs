@@ -7,6 +7,8 @@ pub struct Config {
     watermark: Option<String>,
     auto_load: bool,
     preview_title: String,
+    watermark_font_family: String,
+    editor_font_family: String,
 }
 
 impl From<&str> for Config {
