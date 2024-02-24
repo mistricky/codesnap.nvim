@@ -1,7 +1,5 @@
 build:
-	make build_preview_client
 	make build_server
-	make make_static_files
 
 build_preview_client:
 	cd snap-client && npm install && npm run build
