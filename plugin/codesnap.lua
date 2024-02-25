@@ -32,6 +32,7 @@ vim.api.nvim_create_autocmd({ "CursorMoved", "ModeChanged" }, {
 vim.api.nvim_create_autocmd({
   "VimLeavePre",
   "BufDelete",
+  "BufAdd",
   "InsertEnter",
 }, {
   pattern = "*",
