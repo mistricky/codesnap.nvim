@@ -28,7 +28,6 @@
 
 ## Prerequirements
 - Rust environment required for compiling codesnap.nvim plugin server source code, visit [Install Rust](https://www.rust-lang.org/tools/install) for more detail.
-- NPM required for build preview source code, visit [Install Nodejs](https://nodejs.org/en) for more detail.
 
 ## Install
 ```lua
