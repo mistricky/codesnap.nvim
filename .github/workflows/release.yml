@@ -8,7 +8,37 @@ on:
       - main
 
 jobs:
+  pack:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup nodejs
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: ./snap-client/package-lock.json
+
+      - name: Install deps
+        working-directory: snap-client
+        run: npm i
+
+      - name: Build package 
+        working-directory: snap-client
+        run: npm run build
+
+      - name: Move into public folder
+        run: cp -r snap-client/build snap-server/public
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: "[Update] build newest client package"
+
   release:
+    needs: pack
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
