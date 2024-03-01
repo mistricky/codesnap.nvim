@@ -30,12 +30,23 @@
 - Rust environment required for compiling codesnap.nvim plugin server source code, visit [Install Rust](https://www.rust-lang.org/tools/install) for more detail.
 
 ## Install
+Recommend use [Lazy.nvim](https://github.com/folke/lazy.nvim) for install, but you can still use other plugin manager you prefer to install it.
+
+**Lazy.nvim**
 ```lua
 { "mistricky/codesnap.nvim", build = "make" },
 ```
 
+**Packer**
+```
+use { "mistricky/codesnap.nvim", run = "make" } 
+```
+
+> [!NOTE]
+> Please don't forget to run `make` command after installing codesnap.nvim like the above examples
+
 ## Usage 
-For take a screenshot, the `codesnap.nvim` provides a command named `CodeSnapPreviewOn` to open the preview page, and then you can switch to visual mode and select code you want, and finally just click the copy button on the preview page, that's all :)
+To take a screenshot, the `codesnap.nvim` provides a command named `CodeSnapPreviewOn` to open the preview page, and then you can switch to visual mode and select code you want, and finally just click the copy button on the preview page, that's all :)
 
 https://github.com/mistricky/codesnap.nvim/assets/22574136/5e1a023e-142f-49e8-b24f-707da3728fd5
 
