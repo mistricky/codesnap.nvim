@@ -4,6 +4,7 @@ use tiny_skia::{Paint, Rect, Transform};
 use crate::{
     components::component::{Component, ComponentContext},
     highlight::Highlight,
+    text::render_rich_text,
 };
 
 pub struct Code {
@@ -36,7 +37,6 @@ impl Component for Code {
     }
 
     fn draw_self(&self, pixmap: &mut tiny_skia::Pixmap, context: &ComponentContext) {
-        let ComponentContext { scale_factor } = context;
         let highlight = Highlight::new(
             self.value.clone(),
             self.font_family.clone(),
@@ -44,35 +44,49 @@ impl Component for Code {
             self.extension.clone(),
         );
         let highlight_result = highlight.parse(&self.theme);
-        let mut font_system = FontSystem::new();
-        let mut swash_cache = SwashCache::new();
-        let metrics = Metrics::new(self.font_size, self.line_height).scale(scale_factor.clone());
-        let mut buffer = Buffer::new(&mut font_system, metrics);
-        let mut buffer = buffer.borrow_with(&mut font_system);
-        let attrs = Attrs::new();
 
-        buffer.set_size(self.w * scale_factor, self.h * scale_factor);
-        buffer.set_rich_text(highlight_result, attrs, Shaping::Advanced);
-        buffer.draw(
-            &mut swash_cache,
+        render_rich_text(
+            self.x,
+            self.y,
+            self.w,
+            self.h,
+            self.font_size,
+            self.line_height,
+            context.scale_factor,
+            highlight_result,
             self.default_font_color,
-            |x, y, w, h, color| {
-                let mut paint = Paint {
-                    anti_alias: true,
-                    ..Default::default()
-                };
-
-                paint.set_color_rgba8(color.r(), color.g(), color.b(), color.a());
-                let rect = Rect::from_xywh(
-                    x as f32 + self.x * scale_factor,
-                    y as f32 + self.y * scale_factor,
-                    w as f32,
-                    h as f32,
-                )
-                .unwrap();
-                pixmap.fill_rect(rect, &paint, Transform::identity(), None);
-            },
+            pixmap,
         );
+
+        // let mut font_system = FontSystem::new();
+        // let mut swash_cache = SwashCache::new();
+        // let metrics = Metrics::new(self.font_size, self.line_height).scale(scale_factor.clone());
+        // let mut buffer = Buffer::new(&mut font_system, metrics);
+        // let mut buffer = buffer.borrow_with(&mut font_system);
+        // let attrs = Attrs::new();
+        //
+        // buffer.set_size(self.w * scale_factor, self.h * scale_factor);
+        // buffer.set_rich_text(highlight_result, attrs, Shaping::Advanced);
+        // buffer.draw(
+        //     &mut swash_cache,
+        //     self.default_font_color,
+        //     |x, y, w, h, color| {
+        //         let mut paint = Paint {
+        //             anti_alias: true,
+        //             ..Default::default()
+        //         };
+        //
+        //         paint.set_color_rgba8(color.r(), color.g(), color.b(), color.a());
+        //         let rect = Rect::from_xywh(
+        //             x as f32 + self.x * scale_factor,
+        //             y as f32 + self.y * scale_factor,
+        //             w as f32,
+        //             h as f32,
+        //         )
+        //         .unwrap();
+        //         pixmap.fill_rect(rect, &paint, Transform::identity(), None);
+        //     },
+        // );
     }
 }
 
