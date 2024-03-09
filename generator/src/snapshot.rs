@@ -21,7 +21,7 @@ pub fn take_snapshot(params: TakeSnapshotParams) -> Pixmap {
         left: 20.,
         right: 20.,
         top: 20.,
-        bottom: 28.,
+        bottom: 22.,
     };
 
     let editor = Editor::new(

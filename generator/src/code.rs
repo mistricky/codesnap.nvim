@@ -8,8 +8,8 @@ fn min_width(width: f32) -> f32 {
     }
 }
 
-pub fn calc_wh(code: &str, char_wdith: f32, line_height: f32) -> (f32, f32) {
-    let lines = code.lines();
+pub fn calc_wh(text: &str, char_wdith: f32, line_height: f32) -> (f32, f32) {
+    let lines = text.lines();
     let max_length_line = lines.clone().into_iter().fold("", |max_length_line, cur| {
         if cur.len() > max_length_line.len() {
             cur

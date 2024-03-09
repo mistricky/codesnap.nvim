@@ -1,13 +1,16 @@
-use tiny_skia::{Pixmap, Transform};
+use tiny_skia::Pixmap;
 
 pub struct ComponentContext {
     pub scale_factor: f32,
 }
 
 pub trait Component {
-    fn children(self, component: Vec<Box<dyn Component>>) -> Self
+    fn children(self, _component: Vec<Box<dyn Component>>) -> Self
     where
-        Self: Sized;
+        Self: Sized,
+    {
+        self
+    }
 
     fn get_children(&self) -> &Vec<Box<dyn Component>>;
 
