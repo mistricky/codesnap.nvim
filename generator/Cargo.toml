@@ -1,0 +1,16 @@
+[package]
+name = "generator"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# nvim-oxi = "0.4.2"
+nvim-oxi = {features = ["neovim-nightly", "libuv", "oxi-libuv"], version = "0.3"}
+tiny-skia = "0.11.4"
+syntect = "5.2.0"
+cosmic-text = "0.11.2"
+serde = "1.0.197"
+arboard = "3.3.2"
+
+[lib]
+crate-type = ["cdylib"]
