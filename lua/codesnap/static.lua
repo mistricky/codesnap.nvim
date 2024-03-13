@@ -3,7 +3,6 @@ local path_utils = require("codesnap.utils.path")
 return {
   config = {
     mac_window_bar = true,
-    watermark = "CodeSnap.nvim",
     title = "CodeSnap.nvim",
     code_font_family = "CaskaydiaCove Nerd Font",
     watermark_font_family = "Pacifico",
