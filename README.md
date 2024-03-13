@@ -27,7 +27,7 @@
   
 
 ## Prerequirements
-- Neovim 9.0+
+- Neovim 0.9+
 
 ## Install
 Recommend using [Lazy.nvim](https://github.com/folke/lazy.nvim) for installation, but you can still use other plugin manager you prefer to install it.
