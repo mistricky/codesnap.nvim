@@ -13,19 +13,19 @@ jobs:
       fail-fast: false
       matrix:
         platform:
-          - os_name: Linux-x86_64
+          - os_name: linux-x86_64
             os: ubuntu-20.04
             target: x86_64-unknown-linux-gnu
             origin_dylib_suffix: so
             dest_dylib_suffix: so
 
-          - os_name: macOS-x86_64
+          - os_name: mac-x86_64
             os: macOS-latest
             target: x86_64-apple-darwin
             origin_dylib_suffix: dylib
             dest_dylib_suffix: so
 
-          - os_name: macOS-aarch64
+          - os_name: mac-aarch64
             os: macOS-latest
             target: aarch64-apple-darwin
             origin_dylib_suffix: dylib
