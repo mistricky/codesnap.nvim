@@ -1,5 +1,6 @@
 use tiny_skia::Pixmap;
 
+use crate::components::watermark::Watermark;
 use crate::config::TakeSnapshotParams;
 use crate::{
     code::calc_wh,
@@ -21,7 +22,7 @@ pub fn take_snapshot(params: TakeSnapshotParams) -> Pixmap {
         left: 20.,
         right: 20.,
         top: 20.,
-        bottom: 22.,
+        bottom: 20.,
     };
 
     let editor = Editor::new(
@@ -29,8 +30,9 @@ pub fn take_snapshot(params: TakeSnapshotParams) -> Pixmap {
         pixmap_vertical_padding,
         width,
         height,
+        params.mac_window_bar,
     )
-    .code_y_offset(10.)
+    .code_y_offset(12.)
     .padding(padding.clone())
     .render_editor(16.)
     .render_mac_title_bar()
@@ -41,23 +43,31 @@ pub fn take_snapshot(params: TakeSnapshotParams) -> Pixmap {
         20.,
         15.,
         &params.code_font_family,
-    )
-    .title(params.title);
+    );
 
     let pixmap_width = (pixmap_horizontal_padding * 2. + width + padding.horizontal()) as u32;
     let pixmap_height =
         (pixmap_vertical_padding * 2. + height + padding.vertical() + editor.header_height())
             as u32;
+    let watermark_bottom_margin = match &params.watermark {
+        Some(_) => 200.,
+        None => 0.,
+    };
 
     let mut pixmap = Pixmap::new(
         pixmap_width * SCALE_FACTOR as u32,
-        pixmap_height * SCALE_FACTOR as u32,
+        pixmap_height * SCALE_FACTOR as u32 + watermark_bottom_margin as u32,
     )
     .unwrap();
     let context = ComponentContext {
         scale_factor: SCALE_FACTOR,
     };
-    let background = Background::create().children(vec![Box::new(editor)]);
+    let watermark = Watermark::new(
+        params.watermark,
+        params.watermark_font_family,
+        watermark_bottom_margin,
+    );
+    let background = Background::create().children(vec![Box::new(editor), Box::new(watermark)]);
 
     background.draw(&mut pixmap, &context);
 

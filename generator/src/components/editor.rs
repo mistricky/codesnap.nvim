@@ -1,10 +1,10 @@
 pub mod code;
 mod mac_title_bar;
 
-use crate::{code::calc_wh, padding::Padding};
+use crate::padding::Padding;
 
 use self::{code::Code, mac_title_bar::MacTitleBar};
-use super::{component::Component, rect::Rect, text::Text};
+use super::{component::Component, rect::Rect};
 
 const CONTROL_BAR_RADIUS: f32 = 8.;
 
@@ -14,7 +14,7 @@ pub struct Editor {
     w: f32,
     h: f32,
     children: Vec<Box<dyn Component>>,
-    has_column_number: bool,
+    has_title_bar: bool,
     padding: Padding,
     code_y_offset: f32,
 }
@@ -34,12 +34,13 @@ impl Component for Editor {
 }
 
 impl Editor {
-    pub fn new(x: f32, y: f32, w: f32, h: f32) -> Editor {
+    pub fn new(x: f32, y: f32, w: f32, h: f32, has_title_bar: bool) -> Editor {
         Editor {
             x,
             y,
             w,
             h,
+            has_title_bar,
             padding: Padding {
                 left: 0.,
                 right: 0.,
@@ -47,44 +48,20 @@ impl Editor {
                 bottom: 0.,
             },
             children: vec![],
-            has_column_number: false,
             code_y_offset: 0.,
         }
     }
 
     pub fn render_mac_title_bar(mut self) -> Self {
-        let mac_title_bar = MacTitleBar::from_xyr(
-            self.x + CONTROL_BAR_RADIUS + self.padding.left,
-            self.y + CONTROL_BAR_RADIUS + self.padding.top,
-            CONTROL_BAR_RADIUS,
-        );
+        if self.has_title_bar {
+            let mac_title_bar = MacTitleBar::from_xyr(
+                self.x + CONTROL_BAR_RADIUS + self.padding.left,
+                self.y + CONTROL_BAR_RADIUS + self.padding.top,
+                CONTROL_BAR_RADIUS,
+            );
 
-        self.children.push(Box::new(mac_title_bar));
-        self
-    }
-
-    pub fn column_number(mut self) -> Self {
-        self.has_column_number = true;
-        self
-    }
-
-    pub fn title(mut self, title: Option<String>) -> Self {
-        // if let Some(title) = title {
-        //     let (width, height) = calc_wh(&title, 9.05, 20.);
-        //     let x = (self.w + self.padding.horizontal() - width) / 2. + self.x;
-        //     let title = Text::new(
-        //         x,
-        //         self.y,
-        //         width,
-        //         height,
-        //         title,
-        //         "Hack Nerd Font".to_string(),
-        //         12.,
-        //         15.,
-        //     );
-        //
-        //     self.children.push(Box::new(title));
-        // }
+            self.children.push(Box::new(mac_title_bar));
+        }
 
         self
     }
@@ -103,7 +80,11 @@ impl Editor {
     }
 
     pub fn header_height(&self) -> f32 {
-        CONTROL_BAR_RADIUS * 2.
+        if self.has_title_bar {
+            CONTROL_BAR_RADIUS * 2.
+        } else {
+            0.
+        }
     }
 
     pub fn render_code(
@@ -138,7 +119,10 @@ impl Editor {
     }
 
     pub fn code_y_offset(mut self, code_y_offset: f32) -> Self {
-        self.code_y_offset = code_y_offset;
+        if self.has_title_bar {
+            self.code_y_offset = code_y_offset;
+        }
+
         self
     }
 }

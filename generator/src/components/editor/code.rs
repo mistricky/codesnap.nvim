@@ -1,5 +1,4 @@
-use cosmic_text::{Attrs, Buffer, Color, Family, FontSystem, Metrics, Shaping, SwashCache};
-use tiny_skia::{Paint, Rect, Transform};
+use cosmic_text::Color;
 
 use crate::{
     components::component::{Component, ComponentContext},
@@ -57,36 +56,6 @@ impl Component for Code {
             self.default_font_color,
             pixmap,
         );
-
-        // let mut font_system = FontSystem::new();
-        // let mut swash_cache = SwashCache::new();
-        // let metrics = Metrics::new(self.font_size, self.line_height).scale(scale_factor.clone());
-        // let mut buffer = Buffer::new(&mut font_system, metrics);
-        // let mut buffer = buffer.borrow_with(&mut font_system);
-        // let attrs = Attrs::new();
-        //
-        // buffer.set_size(self.w * scale_factor, self.h * scale_factor);
-        // buffer.set_rich_text(highlight_result, attrs, Shaping::Advanced);
-        // buffer.draw(
-        //     &mut swash_cache,
-        //     self.default_font_color,
-        //     |x, y, w, h, color| {
-        //         let mut paint = Paint {
-        //             anti_alias: true,
-        //             ..Default::default()
-        //         };
-        //
-        //         paint.set_color_rgba8(color.r(), color.g(), color.b(), color.a());
-        //         let rect = Rect::from_xywh(
-        //             x as f32 + self.x * scale_factor,
-        //             y as f32 + self.y * scale_factor,
-        //             w as f32,
-        //             h as f32,
-        //         )
-        //         .unwrap();
-        //         pixmap.fill_rect(rect, &paint, Transform::identity(), None);
-        //     },
-        // );
     }
 }
 
@@ -118,21 +87,6 @@ impl Code {
         }
     }
 
-    pub fn theme(mut self, theme: String) -> Self {
-        self.theme = theme;
-        self
-    }
-
-    pub fn width(mut self, w: f32) -> Self {
-        self.w = w;
-        self
-    }
-
-    pub fn height(mut self, h: f32) -> Self {
-        self.h = h;
-        self
-    }
-
     pub fn line_height(mut self, line_height: f32) -> Self {
         self.line_height = line_height;
         self
@@ -140,11 +94,6 @@ impl Code {
 
     pub fn font_size(mut self, font_size: f32) -> Self {
         self.font_size = font_size;
-        self
-    }
-
-    pub fn default_font_color(mut self, default_font_color: Color) -> Self {
-        self.default_font_color = default_font_color;
         self
     }
 }
