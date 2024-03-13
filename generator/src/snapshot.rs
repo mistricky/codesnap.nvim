@@ -22,7 +22,7 @@ pub fn take_snapshot(params: TakeSnapshotParams) -> Pixmap {
         left: 20.,
         right: 20.,
         top: 20.,
-        bottom: 20.,
+        bottom: 24.,
     };
 
     let editor = Editor::new(
@@ -32,7 +32,7 @@ pub fn take_snapshot(params: TakeSnapshotParams) -> Pixmap {
         height,
         params.mac_window_bar,
     )
-    .code_y_offset(12.)
+    .code_y_offset(15.)
     .padding(padding.clone())
     .render_editor(16.)
     .render_mac_title_bar()
