@@ -4,8 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-# nvim-oxi = "0.4.2"
-nvim-oxi = {features = ["neovim-nightly", "libuv", "oxi-libuv"], version = "0.3"}
+nvim-oxi = {features = ["neovim-0-9", "libuv", "oxi-libuv"], version = "0.3"}
 tiny-skia = "0.11.4"
 syntect = "5.2.0"
 cosmic-text = "0.11.2"
