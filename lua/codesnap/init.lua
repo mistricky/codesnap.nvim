@@ -5,8 +5,9 @@ local string_utils = require("codesnap.utils.string")
 local visual_utils = require("codesnap.utils.visual")
 
 local function get_extension()
-  local file_path = vim.fn.expand("%:p") -- 获取当前文件的完整路径
-  local file_extension = string.match(file_path, "%.([^%.]+)$") -- 提取文件后缀名
+  local file_path = vim.fn.expand("%:p")
+  local file_extension = string.match(file_path, "%.([^%.]+)$")
+
   return file_extension
 end
 

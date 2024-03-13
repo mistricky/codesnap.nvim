@@ -1,5 +1,4 @@
 use cosmic_text::{Attrs, Family, Style, Weight};
-use nvim_oxi::print;
 use syntect::{
     easy::HighlightLines,
     highlighting::{FontStyle, ThemeSet},

@@ -3,8 +3,6 @@ use tiny_skia::{Color, GradientStop, LinearGradient, Paint, Point, Rect, SpreadM
 use super::component::{Component, ComponentContext};
 
 pub struct Background {
-    w: Option<f32>,
-    h: Option<f32>,
     children: Vec<Box<dyn Component>>,
     gradient_stop_points: Vec<GradientStop>,
 }
@@ -12,8 +10,6 @@ pub struct Background {
 impl Background {
     pub fn create() -> Background {
         Background {
-            w: None,
-            h: None,
             children: vec![],
             gradient_stop_points: vec![
                 GradientStop::new(0.0, Color::from_rgba8(58, 28, 113, 255)),
@@ -21,21 +17,6 @@ impl Background {
                 GradientStop::new(1.0, Color::from_rgba8(255, 175, 123, 255)),
             ],
         }
-    }
-
-    pub fn gradient_stop_points(mut self, gradient_stop_points: Vec<GradientStop>) -> Self {
-        self.gradient_stop_points = gradient_stop_points;
-        self
-    }
-
-    pub fn width(mut self, w: f32) -> Self {
-        self.w = Some(w);
-        self
-    }
-
-    pub fn height(mut self, h: f32) -> Self {
-        self.h = Some(h);
-        self
     }
 }
 
@@ -52,10 +33,10 @@ impl Component for Background {
         &self.children
     }
 
-    fn draw_self(&self, pixmap: &mut tiny_skia::Pixmap, context: &ComponentContext) {
+    fn draw_self(&self, pixmap: &mut tiny_skia::Pixmap, _context: &ComponentContext) {
         let mut paint = Paint::default();
-        let w = self.w.unwrap_or(pixmap.width() as f32);
-        let h = self.h.unwrap_or(pixmap.height() as f32);
+        let w = pixmap.width() as f32;
+        let h = pixmap.height() as f32;
 
         paint.anti_alias = false;
         paint.shader = LinearGradient::new(
