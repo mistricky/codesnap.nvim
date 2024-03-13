@@ -1,14 +1,18 @@
 build_generator:
-	cd generator && cargo build
+	cd generator && cargo build --release
 	cp generator/target/debug/libgenerator.dylib lua/generator.so
-# build:
-# 	make build_server
-#
-# build_preview_client:
-# 	cd snap-client && npm install && npm run build
-#
-# build_server:
-# 	cd snap-server && cargo build --release
-#
-# make_static_files:
-# 	cp -r snap-client/build snap-server/public
+
+build_mac_x86_64_target:
+	rustup target install x86_64-apple-darwin
+	cd generator && cargo build --target x86_64-apple-darwin --release
+	cp generator/target/debug/libgenerator.so lua/generator.so
+
+build_mac_arm64_target:
+	rustup target install aarch64-apple-darwin
+	cd generator && cargo build --target aarch64-apple-darwin --release
+	cp generator/target/debug/libgenerator.so lua/generator.so
+
+build_linux_x86_64_target:
+	rustup target install x86_64-unknown-linux-musl
+	cd generator && cargo build --target x86_64-unknown-linux-musl --release
+	cp generator/target/debug/libgenerator.so lua/generator.so
