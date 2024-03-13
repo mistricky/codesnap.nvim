@@ -34,7 +34,7 @@ Recommend using [Lazy.nvim](https://github.com/folke/lazy.nvim) for installation
 
 **Lazy.nvim**
 ```lua
-{ "mistricky/codesnap.nvim"},
+{ "mistricky/codesnap.nvim", version = "^1"},
 ```
 
 ## Usage 
