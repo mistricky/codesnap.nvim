@@ -79,6 +79,14 @@ impl Editor {
         self
     }
 
+    pub fn width(&self) -> f32 {
+        self.w + self.padding.horizontal()
+    }
+
+    pub fn height(&self) -> f32 {
+        self.h + self.header_height() + self.padding.vertical() + self.code_y_offset
+    }
+
     pub fn header_height(&self) -> f32 {
         if self.has_title_bar {
             CONTROL_BAR_RADIUS * 2.

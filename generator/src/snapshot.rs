@@ -45,10 +45,8 @@ pub fn take_snapshot(params: TakeSnapshotParams) -> Pixmap {
         &params.code_font_family,
     );
 
-    let pixmap_width = (pixmap_horizontal_padding * 2. + width + padding.horizontal()) as u32;
-    let pixmap_height =
-        (pixmap_vertical_padding * 2. + height + padding.vertical() + editor.header_height())
-            as u32;
+    let pixmap_width = (pixmap_horizontal_padding * 2. + editor.width()) as u32;
+    let pixmap_height = (pixmap_vertical_padding * 2. + editor.height()) as u32;
     let watermark_bottom_margin = match &params.watermark {
         Some(_) => 200.,
         None => 0.,
