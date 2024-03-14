@@ -12,12 +12,15 @@ use crate::{
     padding::Padding,
 };
 
+// Scale the screenshot to 3 times its size
 const SCALE_FACTOR: f32 = 3.;
 
+// The params is come from neovim instance
 pub fn take_snapshot(params: TakeSnapshotParams) -> Pixmap {
     let (width, height) = calc_wh(&params.code, 9.05, 20.);
     let pixmap_vertical_padding = 82.;
     let pixmap_horizontal_padding = 122.;
+    // Padding of editor shape
     let padding = Padding {
         left: 20.,
         right: 20.,
@@ -47,14 +50,15 @@ pub fn take_snapshot(params: TakeSnapshotParams) -> Pixmap {
 
     let pixmap_width = (pixmap_horizontal_padding * 2. + editor.width()) as u32;
     let pixmap_height = (pixmap_vertical_padding * 2. + editor.height()) as u32;
-    let watermark_bottom_margin = match &params.watermark {
-        Some(_) => 200.,
-        None => 0.,
-    };
+    let (watermark_bottom_margin, watermark_offset_y) = params
+        .watermark
+        .as_ref()
+        .map(|_| (200., 40.))
+        .unwrap_or((0., 0.));
 
     let mut pixmap = Pixmap::new(
         pixmap_width * SCALE_FACTOR as u32,
-        pixmap_height * SCALE_FACTOR as u32 + watermark_bottom_margin as u32,
+        (pixmap_height as f32 * SCALE_FACTOR + watermark_bottom_margin - watermark_offset_y) as u32,
     )
     .unwrap();
     let context = ComponentContext {
