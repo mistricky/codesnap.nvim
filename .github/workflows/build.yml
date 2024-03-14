@@ -40,9 +40,10 @@ jobs:
         uses: houseabsolute/actions-rust-cross@v0
         with:
           command: "build"
+          working-directory: ./generator
           target: ${{ matrix.platform.target }}
           toolchain: ${{ matrix.toolchain }}
-          args: "--release --manifest-path ./generator/Cargo.toml"
+          args: "--release"
 
       - name: Rename dynamic lib
         run: cp generator/target/${{ matrix.platform.target }}/release/libgenerator.${{ matrix.platform.origin_dylib_suffix }} lua/${{ matrix.platform.os_name }}generator.${{ matrix.platform.dest_dylib_suffix }}
