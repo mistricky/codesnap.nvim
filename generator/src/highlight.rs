@@ -32,7 +32,7 @@ impl Highlight {
 
     pub fn parse(&self, theme: &str) -> Vec<(&str, Attrs)> {
         let syntax_set = SyntaxSet::load_defaults_newlines();
-        let theme_set = ThemeSet::load_defaults();
+        let theme_set = ThemeSet::load_from_folder("../assets/themes/").unwrap();
         let syntax = match &self.extension {
             Some(extension) => syntax_set.find_syntax_by_extension(extension),
             None => {
@@ -41,11 +41,11 @@ impl Highlight {
         }
         .unwrap();
 
-        let mut h = HighlightLines::new(syntax, &theme_set.themes[theme]);
+        let mut highlight = HighlightLines::new(syntax, &theme_set.themes[theme]);
         let attrs = Attrs::new().family(Family::Name(self.font_family.as_ref()));
 
         LinesWithEndings::from(&self.content)
-            .map(|line| h.highlight_line(line, &syntax_set).unwrap())
+            .map(|line| highlight.highlight_line(line, &syntax_set).unwrap())
             .fold(vec![], |acc, cur| [acc, cur].concat())
             .into_iter()
             .map(move |(style, str)| {

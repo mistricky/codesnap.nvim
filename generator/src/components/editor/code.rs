@@ -80,7 +80,7 @@ impl Code {
             children: vec![],
             language,
             extension,
-            theme: "base16-ocean.dark".to_string(),
+            theme: "base16-onedark".to_string(),
         }
     }
 
