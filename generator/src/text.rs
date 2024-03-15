@@ -90,7 +90,7 @@ impl FontRenderer {
                     w as f32,
                     h as f32,
                 )
-                .unwrap();
+                .expect("Cannot draw text on pixmap");
 
                 pixmap.fill_rect(rect, &paint, Transform::identity(), None);
             },

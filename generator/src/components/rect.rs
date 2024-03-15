@@ -1,4 +1,7 @@
-use super::component::{Component, ComponentContext, ParentComponent};
+use super::{
+    component::{Component, ComponentContext, ParentComponent},
+    render_error,
+};
 use tiny_skia::{FillRule, Paint, PathBuilder, Pixmap, Transform};
 
 pub struct Rect {
@@ -20,7 +23,12 @@ impl Component for Rect {
         self
     }
 
-    fn draw_self(&self, _: ParentComponent, pixmap: &mut Pixmap, context: &ComponentContext) {
+    fn draw_self(
+        &self,
+        _: ParentComponent,
+        pixmap: &mut Pixmap,
+        context: &ComponentContext,
+    ) -> render_error::Result<()> {
         let mut path_builder = PathBuilder::new();
         let rect_width = self.w - 2. * self.radius;
         let rect_height = self.h - 2. * self.radius;
@@ -85,6 +93,8 @@ impl Component for Rect {
             Transform::from_scale(context.scale_factor, context.scale_factor),
             None,
         );
+
+        Ok(())
     }
 }
 

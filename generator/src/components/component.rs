@@ -1,5 +1,7 @@
 use tiny_skia::Pixmap;
 
+use super::render_error;
+
 pub struct ComponentContext {
     pub scale_factor: f32,
 }
@@ -32,7 +34,8 @@ pub trait Component {
         _parent_component: ParentComponent,
         _pixmap: &mut Pixmap,
         _context: &ComponentContext,
-    ) {
+    ) -> render_error::Result<()> {
+        Ok(())
     }
 
     fn draw(
@@ -40,8 +43,8 @@ pub trait Component {
         parent_component: ParentComponent,
         pixmap: &mut Pixmap,
         context: &ComponentContext,
-    ) {
-        self.draw_self(parent_component, pixmap, context);
+    ) -> render_error::Result<()> {
+        self.draw_self(parent_component, pixmap, context)?;
 
         for child in self.get_children() {
             child.draw(
@@ -51,11 +54,17 @@ pub trait Component {
                 },
                 pixmap,
                 context,
-            )
+            )?
         }
+
+        Ok(())
     }
 
-    fn draw_root(&self, pixmap: &mut Pixmap, context: &ComponentContext) {
+    fn draw_root(
+        &self,
+        pixmap: &mut Pixmap,
+        context: &ComponentContext,
+    ) -> render_error::Result<()> {
         self.draw(ParentComponent { x: 0., y: 0. }, pixmap, context)
     }
 }

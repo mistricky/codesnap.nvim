@@ -6,6 +6,8 @@ use syntect::{
     util::LinesWithEndings,
 };
 
+use crate::components::render_error::RenderError;
+
 pub struct Highlight {
     content: String,
     language: Option<String>,
@@ -30,21 +32,27 @@ impl Highlight {
         }
     }
 
-    pub fn parse(&self, theme: &str) -> Vec<(&str, Attrs)> {
+    pub fn parse(&self, theme: &str) -> Result<Vec<(&str, Attrs)>, RenderError> {
         let syntax_set = SyntaxSet::load_defaults_newlines();
-        let theme_set = ThemeSet::load_from_folder("../assets/themes/").unwrap();
+        let theme_set = ThemeSet::load_from_folder("../assets/themes/")
+            .map_err(|_| RenderError::HighlightThemeLoadFailed)?;
         let syntax = match &self.extension {
-            Some(extension) => syntax_set.find_syntax_by_extension(extension),
+            Some(extension) => syntax_set
+                .find_syntax_by_extension(extension)
+                .ok_or(RenderError::HighlightCodeFailed(extension.to_owned())),
             None => {
-                syntax_set.find_syntax_by_name(&self.language.clone().unwrap_or("Rust".to_string()))
+                let language = &self.language.clone().unwrap_or("Rust".to_string());
+
+                syntax_set
+                    .find_syntax_by_name(language)
+                    .ok_or(RenderError::HighlightCodeFailed(language.to_owned()))
             }
-        }
-        .unwrap();
+        }?;
 
         let mut highlight = HighlightLines::new(syntax, &theme_set.themes[theme]);
         let attrs = Attrs::new().family(Family::Name(self.font_family.as_ref()));
 
-        LinesWithEndings::from(&self.content)
+        Ok(LinesWithEndings::from(&self.content)
             .map(|line| highlight.highlight_line(line, &syntax_set).unwrap())
             .fold(vec![], |acc, cur| [acc, cur].concat())
             .into_iter()
@@ -59,6 +67,6 @@ impl Highlight {
 
                 (str, attrs.color(cosmic_text::Color::rgb(r, g, b)))
             })
-            .collect::<HighlightResult>()
+            .collect::<HighlightResult>())
     }
 }

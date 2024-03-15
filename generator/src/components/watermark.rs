@@ -2,7 +2,10 @@ use cosmic_text::{Align, Attrs, Family};
 
 use crate::{code::calc_wh, text::FontRenderer};
 
-use super::component::{Component, ParentComponent};
+use super::{
+    component::{Component, ParentComponent},
+    render_error,
+};
 
 pub struct Watermark {
     value: Option<String>,
@@ -17,7 +20,7 @@ impl Component for Watermark {
         _: ParentComponent,
         pixmap: &mut tiny_skia::Pixmap,
         context: &super::component::ComponentContext,
-    ) {
+    ) -> render_error::Result<()> {
         if let Some(value) = &self.value {
             let (_, height) = calc_wh(&value, 9., 20.);
             let attrs = Attrs::new().family(Family::Name(&self.font_family));
@@ -34,6 +37,8 @@ impl Component for Watermark {
                 pixmap,
             );
         }
+
+        Ok(())
     }
 
     fn get_children(&self) -> &Vec<Box<dyn Component>> {

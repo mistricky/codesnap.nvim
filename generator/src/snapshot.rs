@@ -1,5 +1,6 @@
 use tiny_skia::Pixmap;
 
+use crate::components::render_error;
 use crate::components::watermark::Watermark;
 use crate::config::TakeSnapshotParams;
 use crate::{
@@ -16,7 +17,7 @@ use crate::{
 const SCALE_FACTOR: f32 = 3.;
 
 // The params is come from neovim instance
-pub fn take_snapshot(params: TakeSnapshotParams) -> Pixmap {
+pub fn take_snapshot(params: TakeSnapshotParams) -> render_error::Result<Pixmap> {
     let (width, height) = calc_wh(&params.code, 9.05, 20.);
     let pixmap_vertical_padding = 82.;
     let pixmap_horizontal_padding = 122.;
@@ -71,7 +72,7 @@ pub fn take_snapshot(params: TakeSnapshotParams) -> Pixmap {
     );
     let background = Background::create().children(vec![Box::new(editor), Box::new(watermark)]);
 
-    background.draw_root(&mut pixmap, &context);
+    background.draw_root(&mut pixmap, &context)?;
 
-    return pixmap;
+    Ok(pixmap)
 }

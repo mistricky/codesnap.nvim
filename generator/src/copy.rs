@@ -4,7 +4,7 @@ use arboard::{Clipboard, ImageData};
 use nvim_oxi::Result;
 
 pub fn copy_into_clipboard(config: TakeSnapshotParams) -> Result<()> {
-    let pixmap = take_snapshot(config.clone());
+    let pixmap = take_snapshot(config.clone())?;
     let premultplied_colors = pixmap.pixels();
     let colors = premultplied_colors
         .iter()

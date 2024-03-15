@@ -1,5 +1,8 @@
 use crate::{
-    components::component::{Component, ComponentContext, ParentComponent},
+    components::{
+        component::{Component, ComponentContext, ParentComponent},
+        render_error,
+    },
     highlight::Highlight,
     text::FontRenderer,
 };
@@ -37,14 +40,14 @@ impl Component for Code {
         _: ParentComponent,
         pixmap: &mut tiny_skia::Pixmap,
         context: &ComponentContext,
-    ) {
+    ) -> render_error::Result<()> {
         let highlight = Highlight::new(
             self.value.clone(),
             self.font_family.clone(),
             self.language.clone(),
             self.extension.clone(),
         );
-        let highlight_result = highlight.parse(&self.theme);
+        let highlight_result = highlight.parse(&self.theme)?;
 
         FontRenderer::new(self.font_size, self.line_height, context.scale_factor).draw_text(
             self.x,
@@ -54,6 +57,8 @@ impl Component for Code {
             highlight_result.clone(),
             pixmap,
         );
+
+        Ok(())
     }
 }
 

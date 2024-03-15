@@ -1,6 +1,9 @@
 use tiny_skia::{Color, FillRule, Paint, PathBuilder, Transform};
 
-use crate::components::component::{Component, ComponentContext, ParentComponent};
+use crate::components::{
+    component::{Component, ComponentContext, ParentComponent},
+    render_error::{self},
+};
 
 pub struct MacTitleBar {
     x: f32,
@@ -27,7 +30,7 @@ impl Component for MacTitleBar {
         _: ParentComponent,
         pixmap: &mut tiny_skia::Pixmap,
         context: &ComponentContext,
-    ) {
+    ) -> render_error::Result<()> {
         self.draw_control_buttons(
             pixmap,
             vec![
@@ -38,6 +41,8 @@ impl Component for MacTitleBar {
             25.,
             Transform::from_scale(context.scale_factor, context.scale_factor),
         );
+
+        Ok(())
     }
 }
 
