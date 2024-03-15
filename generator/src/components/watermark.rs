@@ -1,6 +1,6 @@
-use cosmic_text::{Attrs, Color, Family};
+use cosmic_text::{Align, Attrs, Color, Family};
 
-use crate::{code::calc_wh, text::render_line};
+use crate::{code::calc_wh, text::FontRenderer};
 
 use super::component::Component;
 
@@ -19,22 +19,17 @@ impl Component for Watermark {
     ) {
         if let Some(value) = &self.value {
             let (_, height) = calc_wh(&value, 9., 20.);
-            let attrs = Attrs::new()
-                .family(Family::Name(&self.font_family))
-                .color(Color::rgba(255, 255, 255, 27));
+            let attrs = Attrs::new().family(Family::Name(&self.font_family));
             let y = pixmap.height() as f32 - self.margin_bottom - height;
 
-            render_line(
+            FontRenderer::new(20., 20., context.scale_factor).draw_line(
                 0.,
                 y / context.scale_factor,
                 pixmap.width() as f32,
                 pixmap.height() as f32,
-                20.,
-                20.,
-                context.scale_factor,
                 value,
                 attrs,
-                Color::rgba(255, 255, 255, 127),
+                Some(Align::Center),
                 pixmap,
             );
         }

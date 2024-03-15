@@ -1,9 +1,7 @@
-use cosmic_text::Color;
-
 use crate::{
     components::component::{Component, ComponentContext},
     highlight::Highlight,
-    text::render_rich_text,
+    text::FontRenderer,
 };
 
 pub struct Code {
@@ -15,7 +13,6 @@ pub struct Code {
     h: f32,
     line_height: f32,
     font_size: f32,
-    default_font_color: Color,
     language: Option<String>,
     extension: Option<String>,
     theme: String,
@@ -44,16 +41,12 @@ impl Component for Code {
         );
         let highlight_result = highlight.parse(&self.theme);
 
-        render_rich_text(
+        FontRenderer::new(self.font_size, self.line_height, context.scale_factor).draw_text(
             self.x,
             self.y,
             self.w,
             self.h,
-            self.font_size,
-            self.line_height,
-            context.scale_factor,
-            highlight_result,
-            self.default_font_color,
+            highlight_result.clone(),
             pixmap,
         );
     }
@@ -80,7 +73,6 @@ impl Code {
             line_height: 15.,
             font_size: 15.,
             children: vec![],
-            default_font_color: Color::rgb(0xFF, 0xFF, 0xFF),
             language,
             extension,
             theme: "base16-ocean.dark".to_string(),
