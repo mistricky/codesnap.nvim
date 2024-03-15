@@ -1,5 +1,5 @@
 use crate::{
-    components::component::{Component, ComponentContext},
+    components::component::{Component, ComponentContext, ParentComponent},
     highlight::Highlight,
     text::FontRenderer,
 };
@@ -32,7 +32,12 @@ impl Component for Code {
         &self.children
     }
 
-    fn draw_self(&self, pixmap: &mut tiny_skia::Pixmap, context: &ComponentContext) {
+    fn draw_self(
+        &self,
+        _: ParentComponent,
+        pixmap: &mut tiny_skia::Pixmap,
+        context: &ComponentContext,
+    ) {
         let highlight = Highlight::new(
             self.value.clone(),
             self.font_family.clone(),

@@ -1,8 +1,8 @@
-use cosmic_text::{Align, Attrs, Color, Family};
+use cosmic_text::{Align, Attrs, Family};
 
 use crate::{code::calc_wh, text::FontRenderer};
 
-use super::component::Component;
+use super::component::{Component, ParentComponent};
 
 pub struct Watermark {
     value: Option<String>,
@@ -14,6 +14,7 @@ pub struct Watermark {
 impl Component for Watermark {
     fn draw_self(
         &self,
+        _: ParentComponent,
         pixmap: &mut tiny_skia::Pixmap,
         context: &super::component::ComponentContext,
     ) {

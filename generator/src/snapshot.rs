@@ -71,7 +71,7 @@ pub fn take_snapshot(params: TakeSnapshotParams) -> Pixmap {
     );
     let background = Background::create().children(vec![Box::new(editor), Box::new(watermark)]);
 
-    background.draw(&mut pixmap, &context);
+    background.draw_root(&mut pixmap, &context);
 
     return pixmap;
 }

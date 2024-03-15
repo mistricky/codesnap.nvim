@@ -1,6 +1,6 @@
 use tiny_skia::{Color, GradientStop, LinearGradient, Paint, Point, Rect, SpreadMode, Transform};
 
-use super::component::{Component, ComponentContext};
+use super::component::{Component, ComponentContext, ParentComponent};
 
 pub struct Background {
     children: Vec<Box<dyn Component>>,
@@ -33,7 +33,12 @@ impl Component for Background {
         &self.children
     }
 
-    fn draw_self(&self, pixmap: &mut tiny_skia::Pixmap, _context: &ComponentContext) {
+    fn draw_self(
+        &self,
+        _: ParentComponent,
+        pixmap: &mut tiny_skia::Pixmap,
+        _context: &ComponentContext,
+    ) {
         let mut paint = Paint::default();
         let w = pixmap.width() as f32;
         let h = pixmap.height() as f32;
