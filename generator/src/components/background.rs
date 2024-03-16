@@ -1,8 +1,11 @@
-use tiny_skia::{Color, GradientStop, LinearGradient, Paint, Point, Rect, SpreadMode, Transform};
+use tiny_skia::{
+    Color, GradientStop, LinearGradient, Paint, Pixmap, Point, Rect, SpreadMode, Transform,
+};
 
-use super::{
-    component::{Component, ComponentContext, ParentComponent},
+use super::interface::{
+    component::{Component, ComponentContext, RenderParams},
     render_error,
+    style::{ComponentAlign, ComponentStyle, RawComponentStyle},
 };
 
 pub struct Background {
@@ -11,9 +14,9 @@ pub struct Background {
 }
 
 impl Background {
-    pub fn create() -> Background {
+    pub fn from_children(children: Vec<Box<dyn Component>>) -> Background {
         Background {
-            children: vec![],
+            children,
             gradient_stop_points: vec![
                 GradientStop::new(0.0, Color::from_rgba8(58, 28, 113, 255)),
                 GradientStop::new(0.5, Color::from_rgba8(215, 109, 119, 255)),
@@ -24,23 +27,20 @@ impl Background {
 }
 
 impl Component for Background {
-    fn children(mut self, components: Vec<Box<dyn Component>>) -> Self
-    where
-        Self: Sized,
-    {
-        self.children = components;
-        self
+    fn children(&self) -> &Vec<Box<dyn Component>> {
+        &self.children
     }
 
-    fn get_children(&self) -> &Vec<Box<dyn Component>> {
-        &self.children
+    fn style(&self) -> RawComponentStyle {
+        RawComponentStyle::default().align(ComponentAlign::Column)
     }
 
     fn draw_self(
         &self,
-        _: ParentComponent,
-        pixmap: &mut tiny_skia::Pixmap,
+        pixmap: &mut Pixmap,
         _context: &ComponentContext,
+        _render_params: &RenderParams,
+        _style: &ComponentStyle,
     ) -> render_error::Result<()> {
         let mut paint = Paint::default();
         let w = pixmap.width() as f32;

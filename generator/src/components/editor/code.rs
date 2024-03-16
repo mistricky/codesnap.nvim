@@ -1,59 +1,65 @@
 use crate::{
-    components::{
-        component::{Component, ComponentContext, ParentComponent},
+    code::calc_wh,
+    components::interface::{
+        component::{Component, ComponentContext, RenderParams},
         render_error,
+        style::{ComponentStyle, RawComponentStyle, Size, Style},
     },
+    edges::margin::Margin,
     highlight::Highlight,
     text::FontRenderer,
 };
 
 pub struct Code {
     children: Vec<Box<dyn Component>>,
-    value: String,
-    x: f32,
-    y: f32,
-    w: f32,
-    h: f32,
     line_height: f32,
     font_size: f32,
-    language: Option<String>,
-    extension: Option<String>,
-    theme: String,
-    font_family: String,
+    value: String,
 }
 
 impl Component for Code {
-    fn children(mut self, components: Vec<Box<dyn Component>>) -> Self
-    where
-        Self: Sized,
-    {
-        self.children = components;
-        self
+    fn children(&self) -> &Vec<Box<dyn Component>> {
+        &self.children
     }
 
-    fn get_children(&self) -> &Vec<Box<dyn Component>> {
-        &self.children
+    fn style(&self) -> RawComponentStyle {
+        let (w, h) = calc_wh(&self.value, 9.05, self.line_height);
+
+        Style::default()
+            .size(Size::Num(w), Size::Num(h))
+            .margin(Margin {
+                top: 10.,
+                ..Margin::default()
+            })
     }
 
     fn draw_self(
         &self,
-        _: ParentComponent,
         pixmap: &mut tiny_skia::Pixmap,
         context: &ComponentContext,
+        render_params: &RenderParams,
+        style: &ComponentStyle,
     ) -> render_error::Result<()> {
+        let params = &context.take_snapshot_params;
         let highlight = Highlight::new(
-            self.value.clone(),
-            self.font_family.clone(),
-            self.language.clone(),
-            self.extension.clone(),
+            params.code.clone(),
+            params.code_font_family.clone(),
+            params.language.clone(),
+            params.extension.clone(),
         );
-        let highlight_result = highlight.parse(&self.theme)?;
+        let highlight_result = highlight.parse(&params.themes_folder, &params.theme)?;
 
-        FontRenderer::new(self.font_size, self.line_height, context.scale_factor).draw_text(
-            self.x,
-            self.y,
-            self.w,
-            self.h,
+        FontRenderer::new(
+            self.font_size,
+            self.line_height,
+            context.scale_factor,
+            &context.take_snapshot_params.fonts_folder,
+        )
+        .draw_text(
+            render_params.x,
+            render_params.y,
+            style.width,
+            style.height,
             highlight_result.clone(),
             pixmap,
         );
@@ -63,39 +69,12 @@ impl Component for Code {
 }
 
 impl Code {
-    pub fn new(
-        x: f32,
-        y: f32,
-        w: f32,
-        h: f32,
-        value: String,
-        language: Option<String>,
-        extension: Option<String>,
-        font_family: String,
-    ) -> Code {
+    pub fn new(value: String, line_height: f32, font_size: f32) -> Code {
         Code {
-            x,
-            y,
-            w,
-            h,
             value,
-            font_family,
-            line_height: 15.,
-            font_size: 15.,
+            line_height,
+            font_size,
             children: vec![],
-            language,
-            extension,
-            theme: "base16-onedark".to_string(),
         }
-    }
-
-    pub fn line_height(mut self, line_height: f32) -> Self {
-        self.line_height = line_height;
-        self
-    }
-
-    pub fn font_size(mut self, font_size: f32) -> Self {
-        self.font_size = font_size;
-        self
     }
 }

@@ -4,6 +4,8 @@ local generator = require("generator")
 local string_utils = require("codesnap.utils.string")
 local visual_utils = require("codesnap.utils.visual")
 
+local assets_folder = static.cwd .. "/assets"
+
 local function get_extension()
   local file_path = vim.fn.expand("%:p")
   local file_extension = string.match(file_path, "%.([^%.]+)$")
@@ -35,6 +37,9 @@ local function get_config()
   return table_utils.merge({
     code = code,
     extension = extension,
+    fonts_folder = assets_folder .. "/fonts",
+    themes_folder = assets_folder .. "/themes",
+    theme = "base16-onedark",
   }, static.config)
 end
 

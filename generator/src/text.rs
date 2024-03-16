@@ -10,10 +10,15 @@ pub struct FontRenderer {
 }
 
 impl FontRenderer {
-    pub fn new(font_size: f32, line_height: f32, scale_factor: f32) -> FontRenderer {
+    pub fn new(
+        font_size: f32,
+        line_height: f32,
+        scale_factor: f32,
+        fonts_folder: &str,
+    ) -> FontRenderer {
         let mut font_system = FontSystem::new();
 
-        font_system.db_mut().load_fonts_dir("../assets");
+        font_system.db_mut().load_fonts_dir(fonts_folder);
 
         let metrics = Metrics::new(font_size, line_height).scale(scale_factor.clone());
 

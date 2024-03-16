@@ -14,6 +14,9 @@ pub struct TakeSnapshotParams {
     pub language: Option<String>,
     pub extension: Option<String>,
     pub save_path: Option<String>,
+    pub themes_folder: String,
+    pub fonts_folder: String,
+    pub theme: String,
 }
 
 impl FromObject for TakeSnapshotParams {

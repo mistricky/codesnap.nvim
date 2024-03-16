@@ -1,10 +1,10 @@
 pub mod code;
-mod mac_title_bar;
+pub mod mac_title_bar;
 
-use crate::padding::Padding;
+use crate::edges::{edge::Edge, padding::Padding};
 
 use self::{code::Code, mac_title_bar::MacTitleBar};
-use super::{component::Component, rect::Rect};
+use super::{interface::component::Component, rect::Rect};
 
 const CONTROL_BAR_RADIUS: f32 = 8.;
 
@@ -20,17 +20,13 @@ pub struct Editor {
 }
 
 impl Component for Editor {
-    fn children(mut self, components: Vec<Box<dyn Component>>) -> Self
-    where
-        Self: Sized,
-    {
-        self.children.extend(components);
-        self
-    }
-
-    fn get_children(&self) -> &Vec<Box<dyn Component>> {
+    fn children(&self) -> &Vec<Box<dyn Component>> {
         &self.children
     }
+
+    // fn get_children(&self) -> &Vec<Box<dyn Component>> {
+    //     &self.children
+    // }
 }
 
 impl Editor {
@@ -52,32 +48,32 @@ impl Editor {
         }
     }
 
-    pub fn render_mac_title_bar(mut self) -> Self {
-        if self.has_title_bar {
-            let mac_title_bar = MacTitleBar::from_xyr(
-                self.x + CONTROL_BAR_RADIUS + self.padding.left,
-                self.y + CONTROL_BAR_RADIUS + self.padding.top,
-                CONTROL_BAR_RADIUS,
-            );
+    // pub fn render_mac_title_bar(mut self) -> Self {
+    //     if self.has_title_bar {
+    //         let mac_title_bar = MacTitleBar::from_xyr(
+    //             self.x + CONTROL_BAR_RADIUS + self.padding.left,
+    //             self.y + CONTROL_BAR_RADIUS + self.padding.top,
+    //             CONTROL_BAR_RADIUS,
+    //         );
+    //
+    //         self.children.push(Box::new(mac_title_bar));
+    //     }
+    //
+    //     self
+    // }
 
-            self.children.push(Box::new(mac_title_bar));
-        }
-
-        self
-    }
-
-    pub fn render_editor(mut self, radius: f32) -> Self {
-        let roundrect = Rect::from_xywh(
-            self.x,
-            self.y,
-            self.w + self.padding.horizontal(),
-            self.h + self.header_height() + self.padding.vertical() + self.code_y_offset,
-        )
-        .radius(radius);
-        self.children.push(Box::new(roundrect));
-
-        self
-    }
+    // pub fn render_editor(mut self, radius: f32) -> Self {
+    //     let roundrect = Rect::from_xywh(
+    //         self.x,
+    //         self.y,
+    //         self.w + self.padding.horizontal(),
+    //         self.h + self.header_height() + self.padding.vertical() + self.code_y_offset,
+    //     )
+    //     .radius(radius);
+    //     self.children.push(Box::new(roundrect));
+    //
+    //     self
+    // }
 
     pub fn width(&self) -> f32 {
         self.w + self.padding.horizontal()
@@ -95,31 +91,20 @@ impl Editor {
         }
     }
 
-    pub fn render_code(
-        mut self,
-        code: &str,
-        language: Option<String>,
-        extension: Option<String>,
-        line_height: f32,
-        font_size: f32,
-        font_family: &str,
-    ) -> Self {
-        let code = Code::new(
-            self.x + self.padding.left,
-            self.y + self.header_height() + self.padding.top + self.code_y_offset,
-            self.w,
-            self.h,
-            code.to_string(),
-            language,
-            extension,
-            font_family.to_string(),
-        )
-        .line_height(line_height)
-        .font_size(font_size);
-
-        self.children.push(Box::new(code));
-        self
-    }
+    // pub fn render_code(mut self, code: &str, line_height: f32, font_size: f32) -> Self {
+    //     let code = Code::new(
+    //         self.x + self.padding.left,
+    //         self.y + self.header_height() + self.padding.top + self.code_y_offset,
+    //         self.w,
+    //         self.h,
+    //         code.to_string(),
+    //     )
+    //     .line_height(line_height)
+    //     .font_size(font_size);
+    //
+    //     self.children.push(Box::new(code));
+    //     self
+    // }
 
     pub fn padding(mut self, padding: Padding) -> Self {
         self.padding = padding;

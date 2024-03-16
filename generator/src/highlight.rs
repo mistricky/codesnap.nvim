@@ -6,7 +6,7 @@ use syntect::{
     util::LinesWithEndings,
 };
 
-use crate::components::render_error::RenderError;
+use crate::components::interface::render_error::RenderError;
 
 pub struct Highlight {
     content: String,
@@ -32,9 +32,13 @@ impl Highlight {
         }
     }
 
-    pub fn parse(&self, theme: &str) -> Result<Vec<(&str, Attrs)>, RenderError> {
+    pub fn parse(
+        &self,
+        theme_folder: &str,
+        theme: &str,
+    ) -> Result<Vec<(&str, Attrs)>, RenderError> {
         let syntax_set = SyntaxSet::load_defaults_newlines();
-        let theme_set = ThemeSet::load_from_folder("../assets/themes/")
+        let theme_set = ThemeSet::load_from_folder(theme_folder)
             .map_err(|_| RenderError::HighlightThemeLoadFailed)?;
         let syntax = match &self.extension {
             Some(extension) => syntax_set

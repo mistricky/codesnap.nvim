@@ -1,37 +1,46 @@
 use cosmic_text::{Align, Attrs, Family};
+use tiny_skia::Pixmap;
 
-use crate::{code::calc_wh, text::FontRenderer};
+use crate::{edges::margin::Margin, text::FontRenderer};
 
-use super::{
-    component::{Component, ParentComponent},
+use super::interface::{
+    component::{Component, ComponentContext, RenderParams},
     render_error,
+    style::{ComponentStyle, RawComponentStyle},
 };
 
 pub struct Watermark {
-    value: Option<String>,
-    margin_bottom: f32,
-    font_family: String,
     children: Vec<Box<dyn Component>>,
+    value: Option<String>,
 }
 
 impl Component for Watermark {
     fn draw_self(
         &self,
-        _: ParentComponent,
-        pixmap: &mut tiny_skia::Pixmap,
-        context: &super::component::ComponentContext,
+        pixmap: &mut Pixmap,
+        context: &ComponentContext,
+        render_params: &RenderParams,
+        _style: &ComponentStyle,
     ) -> render_error::Result<()> {
-        if let Some(value) = &self.value {
-            let (_, height) = calc_wh(&value, 9., 20.);
-            let attrs = Attrs::new().family(Family::Name(&self.font_family));
-            let y = pixmap.height() as f32 - self.margin_bottom - height;
+        let params = &context.take_snapshot_params;
 
-            FontRenderer::new(20., 20., context.scale_factor).draw_line(
+        if let Some(value) = &params.watermark {
+            let attrs = Attrs::new().family(Family::Name(
+                &context.take_snapshot_params.watermark_font_family,
+            ));
+
+            FontRenderer::new(
+                20.,
+                20.,
+                context.scale_factor,
+                &context.take_snapshot_params.fonts_folder,
+            )
+            .draw_line(
                 0.,
-                y / context.scale_factor,
+                render_params.y,
                 pixmap.width() as f32,
                 pixmap.height() as f32,
-                value,
+                &value,
                 attrs,
                 Some(Align::Center),
                 pixmap,
@@ -41,18 +50,30 @@ impl Component for Watermark {
         Ok(())
     }
 
-    fn get_children(&self) -> &Vec<Box<dyn Component>> {
+    fn children(&self) -> &Vec<Box<dyn Component>> {
         &self.children
+    }
+
+    fn style(&self) -> RawComponentStyle {
+        let default_style = RawComponentStyle::default();
+
+        if self.value.is_some() {
+            default_style.margin(Margin {
+                bottom: 22.,
+                top: 15.,
+                ..Margin::default()
+            })
+        } else {
+            default_style
+        }
     }
 }
 
 impl Watermark {
-    pub fn new(value: Option<String>, font_family: String, margin_bottom: f32) -> Watermark {
+    pub fn new(value: Option<String>) -> Watermark {
         Watermark {
-            value,
-            font_family,
             children: vec![],
-            margin_bottom,
+            value,
         }
     }
 }
