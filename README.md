@@ -1,4 +1,4 @@
-![image](https://github.com/mistricky/codesnap.nvim/assets/22574136/4afe1462-9325-40e2-856e-be8a7ce4fdad)
+![image](https://github.com/mistricky/codesnap.nvim/assets/22574136/9fc40afc-cff8-4e18-a04f-e931d32a1fb7)
 
 
 
