@@ -81,9 +81,16 @@ jobs:
         run: python3 scripts/replace-template.py
 
       - name: Commit changes
-        uses: EndBug/add-and-commit@v9
+        uses: EndBug/add-and-commit@v7
         with:
-          message: "[Update] apply template"
+          message: '[Update] files based on generated files by template generator'
+          pull_strategy: 'NO-PULL'
+          push: false
+
+      - name: Push changes
+        run: |
+          git pull --rebase
+          git push 
 
       - name: Read version from project config
         id: read_toml
