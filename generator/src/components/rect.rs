@@ -3,7 +3,7 @@ use crate::edges::padding::Padding;
 use super::interface::{
     component::{Component, ComponentContext, RenderParams},
     render_error,
-    style::{ComponentAlign, ComponentStyle, RawComponentStyle, Size, Style},
+    style::{ComponentAlign, ComponentStyle, RawComponentStyle, Style},
 };
 use tiny_skia::{FillRule, Paint, PathBuilder, Pixmap, Transform};
 
