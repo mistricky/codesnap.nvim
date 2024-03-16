@@ -1,11 +1,9 @@
 build:
-	make build_server
+	./scripts/apply_generator.sh
 
-build_preview_client:
-	cd snap-client && npm install && npm run build
+build_generator_debug:
+	./scripts/build_generator.sh	
 
-build_server:
-	cd snap-server && cargo build --release
-
-make_static_files:
-	cp -r snap-client/build snap-server/public
+build_generator:
+	./scripts/build_generator.sh --release
+	# cd generator && cargo build --release
