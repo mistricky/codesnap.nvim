@@ -1,4 +1,5 @@
-![image](https://github.com/mistricky/codesnap.nvim/assets/22574136/9c67eb33-a11c-4ce3-935d-3fb59ec5d015)
+![image](https://github.com/mistricky/codesnap.nvim/assets/22574136/4afe1462-9325-40e2-856e-be8a7ce4fdad)
+
 
 
 <p align="center">
