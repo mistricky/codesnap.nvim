@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Serialize, Deserialize, Clone)]
 pub struct TakeSnapshotParams {
     pub mac_window_bar: bool,
-    pub watermark: Option<String>,
+    pub watermark: String,
     pub title: Option<String>,
     pub code_font_family: String,
     pub watermark_font_family: String,

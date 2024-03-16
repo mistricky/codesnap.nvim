@@ -11,7 +11,7 @@ use super::interface::{
 
 pub struct Watermark {
     children: Vec<Box<dyn Component>>,
-    value: Option<String>,
+    value: String,
 }
 
 impl Component for Watermark {
@@ -24,7 +24,7 @@ impl Component for Watermark {
     ) -> render_error::Result<()> {
         let params = &context.take_snapshot_params;
 
-        if let Some(value) = &params.watermark {
+        if &params.watermark != "" {
             let attrs = Attrs::new().family(Family::Name(
                 &context.take_snapshot_params.watermark_font_family,
             ));
@@ -40,7 +40,7 @@ impl Component for Watermark {
                 render_params.y,
                 pixmap.width() as f32,
                 pixmap.height() as f32,
-                &value,
+                &params.watermark,
                 attrs,
                 Some(Align::Center),
                 pixmap,
@@ -57,7 +57,7 @@ impl Component for Watermark {
     fn style(&self) -> RawComponentStyle {
         let default_style = RawComponentStyle::default();
 
-        if self.value.is_some() {
+        if self.value != "" {
             default_style.margin(Margin {
                 bottom: 22.,
                 top: 15.,
@@ -70,7 +70,7 @@ impl Component for Watermark {
 }
 
 impl Watermark {
-    pub fn new(value: Option<String>) -> Watermark {
+    pub fn new(value: String) -> Watermark {
         Watermark {
             children: vec![],
             value,

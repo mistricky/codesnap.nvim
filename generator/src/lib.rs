@@ -4,6 +4,7 @@ mod config;
 mod copy;
 mod edges;
 mod highlight;
+mod path;
 mod save;
 mod snapshot;
 mod text;

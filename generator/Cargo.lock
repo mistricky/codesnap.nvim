@@ -357,6 +357,7 @@ dependencies = [
  "arboard",
  "cosmic-text",
  "nvim-oxi",
+ "regex",
  "serde",
  "syntect",
  "thiserror",

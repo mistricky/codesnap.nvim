@@ -2,10 +2,7 @@ use std::sync::Arc;
 
 use tiny_skia::Pixmap;
 
-use crate::{
-    config::TakeSnapshotParams,
-    edges::{edge::Edge, padding::Padding},
-};
+use crate::{config::TakeSnapshotParams, edges::edge::Edge};
 
 use super::{
     render_error,
