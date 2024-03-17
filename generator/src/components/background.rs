@@ -103,12 +103,12 @@ impl Background {
                 GradientStop::new(0.95, Color::from_rgba8(116, 185, 255, 255)),
             ],
             "bamboo" => vec![
-                GradientStop::new(0.1, Color::from_rgba8(107, 203, 165, 255)),
-                GradientStop::new(95., Color::from_rgba8(202, 244, 194, 255)),
+                GradientStop::new(0.22, Color::from_rgba8(107, 203, 165, 255)),
+                GradientStop::new(0.95, Color::from_rgba8(202, 244, 194, 255)),
             ],
             "dusk" => vec![
-                GradientStop::new(0.2, Color::from_rgba8(224, 103, 76, 255)),
-                GradientStop::new(95., Color::from_rgba8(253, 175, 25, 255)),
+                GradientStop::new(0.22, Color::from_rgba8(255, 98, 110, 255)),
+                GradientStop::new(0.95, Color::from_rgba8(255, 190, 113, 255)),
             ],
             _ => return Err(RenderError::UnknownBackgroundTheme(theme.to_string())),
         };
