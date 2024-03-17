@@ -60,7 +60,10 @@ If CodeSnap.nvim on your system still not works fine, there are a lot of reasons
 ### Copy into the clipboard
 To take a beautiful snapshot use CodeSnap.nvim, you can just use `CodeSnap` command to generate a snapshot of the current selected code, then the `CodeSnap.nvim` will write the snapshot into the clipboard, and you can paste it anywhere you want.
 
-https://github.com/mistricky/codesnap.nvim/assets/22574136/88d9fe9e-d938-4d82-a1e4-b7170ca47dd9
+
+
+https://github.com/mistricky/codesnap.nvim/assets/22574136/99be72db-57d7-4839-91d0-2a9dfb1901ac
+
 
 
 ### Save the snapshot
@@ -74,7 +77,10 @@ require("codesnap").setup({
 ```
 
 
-https://github.com/mistricky/codesnap.nvim/assets/22574136/7b156a89-1e0d-48cd-b062-af5a460973ba
+
+https://github.com/mistricky/codesnap.nvim/assets/22574136/69b27e77-3dce-4bc3-8516-89ce636fe02d
+
+
 
 
 ## Watermark
