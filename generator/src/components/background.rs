@@ -2,11 +2,15 @@ use tiny_skia::{
     Color, GradientStop, LinearGradient, Paint, Pixmap, Point, Rect, SpreadMode, Transform,
 };
 
+use crate::color::RgbaColor;
+
 use super::interface::{
     component::{Component, ComponentContext, RenderParams},
     render_error::{self, RenderError},
     style::{ComponentAlign, ComponentStyle, RawComponentStyle},
 };
+
+const HEX_COLOR_LENGTH: usize = 7;
 
 pub struct Background {
     children: Vec<Box<dyn Component>>,
@@ -37,16 +41,30 @@ impl Component for Background {
         let mut paint = Paint::default();
         let w = pixmap.width() as f32;
         let h = pixmap.height() as f32;
+        let params = &context.take_snapshot_params;
 
         paint.anti_alias = false;
-        paint.shader = LinearGradient::new(
-            Point::from_xy(0., 0.),
-            Point::from_xy(w, 0.),
-            Background::get_theme(&context.take_snapshot_params.bg_theme)?,
-            SpreadMode::Pad,
-            Transform::identity(),
-        )
-        .unwrap();
+        match params.bg_color.as_ref() {
+            Some(color) => {
+                if color.len() != HEX_COLOR_LENGTH || !color.starts_with("#") {
+                    return Err(RenderError::InvalidHexColor(color.to_string()));
+                }
+
+                let rgba_color: RgbaColor = color.to_string().into();
+
+                paint.set_color(rgba_color.color);
+            }
+            None => {
+                paint.shader = LinearGradient::new(
+                    Point::from_xy(0., 0.),
+                    Point::from_xy(w, 0.),
+                    Background::get_theme(&context.take_snapshot_params.bg_theme)?,
+                    SpreadMode::Pad,
+                    Transform::identity(),
+                )
+                .unwrap();
+            }
+        };
 
         pixmap.fill_rect(
             Rect::from_xywh(0., 0., w, h).unwrap(),
@@ -67,28 +85,30 @@ impl Background {
                 GradientStop::new(0.5, Color::from_rgba8(215, 109, 119, 255)),
                 GradientStop::new(0.95, Color::from_rgba8(255, 175, 123, 255)),
             ],
-            "cyan" => vec![
+            "sea" => vec![
                 GradientStop::new(0.0, Color::from_rgba8(31, 162, 255, 255)),
                 GradientStop::new(0.4, Color::from_rgba8(18, 216, 250, 255)),
                 GradientStop::new(0.95, Color::from_rgba8(166, 255, 203, 255)),
             ],
-            "rose" => vec![
-                GradientStop::new(0.1, Color::from_rgba8(180, 101, 218, 255)),
-                GradientStop::new(0.33, Color::from_rgba8(207, 108, 201, 255)),
-                GradientStop::new(0.66, Color::from_rgba8(238, 96, 156, 255)),
-                GradientStop::new(1., Color::from_rgba8(238, 96, 156, 255)),
+            "grape" => vec![
+                GradientStop::new(0.28, Color::from_rgba8(103, 90, 247, 255)),
+                GradientStop::new(0.95, Color::from_rgba8(189, 101, 250, 255)),
             ],
-            "pink" => vec![
+            "peach" => vec![
                 GradientStop::new(0.22, Color::from_rgba8(221, 94, 137, 255)),
-                GradientStop::new(0.55, Color::from_rgba8(247, 187, 151, 255)),
+                GradientStop::new(0.95, Color::from_rgba8(247, 187, 151, 255)),
             ],
-            "yellow" => vec![
-                GradientStop::new(0., Color::from_rgba8(85, 239, 196, 255)),
-                GradientStop::new(0.4, Color::from_rgba8(255, 234, 167, 255)),
-            ],
-            "blue" => vec![
+            "summer" => vec![
                 GradientStop::new(0.28, Color::from_rgba8(248, 165, 194, 255)),
                 GradientStop::new(0.95, Color::from_rgba8(116, 185, 255, 255)),
+            ],
+            "bamboo" => vec![
+                GradientStop::new(0.1, Color::from_rgba8(107, 203, 165, 255)),
+                GradientStop::new(95., Color::from_rgba8(202, 244, 194, 255)),
+            ],
+            "dusk" => vec![
+                GradientStop::new(0.2, Color::from_rgba8(224, 103, 76, 255)),
+                GradientStop::new(95., Color::from_rgba8(253, 175, 25, 255)),
             ],
             _ => return Err(RenderError::UnknownBackgroundTheme(theme.to_string())),
         };
