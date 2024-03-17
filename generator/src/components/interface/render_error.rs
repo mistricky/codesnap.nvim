@@ -13,6 +13,9 @@ pub enum RenderError {
 
     #[error("Unable to parse unknown background theme {0}")]
     UnknownBackgroundTheme(String),
+
+    #[error("Invalid hex color {0}")]
+    InvalidHexColor(String),
 }
 
 impl From<RenderError> for nvim_oxi::Error {

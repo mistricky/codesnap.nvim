@@ -1,4 +1,5 @@
 mod code;
+mod color;
 mod components;
 mod config;
 mod copy;
