@@ -17,6 +17,7 @@ pub struct TakeSnapshotParams {
     pub themes_folder: String,
     pub fonts_folder: String,
     pub theme: String,
+    pub bg_theme: String,
 }
 
 impl FromObject for TakeSnapshotParams {

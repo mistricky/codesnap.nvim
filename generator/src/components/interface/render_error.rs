@@ -10,6 +10,9 @@ pub enum RenderError {
 
     #[error("Find Highlight theme for {0} failed")]
     HighlightCodeFailed(String),
+
+    #[error("Unable to parse unknown background theme {0}")]
+    UnknownBackgroundTheme(String),
 }
 
 impl From<RenderError> for nvim_oxi::Error {
