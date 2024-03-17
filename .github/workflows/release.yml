@@ -51,7 +51,7 @@ jobs:
           args: "--release"
 
       - name: Rename dynamic lib
-        run: cp generator/target/${{ matrix.platform.target }}/release/libgenerator.${{ matrix.platform.origin_dylib_suffix }} lua/${{ matrix.platform.os_name }}generator.${{ matrix.platform.dest_dylib_suffix }}
+        run: cp -rf generator/target/${{ matrix.platform.target }}/release/libgenerator.${{ matrix.platform.origin_dylib_suffix }} lua/${{ matrix.platform.os_name }}generator.${{ matrix.platform.dest_dylib_suffix }}
 
       - name: Commit changes
         uses: EndBug/add-and-commit@v7
