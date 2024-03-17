@@ -81,8 +81,33 @@ require("codesnap").setup({
 https://github.com/mistricky/codesnap.nvim/assets/22574136/69b27e77-3dce-4bc3-8516-89ce636fe02d
 
 
+## Breadcrumbs
+Breadcrumbs are something to display the current snapshot file path, you can open it through config `has_breadcrumbs`:
+```lua
+require("codesnap").setup({
+  -- ...
+  has_breadcrumbs = true
+})
+```
+The breadcrumbs look like:
+![image](https://github.com/mistricky/codesnap.nvim/assets/22574136/23274faa-36a9-4d41-88a5-e48c44b4d5bf)
+
+### Custom path separator
+The CodeSnap.nvim uses `/` as the separator of the file path by default, of course, you can specify any symbol you prefer as the custom separator:
+```lua
+require("codesnap").setup({
+  -- ...
+  has_breadcrumbs = true
+  breadcrumbs_separator = "👉"
+})
+```
+
+![image](https://github.com/mistricky/codesnap.nvim/assets/22574136/84b80d0f-1467-4bdf-9cbd-aede868f93aa)
+
+
+
 ## Custom background
-The `CodeSnap.nvim` comes with many beautify backgrounds preset, you can set any background you like by setting `bg_theme` to its name, just like:
+The `CodeSnap.nvim` comes with many beautiful backgrounds preset, you can set any background you like by setting `bg_theme` to its name, just like:
 ```lua
 require("codesnap").setup({
   -- The "default" background is one you see at the beginning of the README
