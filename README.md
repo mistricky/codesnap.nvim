@@ -15,7 +15,7 @@
 </p>
 
 <h1 align="center">CodeSnap.nvim</h1>
-<p align="center">📸 Snapshot plugin that can make pretty code snapshots with real-time previews for Neovim</p>
+<p align="center">📸 Snapshot plugin with rich features that can make pretty code snapshots for Neovim</p>
 
 > [!WARNING]  
 > **v1.0.0** will bring some break changes
