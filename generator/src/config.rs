@@ -19,6 +19,9 @@ pub struct TakeSnapshotParams {
     pub theme: String,
     pub bg_theme: String,
     pub bg_color: Option<String>,
+    pub file_path: String,
+    pub breadcrumbs_separator: String,
+    pub has_breadcrumbs: bool,
 }
 
 impl FromObject for TakeSnapshotParams {
