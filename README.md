@@ -28,9 +28,9 @@
 - 😎 Custom watermark and window style
 - 💻 Beautiful Mac-style title bar
 - 🤖 Generate snapshots using only a single command
-- 👏 [WIP] Custom template background
+- 🍞 Breadcrumbs for display file path
+- 🌊 More beautiful background theme
 - 🔢 [WIP] Column number
-- 🍞 [WIP] Breadcrumbs
 
 ## Prerequirements
 - Neovim 9.0+
