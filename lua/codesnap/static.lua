@@ -8,6 +8,8 @@ return {
     watermark_font_family = "Pacifico",
     watermark = "CodeSnap.nvim",
     bg_theme = "default",
+    breadcrumbs_separator = "/",
+    has_breadcrumbs = false,
   },
   cwd = path_utils.back(path_utils.back(debug.getinfo(1, "S").source:sub(2):match("(.*[/\\])"))),
   preview_switch = true,

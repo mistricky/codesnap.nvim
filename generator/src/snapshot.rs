@@ -3,6 +3,7 @@ use std::sync::Arc;
 use tiny_skia::Pixmap;
 
 use crate::components::background::Background;
+use crate::components::breadcrumbs::Breadcrumbs;
 use crate::components::container::Container;
 use crate::components::editor::code::Code;
 use crate::components::editor::mac_title_bar::MacTitleBar;
@@ -26,6 +27,12 @@ pub fn take_snapshot(params: TakeSnapshotParams) -> render_error::Result<Pixmap>
             16.,
             vec![
                 Box::new(MacTitleBar::from_radius(8.)),
+                Box::new(Breadcrumbs::from_path(
+                    params.file_path,
+                    15.,
+                    params.breadcrumbs_separator,
+                    params.has_breadcrumbs,
+                )),
                 Box::new(Code::new(params.code, 20., 15.)),
             ],
         )),

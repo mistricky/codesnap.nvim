@@ -3,6 +3,7 @@ local table_utils = require("codesnap.utils.table")
 local generator = require("generator")
 local string_utils = require("codesnap.utils.string")
 local visual_utils = require("codesnap.utils.visual")
+local path_utils = require("codesnap.utils.path")
 
 local assets_folder = static.cwd .. "/assets"
 
@@ -40,6 +41,7 @@ local function get_config()
     fonts_folder = assets_folder .. "/fonts",
     themes_folder = assets_folder .. "/themes",
     theme = "base16-onedark",
+    file_path = static.config.has_breadcrumbs and path_utils.get_relative_path() or "",
   }, static.config)
 end
 
