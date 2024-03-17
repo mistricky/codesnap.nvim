@@ -19,6 +19,7 @@ impl Edge for Margin {
 }
 
 impl Margin {
+    #[allow(dead_code)]
     pub fn from_value(value: f32) -> Margin {
         Margin {
             left: value,
