@@ -6,4 +6,3 @@ build_generator_debug:
 
 build_generator:
 	./scripts/build_generator.sh --release
-	# cd generator && cargo build --release
