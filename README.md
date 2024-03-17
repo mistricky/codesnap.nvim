@@ -72,7 +72,7 @@ Of course, you can use `CodeSnapSave` command to save the snapshot to path where
 ```lua
 require("codesnap").setup({
   -- ...
-  save_path: ...
+  save_path = ...
 })
 ```
 
@@ -81,14 +81,75 @@ require("codesnap").setup({
 https://github.com/mistricky/codesnap.nvim/assets/22574136/69b27e77-3dce-4bc3-8516-89ce636fe02d
 
 
+## Custom background
+The `CodeSnap.nvim` comes with many beautify backgrounds preset, you can set any background you like by setting `bg_theme` to its name, just like:
+```lua
+require("codesnap").setup({
+  -- The "default" background is one you see at the beginning of the README
+  bg_theme = "default"
+})
+```
+<table>
+  <tr>
+    <th>bamboo</th>
+    <th>sea</th>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/mistricky/codesnap.nvim/assets/22574136/ce3a387b-61a5-42ba-8f71-1b4949f5e148" width="650" />
+    </td>
+    <td>
+      <img src="https://github.com/mistricky/codesnap.nvim/assets/22574136/122790b6-6365-402c-806a-dfc78dabbc06" width="650" />
+    </td>
+  </tr>
+
+  <tr>
+    <th>peach</th>
+    <th>grape</th>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/mistricky/codesnap.nvim/assets/22574136/c0ec9dc1-cd8b-463e-9f2d-ab2e1e3a9831" width="650" />
+    </td>
+    <td>
+      <img src="https://github.com/mistricky/codesnap.nvim/assets/22574136/b573786b-70ed-4006-89c7-20bed115c9cc" width="650" />
+    </td>
+  </tr>
 
 
-## Watermark
-Watermark is something that makes screenshots more personalized, but if you don't like watermark just set it as empty string to hide it.
+  <tr>
+    <th>dusk</th>
+        <th>summer</th>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/mistricky/codesnap.nvim/assets/22574136/e3bb5222-542d-4c32-b78b-8cf4695feec9" width="650" />
+    </td>
+    <td>
+      <img src="https://github.com/mistricky/codesnap.nvim/assets/22574136/98ced31a-091b-4ed8-9bd6-bb5b502a7db2" width="650" />
+    </td>
+  </tr>
+</table>
+
+### Solid color background
+If you prefer solid color background, you can set `bg_color` to your preferred color. For example:
 ```lua
 require("codesnap").setup({
   -- ...
-  watermark: ""
+  bg_color = "#535c68"
+})
+```
+
+![CodeSnap](https://github.com/mistricky/codesnap.nvim/assets/22574136/a600c2e4-4c60-4ec0-b2fc-3b41481048dc)
+
+
+
+## Watermark
+Watermark is something that makes screenshots more personalized, but if you don't like watermark just set it as an empty string to hide it.
+```lua
+require("codesnap").setup({
+  -- ...
+  watermark = ""
 })
 ```
 
@@ -113,6 +174,7 @@ There is a default config:
     code_font_family = "CaskaydiaCove Nerd Font",
     watermark_font_family = "Pacifico",
     watermark = "CodeSnap.nvim",
+    bg_theme = "default"
 }
 ```
 
