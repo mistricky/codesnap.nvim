@@ -11,6 +11,7 @@ use super::interface::{
 };
 
 const HEX_COLOR_LENGTH: usize = 7;
+const HEX_COLOR_WITH_ALPHA_LENGTH: usize = 9;
 
 pub struct Background {
     children: Vec<Box<dyn Component>>,
@@ -20,6 +21,11 @@ impl Background {
     pub fn from_children(children: Vec<Box<dyn Component>>) -> Background {
         Background { children }
     }
+}
+
+fn is_valid_hex_color(color: String) -> bool {
+    (color.len() == HEX_COLOR_LENGTH || color.len() == HEX_COLOR_WITH_ALPHA_LENGTH)
+        && color.starts_with("#")
 }
 
 impl Component for Background {
@@ -46,7 +52,7 @@ impl Component for Background {
         paint.anti_alias = false;
         match params.bg_color.as_ref() {
             Some(color) => {
-                if color.len() != HEX_COLOR_LENGTH || !color.starts_with("#") {
+                if ! is_valid_hex_color(color.to_string()){
                     return Err(RenderError::InvalidHexColor(color.to_string()));
                 }
 
