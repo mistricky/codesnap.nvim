@@ -9,6 +9,7 @@ use crate::components::interface::{
 pub struct MacTitleBar {
     radius: f32,
     children: Vec<Box<dyn Component>>,
+    render_condition: bool,
 }
 
 impl Component for MacTitleBar {
@@ -20,6 +21,10 @@ impl Component for MacTitleBar {
         let demeter = self.radius * 2.;
 
         Style::default().size(Size::Num(demeter + 2. * 25.), Size::Num(demeter))
+    }
+
+    fn render_condition(&self) -> bool {
+        return self.render_condition;
     }
 
     fn draw_self(
@@ -50,10 +55,11 @@ impl Component for MacTitleBar {
 }
 
 impl MacTitleBar {
-    pub fn from_radius(radius: f32) -> MacTitleBar {
+    pub fn from_radius(radius: f32, render_condition: bool) -> MacTitleBar {
         MacTitleBar {
             radius,
             children: vec![],
+            render_condition,
         }
     }
 
