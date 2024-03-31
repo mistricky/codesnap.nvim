@@ -63,6 +63,10 @@ pub trait Component {
         render_params.clone()
     }
 
+    fn render_condition(&self) -> bool {
+        true
+    }
+
     fn draw_self(
         &self,
         _pixmap: &mut Pixmap,
@@ -128,6 +132,10 @@ pub trait Component {
         let mut sibling_style = ComponentStyle::default();
 
         for child in children {
+            if !child.render_condition() {
+                continue;
+            }
+
             sibling_render_params = child.draw(
                 pixmap,
                 context,

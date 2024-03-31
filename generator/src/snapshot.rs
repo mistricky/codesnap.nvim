@@ -26,7 +26,7 @@ pub fn take_snapshot(params: TakeSnapshotParams) -> render_error::Result<Pixmap>
         Box::new(Rect::new(
             16.,
             vec![
-                Box::new(MacTitleBar::from_radius(8.)),
+                Box::new(MacTitleBar::from_radius(8., params.mac_window_bar)),
                 Box::new(Breadcrumbs::from_path(
                     params.file_path,
                     15.,
