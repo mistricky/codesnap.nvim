@@ -2,16 +2,13 @@ use tiny_skia::{
     Color, GradientStop, LinearGradient, Paint, Pixmap, Point, Rect, SpreadMode, Transform,
 };
 
-use crate::color::RgbaColor;
+use crate::color::{is_valid_hex_color, RgbaColor};
 
 use super::interface::{
     component::{Component, ComponentContext, RenderParams},
     render_error::{self, RenderError},
     style::{ComponentAlign, ComponentStyle, RawComponentStyle},
 };
-
-const HEX_COLOR_LENGTH: usize = 7;
-const HEX_COLOR_WITH_ALPHA_LENGTH: usize = 9;
 
 pub struct Background {
     children: Vec<Box<dyn Component>>,
@@ -21,11 +18,6 @@ impl Background {
     pub fn from_children(children: Vec<Box<dyn Component>>) -> Background {
         Background { children }
     }
-}
-
-fn is_valid_hex_color(color: String) -> bool {
-    (color.len() == HEX_COLOR_LENGTH || color.len() == HEX_COLOR_WITH_ALPHA_LENGTH)
-        && color.starts_with("#")
 }
 
 impl Component for Background {
@@ -52,7 +44,7 @@ impl Component for Background {
         paint.anti_alias = false;
         match params.bg_color.as_ref() {
             Some(color) => {
-                if ! is_valid_hex_color(color.to_string()){
+                if !is_valid_hex_color(color) {
                     return Err(RenderError::InvalidHexColor(color.to_string()));
                 }
 
