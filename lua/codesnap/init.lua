@@ -23,9 +23,9 @@ function main.setup(config)
   static.config = table_utils.merge(static.config, config == nil and {} or config)
 end
 
-local function get_config()
+local function get_config(specify_extension)
   local code = visual_utils.get_selected_text()
-  local extension = get_extension()
+  local extension = specify_extension or get_extension()
 
   if string_utils.is_str_empty(code) then
     error("Please select code which you want to take snapshot first")
@@ -45,18 +45,18 @@ local function get_config()
   }, static.config)
 end
 
-function main.copy_into_clipboard()
-  generator.copy_into_clipboard(get_config())
+function main.copy_into_clipboard(extension)
+  generator.copy_into_clipboard(get_config(extension))
   vim.cmd("delmarks <>")
   vim.notify("Save snapshot into clipboard successfully")
 end
 
-function main.save_snapshot()
+function main.save_snapshot(extension)
   if string_utils.is_str_empty(static.config.save_path) then
     error("Cannot find save_path from config")
   end
 
-  generator.save_snapshot(get_config())
+  generator.save_snapshot(get_config(extension))
   vim.cmd("delmarks <>")
   vim.notify("Save snapshot in " .. static.config.save_path .. " successfully")
 end
