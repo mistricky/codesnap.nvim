@@ -8,7 +8,7 @@ pub enum RenderError {
     #[error("Highlight code failed!")]
     HighlightThemeLoadFailed,
 
-    #[error("Find Highlight theme for {0} failed")]
+    #[error("No such highlight syntax for {0}")]
     HighlightCodeFailed(String),
 
     #[error("Unable to parse unknown background theme {0}")]

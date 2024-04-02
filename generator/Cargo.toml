@@ -12,6 +12,7 @@ serde = "1.0.197"
 arboard = {features = ["wayland-data-control"], version = "3.3.2"}
 thiserror = "1.0.58"
 regex = "1.10.3"
+two-face = "0.3.0"
 
 [lib]
 crate-type = ["cdylib"]
