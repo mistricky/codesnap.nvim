@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 source ./scripts/check_os.sh
 
 (cd ./generator; cargo build $1)
