@@ -2,7 +2,6 @@ use cosmic_text::{Attrs, Family, Style, Weight};
 use syntect::{
     easy::HighlightLines,
     highlighting::{FontStyle, ThemeSet},
-    parsing::SyntaxSet,
     util::LinesWithEndings,
 };
 
@@ -37,7 +36,7 @@ impl Highlight {
         theme_folder: &str,
         theme: &str,
     ) -> Result<Vec<(&str, Attrs)>, RenderError> {
-        let syntax_set = SyntaxSet::load_defaults_newlines();
+        let syntax_set = two_face::syntax::extra_newlines();
         let theme_set = ThemeSet::load_from_folder(theme_folder)
             .map_err(|_| RenderError::HighlightThemeLoadFailed)?;
         let syntax = match &self.extension {
