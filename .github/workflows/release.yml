@@ -41,7 +41,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Build library
+      - name: Build link lib
         uses: houseabsolute/actions-rust-cross@v0
         with:
           command: "build"
@@ -56,7 +56,7 @@ jobs:
       - name: Commit changes
         uses: EndBug/add-and-commit@v7
         with:
-          message: '[Update] files based on generated files by template generator'
+          message: '[Update] generator link library on ${{ matrix.platform.os_name }}'
           pull_strategy: 'NO-PULL'
           push: false
 
@@ -71,26 +71,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
 
       - name: Setup python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-
-      - name: Replace template
-        run: python3 scripts/replace-template.py
-
-      - name: Commit changes
-        uses: EndBug/add-and-commit@v7
-        with:
-          message: '[Update] files based on generated files by template generator'
-          pull_strategy: 'NO-PULL'
-          push: false
-
-      - name: Push changes
-        run: |
-          git pull --rebase
-          git push 
 
       - name: Read version from project config
         id: read_toml
@@ -98,6 +85,21 @@ jobs:
         with:
           file: project.toml
           field: project.version
+
+      - name: Replace template
+        run: python3 scripts/replace-template.py
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v7
+        with:
+          message: '[Release] ${{ steps.read_toml.outputs.value }}'
+          pull_strategy: 'NO-PULL'
+          push: false
+
+      - name: Push changes
+        run: |
+          git pull --rebase
+          git push
 
       - name: Bump version and push tag
         id: tag_version
