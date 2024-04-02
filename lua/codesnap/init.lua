@@ -27,11 +27,12 @@ local function get_config(specify_extension)
   local extension = specify_extension or get_extension()
 
   if string_utils.is_str_empty(code) then
-    error("Please select code which you want to take snapshot first")
+    error("No code is selected", 0)
+    return
   end
 
   if string_utils.is_str_empty(extension) then
-    error("Cannot detect current filetype")
+    error("Cannot detect current filetype", 0)
   end
 
   return table_utils.merge({
@@ -52,7 +53,10 @@ end
 
 function main.save_snapshot(extension)
   if string_utils.is_str_empty(static.config.save_path) then
-    error("Cannot find save_path from config")
+    error(
+      "If you want to save snapshot in somewhere, you should config the save_path before, refer: https://github.com/mistricky/codesnap.nvim?tab=readme-ov-file#save-the-snapshot",
+      0
+    )
   end
 
   require("generator").save_snapshot(get_config(extension))
