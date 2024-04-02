@@ -1,6 +1,5 @@
 local static = require("codesnap.static")
 local table_utils = require("codesnap.utils.table")
-local generator = require("generator")
 local string_utils = require("codesnap.utils.string")
 local visual_utils = require("codesnap.utils.visual")
 local path_utils = require("codesnap.utils.path")
@@ -46,7 +45,7 @@ local function get_config(specify_extension)
 end
 
 function main.copy_into_clipboard(extension)
-  generator.copy_into_clipboard(get_config(extension))
+  require("generator").copy_into_clipboard(get_config(extension))
   vim.cmd("delmarks <>")
   vim.notify("Save snapshot into clipboard successfully")
 end
@@ -56,7 +55,7 @@ function main.save_snapshot(extension)
     error("Cannot find save_path from config")
   end
 
-  generator.save_snapshot(get_config(extension))
+  require("generator").save_snapshot(get_config(extension))
   vim.cmd("delmarks <>")
   vim.notify("Save snapshot in " .. static.config.save_path .. " successfully")
 end
