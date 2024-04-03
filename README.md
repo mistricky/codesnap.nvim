@@ -79,7 +79,7 @@ We always recommend you to compile CodeSnap.nvim from `source` instead of using 
 ### Compile on ARM
 If you try to compile CodeSnap.nvim on ARM architecture, you may need to install additional dependencies to compile it, thanks @matteocavestri mentioned in https://github.com/mistricky/codesnap.nvim/issues/53#issuecomment-2032088162
 
-```
+```shell
 export CC=gcc
 sudo dnf install libuv libuv-devel # On RHEL based systems
 sudo apt-get install libtool libuv1-dev # On Debian based systems
