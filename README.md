@@ -122,7 +122,7 @@ In some scenarios, CodeSnap.nvim cannot auto-detect what language syntax should 
 
 CodeSnap.nvim won't read the whole content of the file, thus cannot detect what language syntax is this, in this case, you can specify extension explicitly, for instance:
 
-```shell
+```
 CodeSnapSave sh
 CodeSnap sh
 ```
