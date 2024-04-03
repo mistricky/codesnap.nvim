@@ -17,11 +17,15 @@
 <h1 align="center">CodeSnap.nvim</h1>
 <p align="center">📸 Snapshot plugin with rich features that can make pretty code snapshots for Neovim</p>
 
-> [!WARNING]  
-> **v1.0.0** will bring some break changes
-> - The `CodeSnapPreviewOn` command is not supported, if you prefer live-preview, you can pin `CodeSnap.nvim` version to `v0.0.11` to continue using this command.
-> - The `opacity` and `preview_title` config has been removed from v1.0.0
-> - The `editor_font_family` was renamed to `code_font_family`
+
+## 🚣Migration
+If you have installed v0.x before, this chapter will show you what break changes version v1.x introduced.
+
+- The `CodeSnapPreviewOn` command is not supported, if you prefer live-preview, you can pin `CodeSnap.nvim` version to `v0.0.11` to continue using this command.
+- The `opacity` and `preview_title` config has been removed from v1.0.0
+- The `editor_font_family` was renamed to `code_font_family`
+
+v1.x has a different architecture and better performance than v0.x, and v1.x can generate screenshots directly without an open browser. We recommend you upgrade to v1.x for a better experience.
 
 ## ✨Features
 - 🤩 Beautiful code snap template
@@ -36,22 +40,49 @@
 - Neovim 9.0+
 
 ## Install
-Recommend using [Lazy.nvim](https://github.com/folke/lazy.nvim) for installation, but you can still use another plugin manager you prefer.
+We recommend using [Lazy.nvim](https://github.com/folke/lazy.nvim) to install CodeSnap.nvim, but you can still use another plugin manager you prefer.
 
 **Lazy.nvim**
 ```lua
-{ "mistricky/codesnap.nvim", build = "make", version = "^1" },
+{ "mistricky/codesnap.nvim", build = "make" },
+```
+**Packer**
+```lua
+use {'krivahtoo/silicon.nvim', run = 'make'}
 ```
 
-### Build manually
-Since v0.0.1 was released, the CodeSnap.nvim will cross-compile for the following three targets, then the CodeSnap.nvim will automatically determine which package to use based on your system, you no longer need to have Rust environment if everything goes smoothly.
+**Vim-Plug**
+```lua
+Plug 'krivahtoo/silicon.nvim', { 'do': 'make' }
+```
+
+It's worth mentioning that the screenshot feature is implemented by a module called `generator` written in Rust, when `make` the project, the CodeSnap.nvim will mount a precompiled cross-compile `generator` shared file into the plugin that depends on what OS you are using. 
+
+We precompiled the following targets:
 - x86_64-unknown-linux-gnu
 - x86_64-apple-darwin
 - aarch64-apple-darwin
 
-If CodeSnap.nvim on your system still not works fine, there are a lot of reasons depending on your system arch or OS version, well you can try to build CodeSnap manually using the following config:
+If your platform is in the above list, you can just run `make` after the plugin is installed like the above examples do, CodeSnap.nvim will automatically mount the shared file into the plugin. This means you don't need any Rust utils to compile manually from source.
+
+## Compile from source
+You need to install Rust development environment before compiling from source, you can refer [Install Rust](https://www.rust-lang.org/tools/install) for more detail.
+
+Please keep in mind, cross-compile to these platforms only helps a portion of users to have out-of-box experience, if your platform is not in the above targets list, you still need to compile from source using `make build_generator`, for instance using Lazy:
+
 ```lua
-{ "mistricky/codesnap.nvim", build = "make build_generator", version = "^1" },
+{ "mistricky/codesnap.nvim", build = "make build_generator" },
+```
+
+We always recommend you to compile CodeSnap.nvim from `source` instead of using the precompiled shared file, because the correctness and consistency of compiling from source are always higher than cross-compiling.
+
+### Compile on ARM
+If you try to compile CodeSnap.nvim on ARM architecture, you may need to install additional dependencies to compile it, thanks @matteocavestri mentioned in https://github.com/mistricky/codesnap.nvim/issues/53#issuecomment-2032088162
+
+```
+export CC=gcc
+sudo dnf install libuv libuv-devel # On RHEL based systems
+sudo apt-get install libtool libuv1-dev # On Debian based systems
 ```
 
 ## Usage 
@@ -64,7 +95,14 @@ To take a beautiful snapshot use CodeSnap.nvim, you can just use `CodeSnap` comm
 
 https://github.com/mistricky/codesnap.nvim/assets/22574136/99be72db-57d7-4839-91d0-2a9dfb1901ac
 
+### Copy into clipboard on Linux Wayland
+Copy screenshots directly into the clipboard is cool, however, it doesn't work well on wl-clipboard, because the wl-clipboard can't paste the content which come from exited processes. As Hyprland document say:
 
+
+> When we copy something on Wayland (using wl-clipboard) and close the application we copied from, the copied data disappears from the clipboard and we cannot paste it anymore. So to fix this problem we can use a program called as wl-clip-persist which will preserve the data in the clipboard after the application is closed. 
+
+
+If you using CodeSnap.nvim on wl-clipboard, you can refer [wl-clip-persist](https://github.com/Linus789/wl-clip-persist), it reads all the clipboard data into memory and then overwrites the clipboard with the data from our memory to persist copied data.
 
 ### Save the snapshot
 
