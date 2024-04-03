@@ -114,6 +114,15 @@ require("codesnap").setup({
 })
 ```
 
+### Specify language extension
+In some scenarios, CodeSnap.nvim cannot auto-detect what language syntax should used to highlight code, for example, shell script can have no extension, they specify interpreters using shebang.
+
+CodeSnap.nvim won't read the whole content of the file, thus cannot detect what language syntax is this, in this case, you can specify extension explicitly, for instance:
+
+```shell
+CodeSnapSave sh
+CodeSnap sh
+```
 
 
 https://github.com/mistricky/codesnap.nvim/assets/22574136/69b27e77-3dce-4bc3-8516-89ce636fe02d
@@ -240,6 +249,11 @@ There is a default config:
     bg_theme = "default"
 }
 ```
+
+## Contribution
+CodeSnap.nvim is a project that will be maintained for the long term, and we always accepts new contributors, please feel free to submit PR & issues.
+
+The commit message convention of this project is following [commitlint-wizardoc](https://github.com/wizardoc/commitlint-wizardoc).
 
 ## License
 MIT.
