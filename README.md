@@ -114,6 +114,9 @@ require("codesnap").setup({
 })
 ```
 
+https://github.com/mistricky/codesnap.nvim/assets/22574136/69b27e77-3dce-4bc3-8516-89ce636fe02d
+
+
 ### Specify language extension
 In some scenarios, CodeSnap.nvim cannot auto-detect what language syntax should used to highlight code, for example, shell script can have no extension, they specify interpreters using shebang.
 
@@ -123,9 +126,6 @@ CodeSnap.nvim won't read the whole content of the file, thus cannot detect what 
 CodeSnapSave sh
 CodeSnap sh
 ```
-
-
-https://github.com/mistricky/codesnap.nvim/assets/22574136/69b27e77-3dce-4bc3-8516-89ce636fe02d
 
 
 ## Breadcrumbs
@@ -246,7 +246,9 @@ There is a default config:
     code_font_family = "CaskaydiaCove Nerd Font",
     watermark_font_family = "Pacifico",
     watermark = "CodeSnap.nvim",
-    bg_theme = "default"
+    bg_theme = "default",
+    breadcrumbs_separator = "/",
+    has_breadcrumbs = false,
 }
 ```
 
