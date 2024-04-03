@@ -65,7 +65,7 @@ We precompiled the following targets:
 
 If your platform is in the above list, you can just run `make` after the plugin is installed like the above examples do, CodeSnap.nvim will automatically mount the shared file into the plugin. This means you don't need any Rust utils to compile manually from source.
 
-## Compile from source
+### Compile from source
 You need to install Rust development environment before compiling from source, you can refer [Install Rust](https://www.rust-lang.org/tools/install) for more detail.
 
 Please keep in mind, cross-compile to these platforms only helps a portion of users to have out-of-box experience, if your platform is not in the above targets list, you still need to compile from source using `make build_generator`, for instance using Lazy:
@@ -95,7 +95,7 @@ To take a beautiful snapshot use CodeSnap.nvim, you can just use `CodeSnap` comm
 
 https://github.com/mistricky/codesnap.nvim/assets/22574136/99be72db-57d7-4839-91d0-2a9dfb1901ac
 
-### Copy into clipboard on Linux Wayland
+#### Copy into clipboard on Linux Wayland
 Copy screenshots directly into the clipboard is cool, however, it doesn't work well on wl-clipboard, because the wl-clipboard can't paste the content which come from exited processes. As Hyprland document say:
 
 
