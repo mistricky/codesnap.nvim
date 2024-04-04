@@ -1,3 +1,5 @@
+#!/bin/bash
+
 source ./scripts/check_os.sh
 
 function apply_generator {
