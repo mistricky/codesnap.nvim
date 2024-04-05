@@ -21,6 +21,8 @@ jobs:
           check-regexp: 'with rust'
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 10
+          allowed-conclusions: success,skipped,cancelled
+
 
       - name: Checkout
         uses: actions/checkout@v4
