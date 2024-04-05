@@ -1,17 +1,7 @@
 local static = require("codesnap.static")
 local table_utils = require("codesnap.utils.table")
 local string_utils = require("codesnap.utils.string")
-local visual_utils = require("codesnap.utils.visual")
-local path_utils = require("codesnap.utils.path")
-
-local assets_folder = static.cwd .. "/assets"
-
-local function get_extension()
-  local file_path = vim.fn.expand("%:p")
-  local file_extension = string.match(file_path, "%.([^%.]+)$")
-
-  return file_extension
-end
+local config_module = require("codesnap.config")
 
 local main = {
   cwd = static.cwd,
@@ -22,31 +12,8 @@ function main.setup(config)
   static.config = table_utils.merge(static.config, config == nil and {} or config)
 end
 
-local function get_config(specify_extension)
-  local code = visual_utils.get_selected_text()
-  local extension = specify_extension or get_extension()
-
-  if string_utils.is_str_empty(code) then
-    error("No code is selected", 0)
-    return
-  end
-
-  if string_utils.is_str_empty(extension) then
-    error("Cannot detect current filetype", 0)
-  end
-
-  return table_utils.merge({
-    code = code,
-    extension = extension,
-    fonts_folder = assets_folder .. "/fonts",
-    themes_folder = assets_folder .. "/themes",
-    theme = "base16-onedark",
-    file_path = static.config.has_breadcrumbs and path_utils.get_relative_path() or "",
-  }, static.config)
-end
-
 function main.copy_into_clipboard(extension)
-  require("generator").copy_into_clipboard(get_config(extension))
+  require("generator").copy_into_clipboard(config_module.get_config(extension))
   vim.cmd("delmarks <>")
   vim.notify("Save snapshot into clipboard successfully")
 end
@@ -59,7 +26,7 @@ function main.save_snapshot(extension)
     )
   end
 
-  require("generator").save_snapshot(get_config(extension))
+  require("generator").save_snapshot(config_module.get_config(extension))
   vim.cmd("delmarks <>")
   vim.notify("Save snapshot in " .. static.config.save_path .. " successfully")
 end

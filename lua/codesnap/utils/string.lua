@@ -16,4 +16,12 @@ function string_util.is_str_empty(target)
   return target == nil or target == ""
 end
 
+function string_util.convert_empty_to_nil(target)
+  if target == "" then
+    return nil
+  else
+    return target
+  end
+end
+
 return string_util
