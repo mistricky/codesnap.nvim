@@ -2,7 +2,6 @@ local visual_utils = require("codesnap.utils.visual")
 local path_utils = require("codesnap.utils.path")
 local string_utils = require("codesnap.utils.string")
 local static = require("codesnap.static")
-local list_utils = require("codesnap.utils.list")
 local table_utils = require("codesnap.utils.table")
 local config_module = {}
 
