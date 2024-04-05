@@ -1,0 +1,64 @@
+on:
+  push:
+    paths:
+     generator/** 
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: ${{ matrix.platform.os_name }} with rust ${{ matrix.toolchain }}
+    runs-on: ${{ matrix.platform.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - os_name: linux-x86_64
+            os: ubuntu-20.04
+            target: x86_64-unknown-linux-gnu
+            origin_dylib_suffix: so
+            dest_dylib_suffix: so
+
+          - os_name: mac-x86_64
+            os: macOS-latest
+            target: x86_64-apple-darwin
+            origin_dylib_suffix: dylib
+            dest_dylib_suffix: so
+
+          - os_name: mac-aarch64
+            os: macOS-latest
+            target: aarch64-apple-darwin
+            origin_dylib_suffix: dylib
+            dest_dylib_suffix: so
+
+        toolchain:
+          - stable
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build link lib
+        uses: houseabsolute/actions-rust-cross@v0
+        with:
+          command: "build"
+          working-directory: ./generator
+          target: ${{ matrix.platform.target }}
+          toolchain: ${{ matrix.toolchain }}
+          args: "--release"
+
+      - name: Rename dynamic lib
+        run: cp -rf generator/target/${{ matrix.platform.target }}/release/libgenerator.${{ matrix.platform.origin_dylib_suffix }} lua/${{ matrix.platform.os_name }}generator.${{ matrix.platform.dest_dylib_suffix }}
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v7
+        with:
+          message: '[Update] generator link library on ${{ matrix.platform.os_name }}'
+          pull_strategy: 'NO-PULL'
+          push: false
+
+      - name: Push changes
+        run: |
+          git pull --rebase
+          git push
