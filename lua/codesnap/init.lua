@@ -26,9 +26,17 @@ function main.save_snapshot(extension)
     )
   end
 
-  require("generator").save_snapshot(config_module.get_config(extension))
+  local matched_extension = string.match(static.config.save_path, "%.(.+)$")
+
+  if matched_extension ~= "png" and matched_extension ~= nil then
+    error("The extension of save_path should be .png", 0)
+  end
+
+  local config = config_module.get_config(extension)
+
+  require("generator").save_snapshot(config)
   vim.cmd("delmarks <>")
-  vim.notify("Save snapshot in " .. static.config.save_path .. " successfully")
+  vim.notify("Save snapshot in " .. config.save_path .. " successfully")
 end
 
 return main

@@ -2,7 +2,6 @@ local visual_utils = require("codesnap.utils.visual")
 local path_utils = require("codesnap.utils.path")
 local string_utils = require("codesnap.utils.string")
 local static = require("codesnap.static")
-local list_utils = require("codesnap.utils.list")
 local table_utils = require("codesnap.utils.table")
 local config_module = {}
 
@@ -33,6 +32,24 @@ local function parse_extension(specify_extension)
     or parse_file_extension_by_highlighting_file_presets(filename, file_extension)
 end
 
+-- Auto generated codesnap filename based on the following rule:
+-- CodeSnap_y-m-d_at_h:m:s
+local function auto_generate_snap_filename()
+  return os.date("CodeSnap_%Y-%m-%d_at_%H:%M:%S.png")
+end
+
+-- If the save_path is already configured, but no explicit filename is specified,
+-- it will be replaced with auto-generated filename
+local function parse_save_path(save_path)
+  if save_path == nil or string_utils.ends_with(save_path, "png") then
+    return save_path
+  end
+
+  local parsed_save_path = string_utils.ends_with(save_path, "/") and save_path or save_path .. "/"
+
+  return parsed_save_path .. auto_generate_snap_filename()
+end
+
 function config_module.get_config(specify_extension)
   local code = visual_utils.get_selected_text()
   local extension = specify_extension or parse_extension(specify_extension)
@@ -46,7 +63,7 @@ function config_module.get_config(specify_extension)
     error("Cannot detect current filetype", 0)
   end
 
-  return table_utils.merge({
+  local config = table_utils.merge({
     code = code,
     extension = extension,
     fonts_folder = assets_folder .. "/fonts",
@@ -54,6 +71,10 @@ function config_module.get_config(specify_extension)
     theme = "base16-onedark",
     file_path = static.config.has_breadcrumbs and path_utils.get_relative_path() or "",
   }, static.config)
+
+  config.save_path = parse_save_path(config.save_path)
+
+  return config
 end
 
 return config_module
