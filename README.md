@@ -48,12 +48,12 @@ We recommend using [Lazy.nvim](https://github.com/folke/lazy.nvim) to install Co
 ```
 **Packer**
 ```lua
-use {'krivahtoo/silicon.nvim', run = 'make'}
+use {'mistricky/codesnap.nvim', run = 'make'}
 ```
 
 **Vim-Plug**
 ```lua
-Plug 'krivahtoo/silicon.nvim', { 'do': 'make' }
+Plug 'mistricky/codesnap.nvim', { 'do': 'make' }
 ```
 
 It's worth mentioning that the screenshot feature is implemented by a module called `generator` written in Rust, when `make` the project, the CodeSnap.nvim will mount a precompiled cross-compile `generator` shared file into the plugin that depends on what OS you are using. 
