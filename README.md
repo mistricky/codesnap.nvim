@@ -109,13 +109,18 @@ If you using CodeSnap.nvim on wl-clipboard, you can refer [wl-clip-persist](http
 Of course, you can use `CodeSnapSave` command to save the snapshot to path where you defined it in `config.save_path`
 ```lua
 require("codesnap").setup({
-  -- ...
+  -- The save_path must be ends with .png, unless when you specified a directory path,
+  -- CodeSnap will append an auto-generated filename to the specified directory path
+  -- For example:
+  -- save_path = "~/Pictures"
+  -- parsed: "~/Pictures/CodeSnap_y-m-d_at_h:m:s.png"
+  -- save_path = "~/Pictures/foo.png"
+  -- parsed: "~/Pictures/foo.png"
   save_path = ...
 })
 ```
 
 https://github.com/mistricky/codesnap.nvim/assets/22574136/69b27e77-3dce-4bc3-8516-89ce636fe02d
-
 
 ### Specify language extension
 In some scenarios, CodeSnap.nvim cannot auto-detect what language syntax should used to highlight code, for example, shell script can have no extension, they specify interpreters using shebang.
