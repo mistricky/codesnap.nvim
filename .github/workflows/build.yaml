@@ -1,11 +1,11 @@
 name: Build 
 
 on:
-  push:
+ push:
     paths:
-     generator/** 
+      project.toml
     branches:
-      - main
+      - main 
 
 permissions:
   contents: write

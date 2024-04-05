@@ -1,11 +1,10 @@
 name: Release
 
 on:
-  push:
-    paths:
-      project.toml
-    branches:
-      - main
+  workflow_run: 
+    workflows: [build]
+    types:
+      - completed
 
 permissions:
   contents: write
@@ -14,16 +13,6 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - name: Wait for build workflow to succeed
-        uses: lewagon/wait-on-check-action@v1.3.4
-        with:
-          ref: ${{ github.ref }}
-          check-regexp: 'with rust'
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          wait-interval: 10
-          allowed-conclusions: success,skipped,cancelled
-
-
       - name: Checkout
         uses: actions/checkout@v4
         with:
