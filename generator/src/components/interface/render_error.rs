@@ -16,6 +16,9 @@ pub enum RenderError {
 
     #[error("Invalid hex color {0}")]
     InvalidHexColor(String),
+
+    #[error("No such file {0}")]
+    NoSuchFile(String),
 }
 
 impl From<RenderError> for nvim_oxi::Error {
