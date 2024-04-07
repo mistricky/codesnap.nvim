@@ -1,5 +1,5 @@
 use crate::{
-    code::{calc_wh, trim_space},
+    code::{calc_wh, prepare_code},
     components::interface::{
         component::{Component, ComponentContext, RenderParams},
         render_error,
@@ -44,7 +44,7 @@ impl Component for Code {
         let highlight = Highlight::new(
             self.value.clone(),
             params.code_font_family.clone(),
-            params.language.clone(),
+            params.code_file_path.clone(),
             params.extension.clone(),
         );
         let highlight_result = highlight.parse(&params.themes_folder, &params.theme)?;
@@ -71,7 +71,7 @@ impl Component for Code {
 impl Code {
     pub fn new(value: String, line_height: f32, font_size: f32) -> Code {
         Code {
-            value: trim_space(&value),
+            value: prepare_code(&value),
             line_height,
             font_size,
             children: vec![],
