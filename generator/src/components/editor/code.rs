@@ -44,7 +44,7 @@ impl Component for Code {
         let highlight = Highlight::new(
             self.value.clone(),
             params.code_font_family.clone(),
-            params.language.clone(),
+            params.code_file_path.clone(),
             params.extension.clone(),
         );
         let highlight_result = highlight.parse(&params.themes_folder, &params.theme)?;

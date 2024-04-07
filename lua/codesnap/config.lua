@@ -7,31 +7,6 @@ local config_module = {}
 
 local assets_folder = static.cwd .. "/assets"
 
--- Get extension of cureent file
-local function get_file_info()
-  local file_path = vim.fn.expand("%:p")
-  local filename, extension = string.match(file_path, "([^\\/%.]+)%.?([^\\/%.]*)$")
-
-  return string_utils.convert_empty_to_nil(filename), string_utils.convert_empty_to_nil(extension)
-end
-
--- Some files have no extension, but they still need to highlighting correctly,
--- in this case, use filename instead of extension to highlighting code
--- e.g. Dockerfile, Pipefile
-local function parse_file_extension_by_highlighting_file_presets(filename, extension)
-  local lowercase_filename = string.lower(filename)
-
-  return extension or lowercase_filename
-end
-
-local function parse_extension(specify_extension)
-  local filename, file_extension = get_file_info()
-
-  return specify_extension
-    or file_extension
-    or parse_file_extension_by_highlighting_file_presets(filename, file_extension)
-end
-
 -- Auto generated codesnap filename based on the following rule:
 -- CodeSnap_y-m-d_at_h:m:s
 local function auto_generate_snap_filename()
@@ -50,22 +25,18 @@ local function parse_save_path(save_path)
   return parsed_save_path .. auto_generate_snap_filename()
 end
 
-function config_module.get_config(specify_extension)
+function config_module.get_config(extension)
   local code = visual_utils.get_selected_text()
-  local extension = specify_extension or parse_extension(specify_extension)
 
   if string_utils.is_str_empty(code) then
     error("No code is selected", 0)
     return
   end
 
-  if string_utils.is_str_empty(extension) then
-    error("Cannot detect current filetype", 0)
-  end
-
   local config = table_utils.merge({
     code = code,
     extension = extension,
+    code_file_path = vim.fn.expand("%:p"),
     fonts_folder = assets_folder .. "/fonts",
     themes_folder = assets_folder .. "/themes",
     theme = "base16-onedark",
