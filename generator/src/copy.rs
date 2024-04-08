@@ -1,4 +1,6 @@
 use crate::{config::TakeSnapshotParams, snapshot::take_snapshot};
+#[cfg(target_os = "linux")]
+use arboard::SetExtLinux;
 use arboard::{Clipboard, ImageData};
 
 use nvim_oxi::Result;
@@ -18,14 +20,25 @@ pub fn copy_into_clipboard(config: TakeSnapshotParams) -> Result<()> {
         })
         .flatten()
         .collect::<Vec<u8>>();
-    let mut ctx = Clipboard::new().unwrap();
 
     let img_data = ImageData {
         width: pixmap.width() as usize,
         height: pixmap.height() as usize,
         bytes: colors.into(),
     };
-    ctx.set_image(img_data).unwrap();
+
+    #[cfg(target_os = "linux")]
+    std::thread::spawn(move || {
+        Clipboard::new()
+            .unwrap()
+            .set()
+            .wait()
+            .image(img_data)
+            .unwrap();
+    });
+
+    #[cfg(not(target_os = "linux"))]
+    Clipboard::new().unwrap().set_image(img_data).unwrap();
 
     Ok(())
 }
