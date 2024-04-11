@@ -2,8 +2,7 @@ use crate::{config::TakeSnapshotParams, snapshot::take_snapshot};
 #[cfg(target_os = "linux")]
 use arboard::SetExtLinux;
 use arboard::{Clipboard, ImageData};
-
-use nvim_oxi::Result;
+use nvim_oxi::{lua::Error::RuntimeError, Error, Result};
 
 pub fn copy_into_clipboard(config: TakeSnapshotParams) -> Result<()> {
     let pixmap = take_snapshot(config.clone())?;
@@ -28,17 +27,67 @@ pub fn copy_into_clipboard(config: TakeSnapshotParams) -> Result<()> {
     };
 
     #[cfg(target_os = "linux")]
-    std::thread::spawn(move || {
-        Clipboard::new()
-            .unwrap()
-            .set()
-            .wait()
-            .image(img_data)
-            .unwrap();
-    });
+    if wsl::is_wsl() {
+        let temp_dir = std::env::temp_dir();
+        let filename = generate_random_filename();
 
+        let path = format!("{}/{}", String::from(temp_dir.to_str().unwrap()), filename);
+        let _ = pixmap
+            .save_png(path.clone())
+            .map_err(|err| Error::Lua(RuntimeError(err.to_string())));
+
+        let os_linux_release = sys_info::linux_os_release().unwrap();
+        let src_path = format!(
+            "\\\\wsl$\\{}\\tmp\\{}",
+            os_linux_release.pretty_name(),
+            filename
+        );
+
+        let _ = copy_to_wsl_clipboard(&src_path);
+        //delete the file when done
+        std::fs::remove_file(path).unwrap();
+    } else {
+        std::thread::spawn(move || {
+            Clipboard::new()
+                .unwrap()
+                .set()
+                .wait()
+                .image(img_data)
+                .unwrap();
+        });
+    }
     #[cfg(not(target_os = "linux"))]
     Clipboard::new().unwrap().set_image(img_data).unwrap();
 
     Ok(())
+}
+
+fn copy_to_wsl_clipboard(src_path: &str) -> Result<()> {
+    println!("{}", src_path);
+    let powershell = Command::new("/mnt/c/Windows//System32/WindowsPowerShell/v1.0/powershell.exe")
+        .arg("-NoProfile")
+        .arg("-Command")
+        .arg(&format!("Get-ChildItem {} | Set-Clipboard", src_path))
+        .stdout(Stdio::null())
+        .stderr(Stdio::null())
+        .spawn();
+
+    // Wait until the powershell process is finished before returning
+    let _ = powershell.unwrap().wait().unwrap();
+
+    Ok(())
+}
+
+use std::{
+    process::{Command, Stdio},
+    time::Instant,
+};
+
+fn generate_random_filename() -> String {
+    // Get nanoseconds since epoch for randomness
+    let now = Instant::now();
+    let random_part = format!("{:016x}", now.elapsed().as_nanos() % u128::MAX);
+
+    // Combine prefix, random part, and extension
+    format!("codesnap_{}.png", random_part)
 }
