@@ -37,7 +37,7 @@ v1.x has a different architecture and better performance than v0.x, and v1.x can
 - 🔢 [WIP] Column number
 
 ## Prerequirements
-- Neovim 9.0+
+- Neovim 0.9.0+
 
 ## Install
 We recommend using [Lazy.nvim](https://github.com/folke/lazy.nvim) to install CodeSnap.nvim, but you can still use another plugin manager you prefer.
