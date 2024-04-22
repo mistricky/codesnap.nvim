@@ -85,6 +85,24 @@ sudo dnf install libuv libuv-devel # On RHEL based systems
 sudo apt-get install libtool libuv1-dev # On Debian based systems
 ```
 
+### Keymappings
+If you use `Lazy.nvim` as your package manager, here are some examples show you how to configure keymappings for CodeSnap:
+```lua
+{
+  "mistricky/codesnap.nvim",
+  build = "make build_generator",
+  keys = {
+    { "<leader>cc", "<cmd>CodeSnap<cr>", mode = "x", desc = "Save selected code snapshot into clipboard" },
+    { "<leader>cs", "<cmd>CodeSnapSave<cr>", mode = "x", desc = "Save selected code snapshot in ~/Pictures" },
+  },
+  opts = {
+    save_path = "~/Pictures",
+    has_breadcrumbs = true,
+    bg_theme = "bamboo",
+  },
+}
+```
+
 ## Usage 
 `CodeSnap.nvim` provides the following two ways to take snapshots of currently selected code
 
@@ -235,6 +253,16 @@ require("codesnap").setup({
 CodeSnap # Take a snapshot of the currently selected code and copy the snapshot into the clipboard
 
 CodeSnapSave # Save the snapshot of the currently selected code and save it on the disk
+```
+**Lua**
+```lua
+local codesnap <const> = require("codesnap")
+
+-- Take a snapshot of the currently selected code and copy the snapshot into the clipboard
+codesnap.copy_into_clipboard()
+
+-- Save the snapshot of the currently selected code and save it on the disk
+codesnap.save_snapshot()
 ```
 
 ## Configuration
