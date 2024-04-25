@@ -1,13 +1,10 @@
-use std::sync::Arc;
-
-use tiny_skia::Pixmap;
-
-use crate::{config::TakeSnapshotParams, edges::edge::Edge};
-
 use super::{
     render_error,
     style::{ComponentAlign, ComponentStyle, RawComponentStyle, Size, Style},
 };
+use crate::{config::TakeSnapshotParams, edges::edge::Edge};
+use std::sync::Arc;
+use tiny_skia::Pixmap;
 
 pub struct ComponentContext {
     pub scale_factor: f32,
@@ -152,6 +149,8 @@ pub trait Component {
         Ok(render_params.clone())
     }
 
+    // Dynamic calculate width and height of children, if the children is empty, get_dynamic_wh
+    // will return (0., 0.)
     fn get_dynamic_wh(&self) -> (f32, f32) {
         let children = self.children();
         let calc_children_wh = |cb: fn((f32, f32), &Box<dyn Component>) -> (f32, f32)| {
@@ -160,11 +159,13 @@ pub trait Component {
         let style = self.style();
 
         match style.align {
+            // If align is row, width is sum of children width, height is max of children height
             ComponentAlign::Row => calc_children_wh(|(w, h), child| {
                 let style = child.parsed_style();
 
                 (w + style.width, h.max(style.height))
             }),
+            // If align is column, width is max of children width, height is sum of children height
             ComponentAlign::Column => calc_children_wh(|(w, h), child| {
                 let style = child.parsed_style();
 
