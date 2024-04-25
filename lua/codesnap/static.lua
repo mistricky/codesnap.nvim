@@ -10,6 +10,7 @@ return {
     bg_theme = "default",
     breadcrumbs_separator = "/",
     has_breadcrumbs = false,
+    has_line_number = false,
   },
   cwd = path_utils.back(path_utils.back(debug.getinfo(1, "S").source:sub(2):match("(.*[/\\])"))),
   preview_switch = true,
