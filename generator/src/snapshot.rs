@@ -4,11 +4,13 @@ use tiny_skia::Pixmap;
 
 use crate::components::background::Background;
 use crate::components::breadcrumbs::Breadcrumbs;
+use crate::components::code_block::CodeBlock;
 use crate::components::container::Container;
 use crate::components::editor::code::Code;
 use crate::components::editor::mac_title_bar::MacTitleBar;
 use crate::components::interface::component::ComponentContext;
 use crate::components::interface::render_error;
+use crate::components::line_number::LineNumber;
 use crate::components::rect::Rect;
 use crate::components::watermark::Watermark;
 use crate::config::TakeSnapshotParams;
@@ -33,7 +35,10 @@ pub fn take_snapshot(params: TakeSnapshotParams) -> render_error::Result<Pixmap>
                     params.breadcrumbs_separator,
                     params.has_breadcrumbs,
                 )),
-                Box::new(Code::new(params.code, 20., 15.)),
+                Box::new(CodeBlock::from_children(vec![
+                    Box::new(LineNumber::new(&params.code, params.start_line_number, 20.)),
+                    Box::new(Code::new(params.code, 20., 15.)),
+                ])),
             ],
         )),
         Box::new(Watermark::new(params.watermark)),

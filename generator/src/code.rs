@@ -2,6 +2,7 @@ use cached::proc_macro::cached;
 use regex::Regex;
 
 const MIN_WIDTH: f32 = 100.;
+pub const CHAR_WIDTH: f32 = 9.05;
 
 fn min_width(width: f32) -> f32 {
     if width < MIN_WIDTH {

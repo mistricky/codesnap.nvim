@@ -27,6 +27,7 @@ end
 
 function config_module.get_config(extension)
   local code = visual_utils.get_selected_text()
+  local start_line_number = visual_utils.get_start_line_number()
 
   if string_utils.is_str_empty(code) then
     error("No code is selected", 0)
@@ -41,6 +42,7 @@ function config_module.get_config(extension)
     themes_folder = assets_folder .. "/themes",
     theme = "base16-onedark",
     file_path = static.config.has_breadcrumbs and path_utils.get_relative_path() or "",
+    start_line_number = static.config.has_line_number and start_line_number or nil,
   }, static.config)
 
   config.save_path = parse_save_path(config.save_path)
