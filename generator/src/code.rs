@@ -10,6 +10,8 @@ fn min_width(width: f32) -> f32 {
     }
 }
 
+// Because the code block is input by users, we need to calculate the width and height
+// to make sure render the width and height of the "editor" shape correctly
 pub fn calc_wh(text: &str, char_wdith: f32, line_height: f32) -> (f32, f32) {
     let trimmed_text = prepare_code(text);
     let lines = trimmed_text.lines();
@@ -41,22 +43,20 @@ fn trim_space(text: &str) -> String {
     let head_spaces = Regex::new(r"^(\s*)").unwrap().find(first_line);
 
     match head_spaces {
-        Some(head_spaces) => {
-            return lines
-                .into_iter()
-                .map(|line| {
-                    Regex::new(format!("^{}", head_spaces.as_str()).as_ref())
-                        .unwrap()
-                        .replace(line, "")
-                        .to_string()
-                })
-                .collect::<Vec<String>>()
-                .join("\n");
-        }
+        Some(head_spaces) => lines
+            .into_iter()
+            .map(|line| {
+                Regex::new(format!("^{}", head_spaces.as_str()).as_ref())
+                    .unwrap()
+                    .replace(line, "")
+                    .to_string()
+            })
+            .collect::<Vec<String>>()
+            .join("\n"),
         None => text.to_string(),
     }
 }
 
 pub fn prepare_code(code: &str) -> String {
-    replace_tab_to_space(&trim_space(&code))
+    trim_space(&replace_tab_to_space(&code))
 }
