@@ -36,25 +36,31 @@ fn replace_tab_to_space(text: &str) -> String {
     str::replace(text, "\t", &spaces)
 }
 
-// If the first line have indention, remove the same indention from subsequent lines
+// Find min indention of the line, and remove the same indention from subsequent lines
 fn trim_space(text: &str) -> String {
     let lines = text.split("\n").collect::<Vec<&str>>();
-    let first_line = lines.first().unwrap();
-    let head_spaces = Regex::new(r"^(\s*)").unwrap().find(first_line);
+    let regex = Regex::new(r"(?:^|\n)(\s*)").unwrap();
+    let captures_iter = regex.captures_iter(text);
+    let space_lengths = captures_iter
+        .map(|capture| capture.get(1).unwrap().as_str().len())
+        .collect::<Vec<usize>>();
 
-    match head_spaces {
-        Some(head_spaces) => lines
-            .into_iter()
-            .map(|line| {
-                Regex::new(format!("^{}", head_spaces.as_str()).as_ref())
-                    .unwrap()
-                    .replace(line, "")
-                    .to_string()
-            })
-            .collect::<Vec<String>>()
-            .join("\n"),
-        None => text.to_string(),
+    if space_lengths.len() < lines.len() {
+        return text.to_string();
     }
+
+    let need_to_remove_spaces = " ".repeat(space_lengths.into_iter().min().unwrap());
+
+    lines
+        .into_iter()
+        .map(|line| {
+            Regex::new(format!("^{}", need_to_remove_spaces).as_ref())
+                .unwrap()
+                .replace(line, "")
+                .to_string()
+        })
+        .collect::<Vec<String>>()
+        .join("\n")
 }
 
 pub fn prepare_code(code: &str) -> String {
