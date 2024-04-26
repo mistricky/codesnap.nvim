@@ -34,7 +34,7 @@ v1.x has a different architecture and better performance than v0.x, and v1.x can
 - 🤖 Generate snapshots using only a single command
 - 🍞 Breadcrumbs for display file path
 - 🌊 More beautiful background theme
-- 🔢 [WIP] Column number
+- 🔢 Support for display line number make sharing code snapshot easier
 
 ## Prerequirements
 - Neovim 0.9.0+
@@ -175,6 +175,17 @@ require("codesnap").setup({
 ![image](https://github.com/mistricky/codesnap.nvim/assets/22574136/84b80d0f-1467-4bdf-9cbd-aede868f93aa)
 
 
+## Line number
+We also support displaying line number, you can set `has_line_number` to true to display line number.
+```lua
+require("codesnap").setup({
+  // ...
+	has_line_number = true,
+})
+```
+
+![image](https://github.com/mistricky/codesnap.nvim/assets/22574136/3a5999b1-bb2a-4646-8d69-609be1d28140)
+
 
 ## Custom background
 The `CodeSnap.nvim` comes with many beautiful backgrounds preset, you can set any background you like by setting `bg_theme` to its name, just like:
@@ -282,6 +293,7 @@ There is a default config:
     bg_theme = "default",
     breadcrumbs_separator = "/",
     has_breadcrumbs = false,
+    has_line_number = false
 }
 ```
 
