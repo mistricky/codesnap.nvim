@@ -4,13 +4,30 @@
 
 <p align="center">
 
-<img src="https://img.shields.io/badge/Neovim-57A143?logo=neovim&logoColor=fff&style=for-the-badge" alt="Neovim" />
-
-<img src="https://img.shields.io/badge/Made%20With%20Lua-2C2D72?logo=lua&logoColor=fff&style=for-the-badge" alt="made with lua" >
+<img src="https://img.shields.io/badge/For Neovim 0.9+-57A143?logo=neovim&logoColor=fff&style=for-the-badge" alt="Neovim" />
 
 <img src="https://img.shields.io/github/actions/workflow/status/mistricky/codesnap.nvim/release.yml?style=for-the-badge&label=release" alt="release action status" />
 
 <img src="https://img.shields.io/github/actions/workflow/status/mistricky/codesnap.nvim/lint.yml?style=for-the-badge&label=Lint" alt="release action status" />
+
+<a href="https://github.com/mistricky/codesnap.nvim/issues">
+	<img alt="Issues" src="https://img.shields.io/github/issues/mistricky/codesnap.nvim?style=for-the-badge&logo=github&color=%23ffbd5e">
+</a>
+<a href="https://github.com/mistricky/codesnap.nvim/blob/main/LICENSE">
+	<img alt="License" src="https://img.shields.io/github/license/mistricky/codesnap.nvim?style=for-the-badge&logo=github&color=%235ef1ff">
+</a>
+<a href="https://github.com/mistricky/codesnap.nvim/stars">
+	<img alt="stars" src="https://img.shields.io/github/stars/mistricky/codesnap.nvim?style=for-the-badge&logo=github&color=%23bd5eff">
+</a>
+<br>
+
+<img src="https://img.shields.io/badge/Made%20With%20Lua-2C2D72?logo=lua&logoColor=fff&style=for-the-badge" alt="made with lua" >
+
+<img src="https://img.shields.io/badge/Written%20in%20Rust-B7410E?logo=rust&logoColor=fff&style=for-the-badge" alt="written in rust" >
+
+<a href="https://dotfyle.com/plugins/mistricky/codesnap.nvim">
+	<img src="https://dotfyle.com/plugins/mistricky/codesnap.nvim/shield?style=for-the-badge" />
+</a>
 
 </p>
 
