@@ -184,6 +184,13 @@ require("codesnap").setup({
 
 https://github.com/mistricky/codesnap.nvim/assets/22574136/69b27e77-3dce-4bc3-8516-89ce636fe02d
 
+### Highlight code block
+
+
+https://github.com/mistricky/codesnap.nvim/assets/22574136/6207d185-df4e-4e03-a9ac-3f66c6705cb4
+
+
+
 ### Specify language extension
 In some scenarios, CodeSnap.nvim cannot auto-detect what language syntax should used to highlight code, for example, shell script can have no extension, they specify interpreters using shebang.
 
