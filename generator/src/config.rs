@@ -27,6 +27,8 @@ pub struct TakeSnapshotParams {
     pub breadcrumbs_separator: String,
     pub has_breadcrumbs: bool,
     pub start_line_number: Option<usize>,
+    pub highlight_start_line_number: Option<usize>,
+    pub highlight_end_line_number: Option<usize>,
 }
 
 impl FromObject for TakeSnapshotParams {

@@ -35,6 +35,7 @@ impl Component for Background {
         context: &ComponentContext,
         _render_params: &RenderParams,
         _style: &ComponentStyle,
+        _parent_style: &ComponentStyle,
     ) -> render_error::Result<()> {
         let mut paint = Paint::default();
         let w = pixmap.width() as f32;

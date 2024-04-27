@@ -33,6 +33,7 @@ impl Component for MacTitleBar {
         context: &ComponentContext,
         render_params: &RenderParams,
         _style: &ComponentStyle,
+        _parent_style: &ComponentStyle,
     ) -> render_error::Result<()> {
         self.draw_control_buttons(
             // Control bar construct by draw circles, after drawn, the path will be at the center,
