@@ -44,6 +44,7 @@ impl Component for LineNumber {
         context: &ComponentContext,
         render_params: &RenderParams,
         style: &ComponentStyle,
+        _parent_style: &ComponentStyle,
     ) -> render_error::Result<()> {
         FontRenderer::new(
             FONT_SIZE,

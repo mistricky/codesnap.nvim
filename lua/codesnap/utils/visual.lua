@@ -18,6 +18,10 @@ function visual_utils.get_start_line_number()
   return vim.fn.line("'<")
 end
 
+function visual_utils.get_end_line_number()
+  return vim.fn.line("'>")
+end
+
 function visual_utils.get_selected_text()
   local selected_text = vim.fn.getline("'<", "'>")
 

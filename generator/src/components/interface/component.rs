@@ -70,6 +70,7 @@ pub trait Component {
         _context: &ComponentContext,
         _render_params: &RenderParams,
         _style: &ComponentStyle,
+        _parent_style: &ComponentStyle,
     ) -> render_error::Result<()> {
         Ok(())
     }
@@ -113,13 +114,13 @@ pub trait Component {
         let style = self.parsed_style();
         let render_params = self.initialize(
             &component_render_params.parse_into_render_params_with_style(
-                parent_style,
+                parent_style.clone(),
                 sibling_style,
                 style.clone(),
             ),
         );
 
-        self.draw_self(pixmap, context, &render_params, &style)?;
+        self.draw_self(pixmap, context, &render_params, &style, &parent_style)?;
 
         let children = self.children();
         let mut sibling_render_params = RenderParams {

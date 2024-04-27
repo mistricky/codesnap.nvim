@@ -1,11 +1,12 @@
-use crate::edges::padding::Padding;
-
 use super::interface::{
     component::{Component, ComponentContext, RenderParams},
     render_error,
     style::{ComponentAlign, ComponentStyle, RawComponentStyle, Style},
 };
+use crate::edges::padding::Padding;
 use tiny_skia::{FillRule, Paint, PathBuilder, Pixmap, Transform};
+
+pub const EDITOR_PADDING: f32 = 20.;
 
 pub struct Rect {
     radius: f32,
@@ -20,7 +21,7 @@ impl Component for Rect {
     fn style(&self) -> RawComponentStyle {
         Style::default()
             .align(ComponentAlign::Column)
-            .padding(Padding::from_value(20.))
+            .padding(Padding::from_value(EDITOR_PADDING))
     }
 
     fn draw_self(
@@ -29,6 +30,7 @@ impl Component for Rect {
         context: &ComponentContext,
         render_params: &RenderParams,
         style: &ComponentStyle,
+        _parent_style: &ComponentStyle,
     ) -> render_error::Result<()> {
         let mut path_builder = PathBuilder::new();
         let x = render_params.x;
