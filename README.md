@@ -19,7 +19,6 @@
 <a href="https://github.com/mistricky/codesnap.nvim/stars">
 	<img alt="stars" src="https://img.shields.io/github/stars/mistricky/codesnap.nvim?style=for-the-badge&logo=github&color=%23bd5eff">
 </a>
-<br>
 
 <img src="https://img.shields.io/badge/Made%20With%20Lua-2C2D72?logo=lua&logoColor=fff&style=for-the-badge" alt="made with lua" >
 
