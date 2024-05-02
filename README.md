@@ -33,6 +33,8 @@
 <h1 align="center">CodeSnap.nvim</h1>
 <p align="center">📸 Snapshot plugin with rich features that can make pretty code snapshots for Neovim</p>
 
+<!-- START doctoc -->
+<!-- END doctoc -->
 
 ## 🚣Migration
 If you have installed v0.x before, this chapter will show you what break changes version v1.x introduced.
