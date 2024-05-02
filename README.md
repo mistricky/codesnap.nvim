@@ -346,5 +346,10 @@ CodeSnap.nvim is a project that will be maintained for the long term, and we alw
 
 The commit message convention of this project is following [commitlint-wizardoc](https://github.com/wizardoc/commitlint-wizardoc).
 
+### Contributors
+Thanks to all contributors for their contributions and works they have done.
+
+<img src="CONTRIBUTORS.svg" />
+
 ## License
 MIT.
