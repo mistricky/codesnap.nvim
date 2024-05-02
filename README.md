@@ -33,8 +33,34 @@
 <h1 align="center">CodeSnap.nvim</h1>
 <p align="center">📸 Snapshot plugin with rich features that can make pretty code snapshots for Neovim</p>
 
-<!-- START doctoc -->
-<!-- END doctoc -->
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**
+
+- [🚣Migration](#migration)
+- [✨Features](#features)
+- [Prerequirements](#prerequirements)
+- [Install](#install)
+  - [Compile from source](#compile-from-source)
+  - [Compile on ARM](#compile-on-arm)
+  - [Keymappings](#keymappings)
+- [Usage](#usage)
+  - [Copy into the clipboard](#copy-into-the-clipboard)
+    - [Copy into clipboard on Linux Wayland](#copy-into-clipboard-on-linux-wayland)
+  - [Save the snapshot](#save-the-snapshot)
+  - [Specify language extension](#specify-language-extension)
+- [Breadcrumbs](#breadcrumbs)
+  - [Custom path separator](#custom-path-separator)
+- [Line number](#line-number)
+- [Custom background](#custom-background)
+  - [Solid color background](#solid-color-background)
+- [Watermark](#watermark)
+- [Commands](#commands)
+- [Configuration](#configuration)
+- [Contribution](#contribution)
+- [License](#license)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## 🚣Migration
 If you have installed v0.x before, this chapter will show you what break changes version v1.x introduced.
