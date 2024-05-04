@@ -34,7 +34,7 @@ impl Component for HighlightCodeBlock {
         let start_y_offset = (self.start_line_number - 1) as f32 * self.line_height;
 
         paint.anti_alias = false;
-        paint.set_color(Color::from_rgba8(255, 255, 255, 18));
+        paint.set_color(Color::from_rgba8(255, 255, 255, 10));
         pixmap.fill_rect(
             Rect::from_xywh(
                 render_params.x - EDITOR_PADDING,
