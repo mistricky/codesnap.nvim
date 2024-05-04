@@ -31,7 +31,7 @@ function highlight_module.create_highlight_selector_window(cb_name, code)
     row = row,
     style = "minimal",
     border = "rounded",
-    title = "Select the code needs to be highlighted",
+    title = "Select highlight lines",
     title_pos = "center",
   })
 
