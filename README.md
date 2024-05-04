@@ -295,11 +295,11 @@ require("codesnap").setup({
 
 
 ## Watermark
-Watermark is something that makes screenshots more personalized, but if you don't like watermark just set it as an empty string to hide it.
+Watermark is something that makes screenshots more personalized, you can set a string or function, if you don't like watermark just set it as an empty string to hide it.
 ```lua
 require("codesnap").setup({
   -- ...
-  watermark = ""
+  watermark = "" -- or function() return "" end
 })
 ```
 
@@ -333,7 +333,7 @@ There is a default config:
     title = "CodeSnap.nvim",
     code_font_family = "CaskaydiaCove Nerd Font",
     watermark_font_family = "Pacifico",
-    watermark = "CodeSnap.nvim",
+    watermark = "CodeSnap.nvim" -- or function return "CodeSnap.nvim" end,
     bg_theme = "default",
     breadcrumbs_separator = "/",
     has_breadcrumbs = false,

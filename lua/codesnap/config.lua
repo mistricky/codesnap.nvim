@@ -46,6 +46,10 @@ function config_module.get_config(extension)
   }, static.config)
 
   config.save_path = parse_save_path(config.save_path)
+  if type(config.watermark) == "function" then
+    local mark = config.watermark()
+    config.watermark = type(mark) == "string" and mark or ""
+  end
 
   return config
 end
