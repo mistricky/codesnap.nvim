@@ -22,10 +22,12 @@ function visual_utils.get_end_line_number()
   return vim.fn.line("'>")
 end
 
-function visual_utils.get_selected_text()
-  local selected_text = vim.fn.getline("'<", "'>")
+function visual_utils.get_selected_lines()
+  return vim.fn.getline("'<", "'>")
+end
 
-  return table.concat(selected_text, "\n")
+function visual_utils.get_selected_text()
+  return table.concat(visual_utils.get_selected_lines(), "\n")
 end
 
 function visual_utils.get_selected_text_realtime()

@@ -22,7 +22,8 @@ function highlight_module.create_highlight_selector_window(cb_name, code)
   local col = vim.fn.winwidth(0) / 2 - width / 2
   local bufnr = vim.api.nvim_create_buf(false, true)
 
-  vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, string_utils.split(code, "\n"))
+  vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, code)
+
   local window_id = vim.api.nvim_open_win(bufnr, false, {
     relative = "editor",
     width = width,

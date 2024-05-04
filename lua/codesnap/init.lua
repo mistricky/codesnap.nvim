@@ -1,4 +1,5 @@
 local static = require("codesnap.static")
+local visual_utils = require("codesnap.utils.visual")
 local table_utils = require("codesnap.utils.table")
 local string_utils = require("codesnap.utils.string")
 local config_module = require("codesnap.config")
@@ -53,13 +54,16 @@ end
 function main.highlight_mode_copy_into_clipboard(extension)
   main.highlight_mode_config = config_module.get_config(extension)
 
-  highlight_module.create_highlight_selector_window("copy_into_clipboard_with_config", main.highlight_mode_config.code)
+  highlight_module.create_highlight_selector_window(
+    "copy_into_clipboard_with_config",
+    visual_utils.get_selected_lines()
+  )
 end
 
 function main.highlight_mode_save_snapshot(extension)
   main.highlight_mode_config = config_module.get_config(extension)
 
-  highlight_module.create_highlight_selector_window("save_snapshot_with_config", main.highlight_mode_config.code)
+  highlight_module.create_highlight_selector_window("save_snapshot_with_config", visual_utils.get_selected_lines())
 end
 
 return main
