@@ -51,6 +51,7 @@
     - [How to use](#how-to-use)
   - [Specify language extension](#specify-language-extension)
 - [Breadcrumbs](#breadcrumbs)
+  - [Show workspace in breadcrumbs](#show-workspace-in-breadcrumbs)
   - [Custom path separator](#custom-path-separator)
 - [Line number](#line-number)
 - [Custom background](#custom-background)
