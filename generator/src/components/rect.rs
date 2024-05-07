@@ -10,6 +10,7 @@ pub const EDITOR_PADDING: f32 = 20.;
 
 pub struct Rect {
     radius: f32,
+    min_width: f32,
     children: Vec<Box<dyn Component>>,
 }
 
@@ -20,6 +21,7 @@ impl Component for Rect {
 
     fn style(&self) -> RawComponentStyle {
         Style::default()
+            .min_width(self.min_width)
             .align(ComponentAlign::Column)
             .padding(Padding::from_value(EDITOR_PADDING))
     }
@@ -94,7 +96,11 @@ impl Component for Rect {
 }
 
 impl Rect {
-    pub fn new(radius: f32, children: Vec<Box<dyn Component>>) -> Rect {
-        Rect { radius, children }
+    pub fn new(radius: f32, min_width: Option<f32>, children: Vec<Box<dyn Component>>) -> Rect {
+        Rect {
+            radius,
+            children,
+            min_width: min_width.unwrap_or(0.),
+        }
     }
 }
