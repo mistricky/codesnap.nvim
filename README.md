@@ -142,8 +142,20 @@ https://github.com/mistricky/codesnap.nvim/assets/22574136/69b27e77-3dce-4bc3-85
 
 ### Highlight code block
 
+CodeSnap allows you to take code snapshots with highlights code blocks, we provide two commands for this scenario:
 
-https://github.com/mistricky/codesnap.nvim/assets/22574136/6207d185-df4e-4e03-a9ac-3f66c6705cb4
+```shell
+CodeSnapHighlight # Take code snapshot with highlights code blocks and copy it into the clipboard
+CodeSnapSaveHighlight # Take code snapshot with highlights code blocks and save it somewhere
+```
+
+#### How to use
+For take a code snapshot with highlights code blocks and save it somewhere. First you need to select code which you want to snapshot, then enter the command `CodeSnapSaveHighlight` to open a window show you the selected code which from previous step, now you can select code which you want to highlight, finally press the Enter key, CodeSnap will generate a snapshot with highlight blocks and save it in save_path.
+
+Here is an example video:
+
+https://github.com/mistricky/codesnap.nvim/assets/22574136/bea0bf6c-8fc9-4d09-9cab-4e1e6f47899c
+
 
 
 
