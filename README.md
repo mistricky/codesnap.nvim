@@ -227,6 +227,23 @@ require("codesnap").setup({
 The breadcrumbs look like:
 ![image](https://github.com/mistricky/codesnap.nvim/assets/22574136/23274faa-36a9-4d41-88a5-e48c44b4d5bf)
 
+### Show workspace in breadcrumbs
+Breadcrumbs hide the workspace name by default, if you want to display workspace in breadcrumbs, you can just set `show_workspace` as true.
+```lua
+require("codesnap").setup({
+  -- ...
+  has_breadcrumbs = true
+  show_workspace = true
+})
+```
+
+require("codesnap").setup({
+  -- ...
+  has_breadcrumbs = true
+  breadcrumbs_separator = "👉"
+})
+
+
 ### Custom path separator
 The CodeSnap.nvim uses `/` as the separator of the file path by default, of course, you can specify any symbol you prefer as the custom separator:
 ```lua
