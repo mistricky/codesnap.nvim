@@ -47,6 +47,8 @@
   - [Copy into the clipboard](#copy-into-the-clipboard)
     - [Copy into clipboard on Linux Wayland](#copy-into-clipboard-on-linux-wayland)
   - [Save the snapshot](#save-the-snapshot)
+  - [Highlight code block](#highlight-code-block)
+    - [How to use](#how-to-use)
   - [Specify language extension](#specify-language-extension)
 - [Breadcrumbs](#breadcrumbs)
   - [Custom path separator](#custom-path-separator)
