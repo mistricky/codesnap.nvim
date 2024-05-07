@@ -17,7 +17,7 @@ end
 
 function highlight_module.create_highlight_selector_window(cb_name, code)
   local width = 100
-  local height = 20
+  local height = #code + 2
   local row = vim.fn.winheight(0) / 2 - height / 2
   local col = vim.fn.winwidth(0) / 2 - width / 2
   local bufnr = vim.api.nvim_create_buf(false, true)
