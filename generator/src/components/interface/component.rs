@@ -89,11 +89,17 @@ pub trait Component {
     fn parsed_style(&self) -> Style<f32> {
         let style = self.style();
         let (width, height) = self.get_dynamic_wh();
+        let width = self.parse_size(style.width, width)
+            + style.padding.horizontal()
+            + style.margin.horizontal();
 
         Style {
-            width: self.parse_size(style.width, width)
-                + style.padding.horizontal()
-                + style.margin.horizontal(),
+            min_width: style.min_width,
+            width: if width > style.min_width {
+                width
+            } else {
+                style.min_width
+            },
             height: self.parse_size(style.height, height)
                 + style.padding.vertical()
                 + style.margin.vertical(),

@@ -29,6 +29,7 @@ pub fn take_snapshot(params: TakeSnapshotParams) -> render_error::Result<Pixmap>
     let pixmap = Container::from_children(vec![Box::new(Background::from_children(vec![
         Box::new(Rect::new(
             16.,
+            params.min_width,
             vec![
                 Box::new(MacTitleBar::from_radius(8., params.mac_window_bar)),
                 Box::new(Breadcrumbs::from_path(
