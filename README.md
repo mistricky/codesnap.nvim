@@ -358,7 +358,8 @@ There is a default config:
     bg_theme = "default",
     breadcrumbs_separator = "/",
     has_breadcrumbs = false,
-    has_line_number = false
+    has_line_number = false,
+    min_width = 0
 }
 ```
 
