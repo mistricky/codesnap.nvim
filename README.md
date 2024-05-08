@@ -238,13 +238,6 @@ require("codesnap").setup({
 })
 ```
 
-require("codesnap").setup({
-  -- ...
-  has_breadcrumbs = true
-  breadcrumbs_separator = "👉"
-})
-
-
 ### Custom path separator
 The CodeSnap.nvim uses `/` as the separator of the file path by default, of course, you can specify any symbol you prefer as the custom separator:
 ```lua
