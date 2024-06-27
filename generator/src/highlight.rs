@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use cosmic_text::{Attrs, Family, Style, Weight};
 use syntect::{
     easy::HighlightLines,
@@ -8,11 +10,14 @@ use syntect::{
 
 use crate::components::interface::render_error::RenderError;
 
+type SourceMap = HashMap<&'static str, &'static str>;
+
 pub struct Highlight {
     content: String,
     code_file_path: String,
     extension: Option<String>,
     font_family: String,
+    highlighting_language_source_map: SourceMap,
 }
 
 pub type HighlightResult<'a> = Vec<(&'a str, Attrs<'a>)>;
@@ -29,6 +34,7 @@ impl Highlight {
             code_file_path,
             extension,
             font_family,
+            highlighting_language_source_map: HashMap::from([("PHP", "<?php")]),
         }
     }
 
@@ -46,6 +52,15 @@ impl Highlight {
                     self.code_file_path.to_string(),
                 ))?,
         };
+
+        if let Some(identifier) = self.highlighting_language_source_map.get(&syntax.name[..]) {
+            if !self.content.contains(identifier) {
+                return Ok(syntax_set
+                    .find_syntax_by_name(&format!("{} Source", &syntax.name))
+                    .unwrap_or(syntax)
+                    .to_owned());
+            }
+        }
 
         Ok(syntax.to_owned())
     }
