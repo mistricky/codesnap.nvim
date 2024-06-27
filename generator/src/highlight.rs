@@ -53,6 +53,9 @@ impl Highlight {
                 ))?,
         };
 
+        // The Syntect clearly distinguish between PHP and PHP Source
+        // Should use PHP as highlight language if the source content contains "<php" tag
+        // Should use PHP Source as highlight language if the source content not contains "<php" tag
         if let Some(identifier) = self.highlighting_language_source_map.get(&syntax.name[..]) {
             if !self.content.contains(identifier) {
                 return Ok(syntax_set
@@ -77,21 +80,28 @@ impl Highlight {
         let mut highlight = HighlightLines::new(syntax, &theme_set.themes[theme]);
         let attrs = Attrs::new().family(Family::Name(self.font_family.as_ref()));
 
+        // Highlight the content line by line using highlight_line function
         Ok(LinesWithEndings::from(&self.content)
-            .map(|line| highlight.highlight_line(line, &syntax_set).unwrap())
+            .map(|line| {
+                highlight
+                    .highlight_line(line, &syntax_set)
+                    .unwrap()
+                    .into_iter()
+                    .map(|(style, str)| {
+                        let syntect::highlighting::Color { r, g, b, a: _ } = style.foreground;
+                        let attrs = match style.font_style {
+                            FontStyle::BOLD => attrs.weight(Weight::BOLD),
+                            FontStyle::ITALIC => attrs.style(Style::Italic),
+                            FontStyle::UNDERLINE => attrs.style(Style::Normal),
+                            _ => attrs,
+                        };
+
+                        (str, attrs.color(cosmic_text::Color::rgb(r, g, b)))
+                    })
+                    .collect::<HighlightResult>()
+            })
             .fold(vec![], |acc, cur| [acc, cur].concat())
             .into_iter()
-            .map(move |(style, str)| {
-                let syntect::highlighting::Color { r, g, b, a: _ } = style.foreground;
-                let attrs = match style.font_style {
-                    FontStyle::BOLD => attrs.weight(Weight::BOLD),
-                    FontStyle::ITALIC => attrs.style(Style::Italic),
-                    FontStyle::UNDERLINE => attrs.style(Style::Normal),
-                    _ => attrs,
-                };
-
-                (str, attrs.color(cosmic_text::Color::rgb(r, g, b)))
-            })
             .collect::<HighlightResult>())
     }
 }

@@ -4,19 +4,66 @@
 
 <p align="center">
 
-<img src="https://img.shields.io/badge/Neovim-57A143?logo=neovim&logoColor=fff&style=for-the-badge" alt="Neovim" />
-
-<img src="https://img.shields.io/badge/Made%20With%20Lua-2C2D72?logo=lua&logoColor=fff&style=for-the-badge" alt="made with lua" >
+<img src="https://img.shields.io/badge/For Neovim 0.9+-57A143?logo=neovim&logoColor=fff&style=for-the-badge" alt="Neovim" />
 
 <img src="https://img.shields.io/github/actions/workflow/status/mistricky/codesnap.nvim/release.yml?style=for-the-badge&label=release" alt="release action status" />
 
 <img src="https://img.shields.io/github/actions/workflow/status/mistricky/codesnap.nvim/lint.yml?style=for-the-badge&label=Lint" alt="release action status" />
+
+<a href="https://github.com/mistricky/codesnap.nvim/issues">
+	<img alt="Issues" src="https://img.shields.io/github/issues/mistricky/codesnap.nvim?style=for-the-badge&logo=github&color=%23ffbd5e">
+</a>
+<a href="https://github.com/mistricky/codesnap.nvim/blob/main/LICENSE">
+	<img alt="License" src="https://img.shields.io/github/license/mistricky/codesnap.nvim?style=for-the-badge&logo=github&color=%235ef1ff">
+</a>
+<a href="https://github.com/mistricky/codesnap.nvim/stars">
+	<img alt="stars" src="https://img.shields.io/github/stars/mistricky/codesnap.nvim?style=for-the-badge&logo=github&color=%23bd5eff">
+</a>
+
+<img src="https://img.shields.io/badge/Made%20With%20Lua-2C2D72?logo=lua&logoColor=fff&style=for-the-badge" alt="made with lua" >
+
+<img src="https://img.shields.io/badge/Written%20in%20Rust-B7410E?logo=rust&logoColor=fff&style=for-the-badge" alt="written in rust" >
+
+<a href="https://dotfyle.com/plugins/mistricky/codesnap.nvim">
+	<img src="https://dotfyle.com/plugins/mistricky/codesnap.nvim/shield?style=for-the-badge" />
+</a>
 
 </p>
 
 <h1 align="center">CodeSnap.nvim</h1>
 <p align="center">📸 Snapshot plugin with rich features that can make pretty code snapshots for Neovim</p>
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+- [🚣Migration](#migration)
+- [✨Features](#features)
+- [Prerequirements](#prerequirements)
+- [Install](#install)
+  - [Compile from source](#compile-from-source)
+  - [Compile on ARM](#compile-on-arm)
+  - [Keymappings](#keymappings)
+- [Usage](#usage)
+  - [Copy into the clipboard](#copy-into-the-clipboard)
+    - [Copy into clipboard on Linux Wayland](#copy-into-clipboard-on-linux-wayland)
+  - [Save the snapshot](#save-the-snapshot)
+  - [Highlight code block](#highlight-code-block)
+    - [How to use](#how-to-use)
+  - [Specify language extension](#specify-language-extension)
+- [Breadcrumbs](#breadcrumbs)
+  - [Show workspace in breadcrumbs](#show-workspace-in-breadcrumbs)
+  - [Custom path separator](#custom-path-separator)
+- [Line number](#line-number)
+- [Custom background](#custom-background)
+  - [Solid color background](#solid-color-background)
+- [Watermark](#watermark)
+- [Commands](#commands)
+- [Configuration](#configuration)
+- [Contribution](#contribution)
+  - [Contributors](#contributors)
+- [License](#license)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## 🚣Migration
 If you have installed v0.x before, this chapter will show you what break changes version v1.x introduced.
@@ -34,7 +81,7 @@ v1.x has a different architecture and better performance than v0.x, and v1.x can
 - 🤖 Generate snapshots using only a single command
 - 🍞 Breadcrumbs for display file path
 - 🌊 More beautiful background theme
-- 🔢 [WIP] Column number
+- 🔢 Support for display line number make sharing code snapshot easier
 
 ## Prerequirements
 - Neovim 0.9.0+
@@ -85,6 +132,24 @@ sudo dnf install libuv libuv-devel # On RHEL based systems
 sudo apt-get install libtool libuv1-dev # On Debian based systems
 ```
 
+### Keymappings
+If you use `Lazy.nvim` as your package manager, here are some examples show you how to configure keymappings for CodeSnap:
+```lua
+{
+  "mistricky/codesnap.nvim",
+  build = "make build_generator",
+  keys = {
+    { "<leader>cc", "<cmd>CodeSnap<cr>", mode = "x", desc = "Save selected code snapshot into clipboard" },
+    { "<leader>cs", "<cmd>CodeSnapSave<cr>", mode = "x", desc = "Save selected code snapshot in ~/Pictures" },
+  },
+  opts = {
+    save_path = "~/Pictures",
+    has_breadcrumbs = true,
+    bg_theme = "bamboo",
+  },
+}
+```
+
 ## Usage 
 `CodeSnap.nvim` provides the following two ways to take snapshots of currently selected code
 
@@ -122,6 +187,25 @@ require("codesnap").setup({
 
 https://github.com/mistricky/codesnap.nvim/assets/22574136/69b27e77-3dce-4bc3-8516-89ce636fe02d
 
+### Highlight code block
+
+CodeSnap allows you to take code snapshots with highlights code blocks, we provide two commands for this scenario:
+
+```shell
+CodeSnapHighlight # Take code snapshot with highlights code blocks and copy it into the clipboard
+CodeSnapSaveHighlight # Take code snapshot with highlights code blocks and save it somewhere
+```
+
+#### How to use
+For take a code snapshot with highlights code blocks and save it somewhere. First you need to select code which you want to snapshot, then enter the command `CodeSnapSaveHighlight` to open a window show you the selected code which from previous step, now you can select code which you want to highlight, finally press the Enter key, CodeSnap will generate a snapshot with highlight blocks and save it in save_path.
+
+Here is an example video:
+
+https://github.com/mistricky/codesnap.nvim/assets/22574136/bea0bf6c-8fc9-4d09-9cab-4e1e6f47899c
+
+
+
+
 ### Specify language extension
 In some scenarios, CodeSnap.nvim cannot auto-detect what language syntax should used to highlight code, for example, shell script can have no extension, they specify interpreters using shebang.
 
@@ -144,6 +228,16 @@ require("codesnap").setup({
 The breadcrumbs look like:
 ![image](https://github.com/mistricky/codesnap.nvim/assets/22574136/23274faa-36a9-4d41-88a5-e48c44b4d5bf)
 
+### Show workspace in breadcrumbs
+Breadcrumbs hide the workspace name by default, if you want to display workspace in breadcrumbs, you can just set `show_workspace` as true.
+```lua
+require("codesnap").setup({
+  -- ...
+  has_breadcrumbs = true
+  show_workspace = true
+})
+```
+
 ### Custom path separator
 The CodeSnap.nvim uses `/` as the separator of the file path by default, of course, you can specify any symbol you prefer as the custom separator:
 ```lua
@@ -156,6 +250,17 @@ require("codesnap").setup({
 
 ![image](https://github.com/mistricky/codesnap.nvim/assets/22574136/84b80d0f-1467-4bdf-9cbd-aede868f93aa)
 
+
+## Line number
+We also support displaying line number, you can set `has_line_number` to true to display line number.
+```lua
+require("codesnap").setup({
+  // ...
+	has_line_number = true,
+})
+```
+
+![image](https://github.com/mistricky/codesnap.nvim/assets/22574136/3a5999b1-bb2a-4646-8d69-609be1d28140)
 
 
 ## Custom background
@@ -236,6 +341,16 @@ CodeSnap # Take a snapshot of the currently selected code and copy the snapshot 
 
 CodeSnapSave # Save the snapshot of the currently selected code and save it on the disk
 ```
+**Lua**
+```lua
+local codesnap <const> = require("codesnap")
+
+-- Take a snapshot of the currently selected code and copy the snapshot into the clipboard
+codesnap.copy_into_clipboard()
+
+-- Save the snapshot of the currently selected code and save it on the disk
+codesnap.save_snapshot()
+```
 
 ## Configuration
 Define your custom config using `setup` function
@@ -254,6 +369,8 @@ There is a default config:
     bg_theme = "default",
     breadcrumbs_separator = "/",
     has_breadcrumbs = false,
+    has_line_number = false,
+    min_width = 0
 }
 ```
 
@@ -261,6 +378,11 @@ There is a default config:
 CodeSnap.nvim is a project that will be maintained for the long term, and we always accepts new contributors, please feel free to submit PR & issues.
 
 The commit message convention of this project is following [commitlint-wizardoc](https://github.com/wizardoc/commitlint-wizardoc).
+
+### Contributors
+Thanks to all contributors for their contributions and works they have done.
+
+<img src="CONTRIBUTORS.svg" />
 
 ## License
 MIT.

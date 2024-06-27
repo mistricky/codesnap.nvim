@@ -21,6 +21,7 @@ impl Component for Watermark {
         context: &ComponentContext,
         render_params: &RenderParams,
         _style: &ComponentStyle,
+        _parent_style: &ComponentStyle,
     ) -> render_error::Result<()> {
         let params = &context.take_snapshot_params;
 

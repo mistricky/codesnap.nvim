@@ -2,7 +2,6 @@ local visual_utils = {}
 
 -- Get all the lines from "from" to "to" and return them as a single string
 -- If "from" and "to" are the same, return the line at "from"
-
 local function get_whole_lines(from, to)
   local lines = {}
   if from == to then
@@ -15,10 +14,20 @@ local function get_whole_lines(from, to)
   return table.concat(lines, "\n")
 end
 
-function visual_utils.get_selected_text()
-  local selected_text = vim.fn.getline("'<", "'>")
+function visual_utils.get_start_line_number()
+  return vim.fn.line("'<")
+end
 
-  return table.concat(selected_text, "\n")
+function visual_utils.get_end_line_number()
+  return vim.fn.line("'>")
+end
+
+function visual_utils.get_selected_lines()
+  return vim.fn.getline("'<", "'>")
+end
+
+function visual_utils.get_selected_text()
+  return table.concat(visual_utils.get_selected_lines(), "\n")
 end
 
 function visual_utils.get_selected_text_realtime()

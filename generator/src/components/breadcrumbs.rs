@@ -5,7 +5,7 @@ use crate::{code::calc_wh, edges::margin::Margin, text::FontRenderer};
 
 use super::interface::{
     component::Component,
-    style::{RawComponentStyle, Size},
+    style::{ComponentStyle, RawComponentStyle, Size},
 };
 
 pub struct Breadcrumbs {
@@ -41,6 +41,7 @@ impl Component for Breadcrumbs {
         context: &super::interface::component::ComponentContext,
         render_params: &super::interface::component::RenderParams,
         style: &super::interface::style::ComponentStyle,
+        _parent_style: &ComponentStyle,
     ) -> super::interface::render_error::Result<()> {
         if self.has_breadcrumbs {
             let attrs = Attrs::new()

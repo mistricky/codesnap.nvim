@@ -1,7 +1,10 @@
 pub mod background;
 pub mod breadcrumbs;
+pub mod code_block;
 pub mod container;
 pub mod editor;
+pub mod highlight_code_block;
 pub mod interface;
+pub mod line_number;
 pub mod rect;
 pub mod watermark;

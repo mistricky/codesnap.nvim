@@ -1,13 +1,10 @@
-use std::sync::Arc;
-
-use tiny_skia::Pixmap;
-
-use crate::{config::TakeSnapshotParams, edges::edge::Edge};
-
 use super::{
     render_error,
     style::{ComponentAlign, ComponentStyle, RawComponentStyle, Size, Style},
 };
+use crate::{config::TakeSnapshotParams, edges::edge::Edge};
+use std::sync::Arc;
+use tiny_skia::Pixmap;
 
 pub struct ComponentContext {
     pub scale_factor: f32,
@@ -73,6 +70,7 @@ pub trait Component {
         _context: &ComponentContext,
         _render_params: &RenderParams,
         _style: &ComponentStyle,
+        _parent_style: &ComponentStyle,
     ) -> render_error::Result<()> {
         Ok(())
     }
@@ -91,11 +89,17 @@ pub trait Component {
     fn parsed_style(&self) -> Style<f32> {
         let style = self.style();
         let (width, height) = self.get_dynamic_wh();
+        let width = self.parse_size(style.width, width)
+            + style.padding.horizontal()
+            + style.margin.horizontal();
 
         Style {
-            width: self.parse_size(style.width, width)
-                + style.padding.horizontal()
-                + style.margin.horizontal(),
+            min_width: style.min_width,
+            width: if width > style.min_width {
+                width
+            } else {
+                style.min_width
+            },
             height: self.parse_size(style.height, height)
                 + style.padding.vertical()
                 + style.margin.vertical(),
@@ -116,13 +120,13 @@ pub trait Component {
         let style = self.parsed_style();
         let render_params = self.initialize(
             &component_render_params.parse_into_render_params_with_style(
-                parent_style,
+                parent_style.clone(),
                 sibling_style,
                 style.clone(),
             ),
         );
 
-        self.draw_self(pixmap, context, &render_params, &style)?;
+        self.draw_self(pixmap, context, &render_params, &style, &parent_style)?;
 
         let children = self.children();
         let mut sibling_render_params = RenderParams {
@@ -152,6 +156,8 @@ pub trait Component {
         Ok(render_params.clone())
     }
 
+    // Dynamic calculate width and height of children, if the children is empty, get_dynamic_wh
+    // will return (0., 0.)
     fn get_dynamic_wh(&self) -> (f32, f32) {
         let children = self.children();
         let calc_children_wh = |cb: fn((f32, f32), &Box<dyn Component>) -> (f32, f32)| {
@@ -160,11 +166,13 @@ pub trait Component {
         let style = self.style();
 
         match style.align {
+            // If align is row, width is sum of children width, height is max of children height
             ComponentAlign::Row => calc_children_wh(|(w, h), child| {
                 let style = child.parsed_style();
 
                 (w + style.width, h.max(style.height))
             }),
+            // If align is column, width is max of children width, height is sum of children height
             ComponentAlign::Column => calc_children_wh(|(w, h), child| {
                 let style = child.parsed_style();
 

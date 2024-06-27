@@ -33,7 +33,7 @@ end
 
 function table_utils.serialize_array(t)
   local result = list_utils.map(t, function(ele)
-    table_utils.serialize_json(ele)
+    table_utils.to_string(ele)
   end)
 
   return "[" .. result.concat(t, ",") .. "]"
@@ -43,17 +43,17 @@ function table_utils.serialize_table(t)
   local result = {}
 
   for key, value in pairs(t) do
-    table.insert(result, string.format('"%s":%s', key, table_utils.serialize_json(value)))
+    table.insert(result, string.format("%s = %s", key, table_utils.to_string(value)))
   end
 
   return "{" .. table.concat(result, ",") .. "}"
 end
 
 function table_utils.serialize_string(value)
-  return '"' .. value .. '"'
+  return "[[" .. value .. "]]"
 end
 
-function table_utils.serialize_json(t)
+function table_utils.to_string(t)
   local complex_type_parser = {
     array = table_utils.serialize_array,
     table = table_utils.serialize_table,
@@ -66,5 +66,15 @@ function table_utils.serialize_json(t)
 
   return parse(t)
 end
+
+-- function table_utils.to_string(t)
+--   local result = ""
+--
+--   for key, value in pairs(t) do
+--     result = result .. key .. ":" .. tostring(value) .. ","
+--   end
+--
+--   return "{" .. result .. "}"
+-- end
 
 return table_utils
