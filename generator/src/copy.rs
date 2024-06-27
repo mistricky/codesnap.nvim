@@ -39,13 +39,12 @@ pub fn copy_into_clipboard(config: TakeSnapshotParams) -> Result<()> {
         let os_linux_release = sys_info::linux_os_release().unwrap();
         let src_path = format!(
             "\\\\wsl$\\{}\\tmp\\{}",
-            os_linux_release.pretty_name(),
+            os_linux_release.name(),
             filename
         );
 
         let _ = copy_to_wsl_clipboard(&src_path);
-        //delete the file when done
-        std::fs::remove_file(path).unwrap();
+        //delete the file when done?
     } else {
         std::thread::spawn(move || {
             Clipboard::new()
@@ -79,8 +78,7 @@ fn copy_to_wsl_clipboard(src_path: &str) -> Result<()> {
 }
 
 use std::{
-    process::{Command, Stdio},
-    time::Instant,
+    process::{Command, Stdio}, time::Instant
 };
 
 fn generate_random_filename() -> String {
