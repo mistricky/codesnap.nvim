@@ -36,10 +36,21 @@ pub fn copy_into_clipboard(config: TakeSnapshotParams) -> Result<()> {
             .save_png(path.clone())
             .map_err(|err| Error::Lua(RuntimeError(err.to_string())));
 
+        //getting mounted vdisk location of linux install
         let os_linux_release = sys_info::linux_os_release().unwrap();
+        let mut wsl_path = format!(
+            "\\\\wsl$\\{}",
+            os_linux_release.pretty_name()
+        );
+        if !powershell_folder_exist(wsl_path.clone()) {
+            wsl_path = format!(
+                "\\\\wsl$\\{}",
+                os_linux_release.name()
+            );
+        }
         let src_path = format!(
-            "\\\\wsl$\\{}\\tmp\\{}",
-            os_linux_release.name(),
+            "{}\\tmp\\{}",
+            wsl_path,
             filename
         );
 
@@ -66,7 +77,7 @@ fn copy_to_wsl_clipboard(src_path: &str) -> Result<()> {
     let powershell = Command::new("/mnt/c/Windows//System32/WindowsPowerShell/v1.0/powershell.exe")
         .arg("-NoProfile")
         .arg("-Command")
-        .arg(&format!("Get-ChildItem {} | Set-Clipboard", src_path))
+        .arg(&format!("Get-ChildItem \"{}\" | Set-Clipboard", src_path))
         .stdout(Stdio::null())
         .stderr(Stdio::null())
         .spawn();
@@ -80,6 +91,22 @@ fn copy_to_wsl_clipboard(src_path: &str) -> Result<()> {
 use std::{
     process::{Command, Stdio}, time::Instant
 };
+
+fn powershell_folder_exist(src_path: String) -> bool {
+    let powershell = Command::new("/mnt/c/Windows//System32/WindowsPowerShell/v1.0/powershell.exe")
+        .arg("-NoProfile")
+        .arg("-Command")
+        .arg(&format!("Test-Path -path \"{}\"", src_path))
+        .stdout(Stdio::piped())
+        .stderr(Stdio::null())
+        .output();
+
+    let stdout = String::from_utf8(powershell.unwrap().stdout).unwrap();
+
+    let result = stdout == "True\r\n";
+
+    return result;
+}
 
 fn generate_random_filename() -> String {
     // Get nanoseconds since epoch for randomness
