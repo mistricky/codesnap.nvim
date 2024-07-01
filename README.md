@@ -46,6 +46,7 @@
 - [Usage](#usage)
   - [Copy into the clipboard](#copy-into-the-clipboard)
     - [Copy into clipboard on Linux Wayland](#copy-into-clipboard-on-linux-wayland)
+    - [Copy into clipboard on WSL](#copy-into-clipboard-on-wsl)
   - [Save the snapshot](#save-the-snapshot)
   - [Highlight code block](#highlight-code-block)
     - [How to use](#how-to-use)
@@ -169,6 +170,14 @@ Copy screenshots directly into the clipboard is cool, however, it doesn't work w
 
 If you using CodeSnap.nvim on wl-clipboard, you can refer [wl-clip-persist](https://github.com/Linus789/wl-clip-persist), it reads all the clipboard data into memory and then overwrites the clipboard with the data from our memory to persist copied data.
 
+
+#### Copy into clipboard on WSL
+currently copy to clipboard in WSL works, but it has some potencial issues, inside of wsl normally is not possible to copy an image to the clipboard,
+how this works in wsl at this moment is the following, we create an image in the /tmp directory, then we try to execute powershell commands
+to copy the image to the clipboard
+> [!WARNING]
+> If the WSL distro name is not the default or the pretty_name/name in the /etc/os-release this feature will fai
+
 ### Save the snapshot
 
 Of course, you can use `CodeSnapSave` command to save the snapshot to path where you defined it in `config.save_path`
@@ -181,6 +190,8 @@ require("codesnap").setup({
   -- parsed: "~/Pictures/CodeSnap_y-m-d_at_h:m:s.png"
   -- save_path = "~/Pictures/foo.png"
   -- parsed: "~/Pictures/foo.png"
+  -- if you are on wsl and do you want to use a windows path
+  -- save_path="/mnt/c/Users/user/Pictures/"
   save_path = ...
 })
 ```
