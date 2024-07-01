@@ -14,6 +14,8 @@ thiserror = "1.0.58"
 regex = "1.10.3"
 two-face = "0.3.0"
 cached = "0.49.3"
+wsl = "0.1.0"
+sys-info = "0.9.1"
 
 [lib]
 crate-type = ["cdylib"]
