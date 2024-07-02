@@ -124,6 +124,7 @@ mod test {
     use super::copy_to_wsl_clipboard;
 
     #[test]
+    #[cfg(target_os = "linux")]
     fn copy_to_wsl_test() -> std::result::Result<(), nvim_oxi::Error> {
         
         if !wsl::is_wsl() {
@@ -138,6 +139,7 @@ mod test {
     }
 
     #[test]
+    #[cfg(target_os = "linux")]
     fn check_if_folder_exist() {
         if !wsl::is_wsl() {
             return;
