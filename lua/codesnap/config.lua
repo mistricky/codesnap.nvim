@@ -49,6 +49,7 @@ function config_module.get_config(extension)
     theme = "base16-onedark",
     file_path = static.config.has_breadcrumbs and get_file_path(static.config.show_workspace) or "",
     start_line_number = static.config.has_line_number and start_line_number or nil,
+    has_background = true,
   }, static.config)
 
   config.save_path = parse_save_path(config.save_path)
