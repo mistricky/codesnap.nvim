@@ -1,9 +1,12 @@
 use tiny_skia::{Color, FillRule, Paint, PathBuilder, Transform};
 
-use crate::components::interface::{
-    component::{Component, ComponentContext, RenderParams},
-    render_error,
-    style::{ComponentStyle, RawComponentStyle, Size, Style},
+use crate::{
+    components::interface::{
+        component::{Component, ComponentContext, RenderParams},
+        render_error,
+        style::{ComponentStyle, RawComponentStyle, Size, Style},
+    },
+    edges::margin::Margin,
 };
 
 pub struct MacTitleBar {
@@ -20,7 +23,12 @@ impl Component for MacTitleBar {
     fn style(&self) -> RawComponentStyle {
         let demeter = self.radius * 2.;
 
-        Style::default().size(Size::Num(demeter + 2. * 25.), Size::Num(demeter))
+        Style::default()
+            .size(Size::Num(demeter + 2. * 25.), Size::Num(demeter))
+            .margin(Margin {
+                bottom: 10.,
+                ..Margin::default()
+            })
     }
 
     fn render_condition(&self) -> bool {

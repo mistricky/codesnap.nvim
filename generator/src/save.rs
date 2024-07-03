@@ -1,6 +1,8 @@
 use crate::{config::TakeSnapshotParams, path::parse_save_path, snapshot::take_snapshot};
 use nvim_oxi::{lua::Error::RuntimeError, Error, Result};
 
+// The function will be called as FFI on Lua side
+#[allow(dead_code)]
 pub fn save_snapshot(config: TakeSnapshotParams) -> Result<()> {
     match &config.save_path {
         Some(path) => {

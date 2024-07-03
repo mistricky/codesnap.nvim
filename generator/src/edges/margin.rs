@@ -1,6 +1,6 @@
 use super::edge::Edge;
 
-#[derive(Clone, Default)]
+#[derive(Clone, Default, Debug)]
 pub struct Margin {
     pub left: f32,
     pub right: f32,

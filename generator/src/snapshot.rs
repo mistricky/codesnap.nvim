@@ -26,35 +26,45 @@ pub fn take_snapshot(params: TakeSnapshotParams) -> render_error::Result<Pixmap>
         scale_factor: SCALE_FACTOR,
         take_snapshot_params: Arc::new(params.clone()),
     };
-    let pixmap = Container::from_children(vec![Box::new(Background::from_children(vec![
-        Box::new(Rect::new(
-            16.,
-            params.min_width,
-            vec![
-                Box::new(MacTitleBar::from_radius(8., params.mac_window_bar)),
-                Box::new(Breadcrumbs::from_path(
-                    params.file_path,
-                    15.,
-                    params.breadcrumbs_separator,
-                    params.has_breadcrumbs,
-                )),
-                Box::new(CodeBlock::from_children(vec![
-                    Box::new(HighlightCodeBlock::from_line_number(
-                        params.highlight_start_line_number,
-                        params.highlight_end_line_number,
-                        LINE_HEIGHT,
+    // If background is disabled, should hidden watermark component
+    // If watermark text is equal to "", the watermark component is hidden
+    let watermark = if params.has_background {
+        params.watermark
+    } else {
+        "".to_string()
+    };
+    let pixmap = Container::from_children(vec![Box::new(Background::new(
+        params.has_background,
+        vec![
+            Box::new(Rect::new(
+                16.,
+                params.min_width,
+                vec![
+                    Box::new(MacTitleBar::from_radius(8., params.mac_window_bar)),
+                    Box::new(Breadcrumbs::from_path(
+                        params.file_path,
+                        15.,
+                        params.breadcrumbs_separator,
+                        params.has_breadcrumbs,
                     )),
-                    Box::new(LineNumber::new(
-                        &params.code,
-                        params.start_line_number,
-                        LINE_HEIGHT,
-                    )),
-                    Box::new(Code::new(params.code, LINE_HEIGHT, 15.)),
-                ])),
-            ],
-        )),
-        Box::new(Watermark::new(params.watermark)),
-    ]))])
+                    Box::new(CodeBlock::from_children(vec![
+                        Box::new(HighlightCodeBlock::from_line_number(
+                            params.highlight_start_line_number,
+                            params.highlight_end_line_number,
+                            LINE_HEIGHT,
+                        )),
+                        Box::new(LineNumber::new(
+                            &params.code,
+                            params.start_line_number,
+                            LINE_HEIGHT,
+                        )),
+                        Box::new(Code::new(params.code, LINE_HEIGHT, 15.)),
+                    ])),
+                ],
+            )),
+            Box::new(Watermark::new(watermark)),
+        ],
+    ))])
     .draw_root(&context)?;
 
     Ok(pixmap)

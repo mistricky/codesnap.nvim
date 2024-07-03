@@ -1,6 +1,6 @@
 use crate::edges::{margin::Margin, padding::Padding};
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub enum ComponentAlign {
     Row,
     Column,
@@ -11,7 +11,7 @@ pub enum Size {
     Num(f32),
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct Style<T> {
     pub width: T,
     pub height: T,
