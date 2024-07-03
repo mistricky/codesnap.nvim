@@ -2,7 +2,10 @@ use tiny_skia::{
     Color, GradientStop, LinearGradient, Paint, Pixmap, Point, Rect, SpreadMode, Transform,
 };
 
-use crate::color::{is_valid_hex_color, RgbaColor};
+use crate::{
+    color::{is_valid_hex_color, RgbaColor},
+    edges::padding::Padding,
+};
 
 use super::interface::{
     component::{Component, ComponentContext, RenderParams},
@@ -12,11 +15,15 @@ use super::interface::{
 
 pub struct Background {
     children: Vec<Box<dyn Component>>,
+    has_background: bool,
 }
 
 impl Background {
-    pub fn from_children(children: Vec<Box<dyn Component>>) -> Background {
-        Background { children }
+    pub fn new(has_background: bool, children: Vec<Box<dyn Component>>) -> Background {
+        Background {
+            children,
+            has_background,
+        }
     }
 }
 
@@ -26,7 +33,22 @@ impl Component for Background {
     }
 
     fn style(&self) -> RawComponentStyle {
-        RawComponentStyle::default().align(ComponentAlign::Column)
+        let style = RawComponentStyle::default().align(ComponentAlign::Column);
+
+        if self.has_background {
+            return style.padding(Padding {
+                top: 82.,
+                left: 122.,
+                right: 122.,
+                bottom: 82.,
+            });
+        }
+
+        return style;
+    }
+
+    fn self_render_condition(&self) -> bool {
+        self.has_background
     }
 
     fn draw_self(

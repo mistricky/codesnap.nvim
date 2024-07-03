@@ -5,6 +5,8 @@ use arboard::{Clipboard, ImageData};
 
 use nvim_oxi::Result;
 
+// The function will be called as FFI on Lua side
+#[allow(dead_code)]
 pub fn copy_into_clipboard(config: TakeSnapshotParams) -> Result<()> {
     let pixmap = take_snapshot(config.clone())?;
     let premultplied_colors = pixmap.pixels();

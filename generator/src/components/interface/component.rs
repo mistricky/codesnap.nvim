@@ -60,7 +60,13 @@ pub trait Component {
         render_params.clone()
     }
 
+    // The render_condition determines whether the component should be rendered or not
     fn render_condition(&self) -> bool {
+        true
+    }
+
+    // The difference with render_condition is that self_render_condition still renders childrens
+    fn self_render_condition(&self) -> bool {
         true
     }
 
@@ -87,7 +93,19 @@ pub trait Component {
     }
 
     fn parsed_style(&self) -> Style<f32> {
-        let style = self.style();
+        // If render_condition return false, the whole component shouldn't rendered,
+        // includes its children
+        if !self.render_condition() {
+            return ComponentStyle::default();
+        }
+
+        // If self_render_condition return false, the component shouldn't rendered,
+        // so the corresponding style should be cleared
+        let style = if self.self_render_condition() {
+            self.style()
+        } else {
+            RawComponentStyle::default()
+        };
         let (width, height) = self.get_dynamic_wh();
         let width = self.parse_size(style.width, width)
             + style.padding.horizontal()
@@ -121,12 +139,19 @@ pub trait Component {
         let render_params = self.initialize(
             &component_render_params.parse_into_render_params_with_style(
                 parent_style.clone(),
-                sibling_style,
+                sibling_style.clone(),
                 style.clone(),
             ),
         );
 
-        self.draw_self(pixmap, context, &render_params, &style, &parent_style)?;
+        // Render nothing on paint if render_condition return false
+        if !self.render_condition() {
+            return Ok(render_params.clone());
+        }
+
+        if self.self_render_condition() {
+            self.draw_self(pixmap, context, &render_params, &style, &parent_style)?;
+        }
 
         let children = self.children();
         let mut sibling_render_params = RenderParams {
@@ -136,10 +161,6 @@ pub trait Component {
         let mut sibling_style = ComponentStyle::default();
 
         for child in children {
-            if !child.render_condition() {
-                continue;
-            }
-
             sibling_render_params = child.draw(
                 pixmap,
                 context,

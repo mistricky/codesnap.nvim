@@ -25,34 +25,36 @@ impl Component for Watermark {
     ) -> render_error::Result<()> {
         let params = &context.take_snapshot_params;
 
-        if &params.watermark != "" {
-            let attrs = Attrs::new().family(Family::Name(
-                &context.take_snapshot_params.watermark_font_family,
-            ));
+        let attrs = Attrs::new().family(Family::Name(
+            &context.take_snapshot_params.watermark_font_family,
+        ));
 
-            FontRenderer::new(
-                20.,
-                20.,
-                context.scale_factor,
-                &context.take_snapshot_params.fonts_folder,
-            )
-            .draw_line(
-                0.,
-                render_params.y,
-                pixmap.width() as f32,
-                pixmap.height() as f32,
-                &params.watermark,
-                attrs,
-                Some(Align::Center),
-                pixmap,
-            );
-        }
+        FontRenderer::new(
+            20.,
+            20.,
+            context.scale_factor,
+            &context.take_snapshot_params.fonts_folder,
+        )
+        .draw_line(
+            0.,
+            render_params.y,
+            pixmap.width() as f32,
+            pixmap.height() as f32,
+            &params.watermark,
+            attrs,
+            Some(Align::Center),
+            pixmap,
+        );
 
         Ok(())
     }
 
     fn children(&self) -> &Vec<Box<dyn Component>> {
         &self.children
+    }
+
+    fn render_condition(&self) -> bool {
+        self.value != ""
     }
 
     fn style(&self) -> RawComponentStyle {

@@ -1,11 +1,9 @@
 use tiny_skia::Pixmap;
 
-use crate::edges::padding::Padding;
-
 use super::interface::{
     component::{Component, ComponentContext, ComponentRenderParams},
     render_error::Result,
-    style::{RawComponentStyle, Style},
+    style::Style,
 };
 
 pub struct Container {
@@ -15,15 +13,6 @@ pub struct Container {
 impl Component for Container {
     fn children(&self) -> &Vec<Box<dyn Component>> {
         &self.children
-    }
-
-    fn style(&self) -> RawComponentStyle {
-        Style::default().padding(Padding {
-            top: 82.,
-            left: 122.,
-            right: 122.,
-            bottom: 82.,
-        })
     }
 }
 
