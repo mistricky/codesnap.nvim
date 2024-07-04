@@ -331,7 +331,7 @@ CodeSnap allows you to customize the padding of background using `bg_x_padding`,
 require("codesnap").setup({
   bg_x_padding = 122,
   bg_y_padding = 82,
-  bg_padding = null
+  bg_padding = nil
 })
 ```
 
