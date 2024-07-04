@@ -22,7 +22,7 @@
 
 <img src="https://img.shields.io/badge/Made%20With%20Lua-2C2D72?logo=lua&logoColor=fff&style=for-the-badge" alt="made with lua" >
 
-<img src="https://img.shields.io/badge/Written%20in%20Rust-B7410E?logo=rust&logoColor=fff&style=for-the-badge" alt="written in rust" >
+<img src="https://img.shields.io/badge/Written%20in%20Rust-DEA584?logo=rust&logoColor=fff&style=for-the-badge" alt="written in rust" >
 
 <a href="https://dotfyle.com/plugins/mistricky/codesnap.nvim">
 	<img src="https://dotfyle.com/plugins/mistricky/codesnap.nvim/shield?style=for-the-badge" />
