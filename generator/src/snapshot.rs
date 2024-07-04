@@ -28,9 +28,9 @@ pub fn take_snapshot(params: TakeSnapshotParams) -> render_error::Result<Pixmap>
         take_snapshot_params: Arc::new(params.clone()),
     };
     let background_padding = Background::parse_background_padding(
-        params.horizontal_background_padding,
-        params.vertical_background_padding,
-        params.background_padding,
+        params.bg_x_padding,
+        params.bg_y_padding,
+        params.bg_padding,
     );
 
     // If vertical background padding is less than 82., should hidden watermark component
