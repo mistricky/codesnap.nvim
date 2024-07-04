@@ -13,6 +13,8 @@ return {
     has_line_number = false,
     show_workspace = false,
     min_width = 0,
+    horizontal_background_padding = 122,
+    vertical_background_padding = 82,
   },
   cwd = path_utils.back(path_utils.back(debug.getinfo(1, "S").source:sub(2):match("(.*[/\\])"))),
   preview_switch = true,

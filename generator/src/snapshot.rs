@@ -19,6 +19,7 @@ use crate::config::TakeSnapshotParams;
 // Scale the screenshot to 3 times its size
 const SCALE_FACTOR: f32 = 3.;
 const LINE_HEIGHT: f32 = 20.;
+const VIEW_WATERMARK_PADDING: f32 = 82.;
 
 // The params is come from neovim instance
 pub fn take_snapshot(params: TakeSnapshotParams) -> render_error::Result<Pixmap> {
@@ -26,15 +27,21 @@ pub fn take_snapshot(params: TakeSnapshotParams) -> render_error::Result<Pixmap>
         scale_factor: SCALE_FACTOR,
         take_snapshot_params: Arc::new(params.clone()),
     };
-    // If background is disabled, should hidden watermark component
+    let background_padding = Background::parse_background_padding(
+        params.horizontal_background_padding,
+        params.vertical_background_padding,
+        params.background_padding,
+    );
+
+    // If vertical background padding is less than 82., should hidden watermark component
     // If watermark text is equal to "", the watermark component is hidden
-    let watermark = if params.has_background {
+    let watermark = if background_padding.bottom >= VIEW_WATERMARK_PADDING {
         params.watermark
     } else {
         "".to_string()
     };
     let pixmap = Container::from_children(vec![Box::new(Background::new(
-        params.has_background,
+        background_padding,
         vec![
             Box::new(Rect::new(
                 16.,
