@@ -56,6 +56,7 @@
 - [Line number](#line-number)
 - [Custom background](#custom-background)
   - [Solid color background](#solid-color-background)
+  - [Customize background padding](#customize-background-padding)
 - [Watermark](#watermark)
 - [Commands](#commands)
 - [Configuration](#configuration)
