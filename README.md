@@ -324,7 +324,23 @@ require("codesnap").setup({
 
 ![CodeSnap](https://github.com/mistricky/codesnap.nvim/assets/22574136/a600c2e4-4c60-4ec0-b2fc-3b41481048dc)
 
+### Customize background padding
+CodeSnap allows you to customize the padding of background using `bg_x_padding`, `bg_y_padding` and `bg_padding`, the default value is:
+```lua
+require("codesnap").setup({
+  bg_x_padding = 122,
+  bg_y_padding = 82,
+  bg_padding = null
+})
+```
 
+If you want to hide background, you can set `bg_padding` to `0` in your config:
+```lua
+require("codesnap").setup({
+  -- ...
+  bg_padding = 0
+})
+```
 
 ## Watermark
 Watermark is something that makes screenshots more personalized, but if you don't like watermark just set it as an empty string to hide it.
@@ -370,7 +386,10 @@ There is a default config:
     breadcrumbs_separator = "/",
     has_breadcrumbs = false,
     has_line_number = false,
-    min_width = 0
+    show_workspace = false,
+    min_width = 0,
+    bg_x_padding = 122,
+    bg_y_padding = 82,
 }
 ```
 

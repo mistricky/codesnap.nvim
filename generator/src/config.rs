@@ -30,7 +30,9 @@ pub struct TakeSnapshotParams {
     pub highlight_start_line_number: Option<usize>,
     pub highlight_end_line_number: Option<usize>,
     pub min_width: Option<f32>,
-    pub has_background: bool,
+    pub bg_x_padding: f32,
+    pub bg_y_padding: f32,
+    pub bg_padding: Option<f32>,
 }
 
 impl FromObject for TakeSnapshotParams {

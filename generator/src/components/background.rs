@@ -4,7 +4,7 @@ use tiny_skia::{
 
 use crate::{
     color::{is_valid_hex_color, RgbaColor},
-    edges::padding::Padding,
+    edges::{edge::Edge, padding::Padding},
 };
 
 use super::interface::{
@@ -15,15 +15,32 @@ use super::interface::{
 
 pub struct Background {
     children: Vec<Box<dyn Component>>,
-    has_background: bool,
+    padding: Padding,
 }
 
 impl Background {
-    pub fn new(has_background: bool, children: Vec<Box<dyn Component>>) -> Background {
-        Background {
-            children,
-            has_background,
+    pub fn new(padding: Padding, children: Vec<Box<dyn Component>>) -> Background {
+        Background { children, padding }
+    }
+
+    pub fn parse_background_padding(
+        horizontal_background_padding: f32,
+        vertical_background_padding: f32,
+        background_padding: Option<f32>,
+    ) -> Padding {
+        match background_padding {
+            Some(padding) => Padding::from_value(padding),
+            None => Padding {
+                top: vertical_background_padding,
+                bottom: vertical_background_padding,
+                left: horizontal_background_padding,
+                right: horizontal_background_padding,
+            },
         }
+    }
+
+    pub fn has_background(padding: &Padding) -> bool {
+        return padding.horizontal() != 0. || padding.vertical() != 0.;
     }
 }
 
@@ -33,22 +50,13 @@ impl Component for Background {
     }
 
     fn style(&self) -> RawComponentStyle {
-        let style = RawComponentStyle::default().align(ComponentAlign::Column);
-
-        if self.has_background {
-            return style.padding(Padding {
-                top: 82.,
-                left: 122.,
-                right: 122.,
-                bottom: 82.,
-            });
-        }
-
-        return style;
+        RawComponentStyle::default()
+            .align(ComponentAlign::Column)
+            .padding(self.padding.clone())
     }
 
     fn self_render_condition(&self) -> bool {
-        self.has_background
+        Self::has_background(&self.padding)
     }
 
     fn draw_self(
