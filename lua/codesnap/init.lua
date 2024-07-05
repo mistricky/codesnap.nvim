@@ -21,6 +21,13 @@ function main.copy_into_clipboard_with_config(config)
   vim.notify("Save snapshot into clipboard successfully")
 end
 
+-- Take ASCII code snapshot into clipboard
+function main.copy_ascii_snapshot(extension)
+  require("generator").copy_ascii(config_module.get_config(extension))
+  vim.cmd("delmarks <>")
+  vim.notify("Save snapshot into clipboard successfully")
+end
+
 function main.save_snapshot_with_config(config)
   if string_utils.is_str_empty(static.config.save_path) then
     error(
