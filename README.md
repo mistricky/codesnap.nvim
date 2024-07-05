@@ -205,6 +205,14 @@ Here is an example video:
 https://github.com/mistricky/codesnap.nvim/assets/22574136/bea0bf6c-8fc9-4d09-9cab-4e1e6f47899c
 
 
+### Take ASCII snapshot
+Run `CodeSnapASCII`, CodeSnap will generate a "code snapshot" in ASCII format and then copy it into clipboard automatically, it's really cool and lightweight, if you want to share your code in somewhere like Markdown document, even you can enjoy the code highlighting which provided by Markdown parser. Here is an usage video:
+
+
+
+https://github.com/mistricky/codesnap.nvim/assets/22574136/91bc3d96-7dbd-4e1c-9224-95428c7cca48
+
+
 
 
 ### Specify language extension
@@ -357,6 +365,8 @@ require("codesnap").setup({
 CodeSnap # Take a snapshot of the currently selected code and copy the snapshot into the clipboard
 
 CodeSnapSave # Save the snapshot of the currently selected code and save it on the disk
+
+CodeSnapASCII # Take a code snapshot in ASCII format
 ```
 **Lua**
 ```lua
