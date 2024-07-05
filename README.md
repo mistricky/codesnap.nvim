@@ -49,6 +49,7 @@
   - [Save the snapshot](#save-the-snapshot)
   - [Highlight code block](#highlight-code-block)
     - [How to use](#how-to-use)
+  - [Take ASCII snapshot](#take-ascii-snapshot)
   - [Specify language extension](#specify-language-extension)
 - [Breadcrumbs](#breadcrumbs)
   - [Show workspace in breadcrumbs](#show-workspace-in-breadcrumbs)
