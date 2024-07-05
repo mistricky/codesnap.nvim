@@ -25,8 +25,6 @@ pub fn copy_ascii(params: TakeSnapshotParams) -> Result<()> {
     let frame_width = max(width as usize, params.file_path.len()) + SPACE_BOTH_SIDE;
     let frame_width = match params.start_line_number {
         Some(start_line_number) => {
-            println!("{}", calc_line_number_width(start_line_number));
-
             frame_width + SPACE_BOTH_SIDE + calc_line_number_width(start_line_number)
         }
         None => frame_width,
