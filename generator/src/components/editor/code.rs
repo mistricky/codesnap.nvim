@@ -1,5 +1,5 @@
 use crate::{
-    code::{calc_wh, prepare_code, CHAR_WIDTH},
+    code::{calc_wh_with_min_width, prepare_code, CHAR_WIDTH},
     components::interface::{
         component::{Component, ComponentContext, RenderParams},
         render_error,
@@ -22,7 +22,7 @@ impl Component for Code {
     }
 
     fn style(&self) -> RawComponentStyle {
-        let (w, h) = calc_wh(&self.value, CHAR_WIDTH, self.line_height);
+        let (w, h) = calc_wh_with_min_width(&self.value, CHAR_WIDTH, self.line_height);
 
         Style::default().size(Size::Num(w), Size::Num(h))
     }

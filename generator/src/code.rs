@@ -12,9 +12,13 @@ fn min_width(width: f32) -> f32 {
     }
 }
 
-// Because the code block is input by users, we need to calculate the width and height
-// to make sure render the width and height of the "editor" shape correctly
-#[cached(key = "String", convert = r#"{ format!("{}", text) }"#)]
+pub fn calc_max_line_number_length(code_length: usize, start_line_number: usize) -> usize {
+    let max_line_number = code_length + start_line_number;
+
+    // If code length is 1, the max_line_number will equal to start_line_number
+    (max_line_number - 1).to_string().len()
+}
+
 pub fn calc_wh(text: &str, char_wdith: f32, line_height: f32) -> (f32, f32) {
     let trimmed_text = prepare_code(text);
     let lines = trimmed_text.lines();
@@ -27,6 +31,15 @@ pub fn calc_wh(text: &str, char_wdith: f32, line_height: f32) -> (f32, f32) {
     });
     let width = max_length_line.len() as f32 * char_wdith;
     let height = lines.collect::<Vec<&str>>().len() as f32 * line_height;
+
+    (width, height)
+}
+
+// Because the code block is input by users, we need to calculate the width and height
+// to make sure render the width and height of the "editor" shape correctly
+#[cached(key = "String", convert = r#"{ format!("{}", text) }"#)]
+pub fn calc_wh_with_min_width(text: &str, char_wdith: f32, line_height: f32) -> (f32, f32) {
+    let (width, height) = calc_wh(text, char_wdith, line_height);
 
     (min_width(width), height)
 }
