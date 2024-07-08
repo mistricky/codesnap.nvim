@@ -85,6 +85,8 @@ v1.x has a different architecture and better performance than v0.x, and v1.x can
 - 🍞 Breadcrumbs for display file path
 - 🌊 More beautiful background theme
 - 🔢 Support for display line number make sharing code snapshot easier
+- 🔆 Highlight specific lines of code
+- 🖨️ Generate ASCII art code snapshots
 
 ## Prerequirements
 - Neovim 0.9.0+
