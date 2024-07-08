@@ -43,6 +43,7 @@
   - [Compile from source](#compile-from-source)
   - [Compile on ARM](#compile-on-arm)
   - [Keymappings](#keymappings)
+  - [Windows Support](#windows-support)
 - [Usage](#usage)
   - [Copy into the clipboard](#copy-into-the-clipboard)
     - [Copy into clipboard on Linux Wayland](#copy-into-clipboard-on-linux-wayland)
