@@ -1,11 +1,12 @@
-use std::cmp::max;
-
 use crate::{
     code::{calc_max_line_number_length, calc_wh},
     config::TakeSnapshotParams,
 };
 use arboard::Clipboard;
+#[cfg(target_os = "linux")]
+use arboard::SetExtLinux;
 use nvim_oxi::Result;
+use std::cmp::max;
 
 const SPACE_BOTH_SIDE: usize = 2;
 
@@ -59,6 +60,17 @@ pub fn copy_ascii(params: TakeSnapshotParams) -> Result<()> {
     );
     let ascii_snapshot = format!("{top_frame}{breadcrumbs}{code}{bottom_frame}");
 
+    #[cfg(target_os = "linux")]
+    std::thread::spawn(move || {
+        Clipboard::new()
+            .unwrap()
+            .set()
+            .wait()
+            .text(ascii_snapshot)
+            .unwrap();
+    });
+
+    #[cfg(not(target_os = "linux"))]
     Clipboard::new().unwrap().set_text(ascii_snapshot).unwrap();
 
     Ok(())
