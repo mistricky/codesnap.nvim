@@ -152,6 +152,9 @@ If you use `Lazy.nvim` as your package manager, here are some examples show you 
 }
 ```
 
+### Windows Support
+Unfortunately, CodeSnap does not support Windows yet, but version `v0.0.x` is working fine on Windows. If you want to use CodeSnap on Windows, we recommend you pin the version to `0.0.11` to use CodeSnap, follow to [0.0.11 Document](https://github.com/mistricky/codesnap.nvim/tree/v0.0.11) for more detail.
+
 ## Usage 
 `CodeSnap.nvim` provides the following two ways to take snapshots of currently selected code
 
