@@ -1,5 +1,5 @@
 use crate::{
-    code::{calc_max_line_number_length, calc_wh},
+    code::{calc_max_line_number_length, calc_wh, prepare_code},
     config::TakeSnapshotParams,
 };
 use arboard::Clipboard;
@@ -20,7 +20,8 @@ fn optional(component: String, is_view: bool) -> String {
 
 #[allow(dead_code)]
 pub fn copy_ascii(params: TakeSnapshotParams) -> Result<()> {
-    let (width, height) = calc_wh(&params.code, 1., 1.);
+    let code = prepare_code(&params.code);
+    let (width, height) = calc_wh(&code, 1., 1.);
     let calc_line_number_width =
         |start_line_number: usize| calc_max_line_number_length(height as usize, start_line_number);
     let frame_width = max(width as usize, params.file_path.len()) + SPACE_BOTH_SIDE;
@@ -34,8 +35,7 @@ pub fn copy_ascii(params: TakeSnapshotParams) -> Result<()> {
     let frame_width_with_content = frame_width - 1;
     let top_frame = format!("╭{}╮\n", "─".repeat(frame_width));
     let bottom_frame = format!("╰{}╯", "─".repeat(frame_width));
-    let code = params
-        .code
+    let code = code
         .lines()
         .enumerate()
         .map(|(i, line)| {
