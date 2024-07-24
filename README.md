@@ -408,6 +408,7 @@ There is a default config:
     min_width = 0,
     bg_x_padding = 122,
     bg_y_padding = 82,
+    save_path = os.getenv("XDG_PICTURES_DIR") or (os.getenv("HOME").. "/Pictures")
 }
 ```
 
