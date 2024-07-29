@@ -1,5 +1,6 @@
 use cosmic_text::{
-    Align, Attrs, AttrsList, Buffer, BufferLine, Color, FontSystem, Metrics, Shaping, SwashCache,
+    Align, Attrs, AttrsList, Buffer, BufferLine, Color, FontSystem, LineEnding, Metrics, Shaping,
+    SwashCache,
 };
 use tiny_skia::{Paint, Pixmap, Rect, Transform};
 
@@ -41,8 +42,8 @@ impl FontRenderer {
         let mut buffer = Buffer::new(&mut self.font_system, self.metrics);
         buffer.set_size(
             &mut self.font_system,
-            w * self.scale_factor,
-            h * self.scale_factor,
+            Some(w * self.scale_factor),
+            Some(h * self.scale_factor),
         );
         buffer.set_rich_text(
             &mut self.font_system,
@@ -65,11 +66,27 @@ impl FontRenderer {
         pixmap: &mut Pixmap,
     ) {
         let mut buffer = Buffer::new(&mut self.font_system, self.metrics);
-        let mut line = BufferLine::new(line, AttrsList::new(attrs), Shaping::Advanced);
+        let mut line = if cfg!(unix) {
+            BufferLine::new(
+                line,
+                LineEnding::Lf,
+                AttrsList::new(attrs),
+                Shaping::Advanced,
+            )
+        } else if cfg!(windows) {
+            BufferLine::new(
+                line,
+                LineEnding::CrLf,
+                AttrsList::new(attrs),
+                Shaping::Advanced,
+            )
+        } else {
+            panic!("Unsupported OS")
+        };
 
         line.set_align(align);
         buffer.lines = vec![line];
-        buffer.set_size(&mut self.font_system, w, h);
+        buffer.set_size(&mut self.font_system, Some(w), Some(h));
         self.draw(x, y, &mut buffer, pixmap);
     }
 

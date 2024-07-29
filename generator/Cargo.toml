@@ -4,16 +4,16 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-nvim-oxi = {features = ["neovim-0-9", "libuv", "oxi-libuv"], version = "0.3"}
+nvim-oxi = { features = ["neovim-0-9", "libuv", "oxi-libuv"], version = "0.3" }
 tiny-skia = "0.11.4"
 syntect = "5.2.0"
-cosmic-text = "0.11.2"
-serde = "1.0.197"
-arboard = {features = ["wayland-data-control"], version = "3.3.2"}
-thiserror = "1.0.58"
-regex = "1.10.3"
-two-face = "0.3.0"
-cached = "0.49.3"
+cosmic-text = "0.12.0"
+serde = "1.0.204"
+arboard = { features = ["wayland-data-control"], version = "3.4.0" }
+thiserror = "1.0.63"
+regex = "1.10.5"
+two-face = "0.4.0"
+cached = "0.53.1"
 
 [lib]
 crate-type = ["cdylib"]
