@@ -5,7 +5,7 @@ use crate::{
 use arboard::Clipboard;
 #[cfg(target_os = "linux")]
 use arboard::SetExtLinux;
-use nvim_oxi::Result;
+use nvim_oxi::api;
 use std::cmp::max;
 
 const SPACE_BOTH_SIDE: usize = 2;
@@ -19,7 +19,7 @@ fn optional(component: String, is_view: bool) -> String {
 }
 
 #[allow(dead_code)]
-pub fn copy_ascii(params: TakeSnapshotParams) -> Result<()> {
+pub fn copy_ascii(params: TakeSnapshotParams) -> Result<(), api::Error> {
     let code = prepare_code(&params.code);
     let (width, height) = calc_wh(&code, 1., 1.);
     let calc_line_number_width =
@@ -71,7 +71,10 @@ pub fn copy_ascii(params: TakeSnapshotParams) -> Result<()> {
     });
 
     #[cfg(not(target_os = "linux"))]
-    Clipboard::new().unwrap().set_text(ascii_snapshot).unwrap();
+    Clipboard::new()
+        .unwrap()
+        .set_text(ascii_snapshot)
+        .map_err(|err| api::Error::Other(err.to_string()))?;
 
     Ok(())
 }
