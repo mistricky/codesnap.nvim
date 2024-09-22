@@ -1,4 +1,3 @@
-use nvim_oxi::lua;
 use thiserror::Error;
 
 pub type Result<T> = std::result::Result<T, RenderError>;
@@ -21,8 +20,8 @@ pub enum RenderError {
     NoSuchFile(String),
 }
 
-impl From<RenderError> for nvim_oxi::Error {
+impl From<RenderError> for nvim_oxi::api::Error {
     fn from(err: RenderError) -> Self {
-        nvim_oxi::Error::Lua(lua::Error::RuntimeError(err.to_string()))
+        nvim_oxi::api::Error::Other(err.to_string())
     }
 }

@@ -3,11 +3,11 @@ use crate::{config::TakeSnapshotParams, snapshot::take_snapshot};
 use arboard::SetExtLinux;
 use arboard::{Clipboard, ImageData};
 
-use nvim_oxi::Result;
+use nvim_oxi::api;
 
 // The function will be called as FFI on Lua side
 #[allow(dead_code)]
-pub fn copy_into_clipboard(config: TakeSnapshotParams) -> Result<()> {
+pub fn copy_into_clipboard(config: TakeSnapshotParams) -> Result<(), api::Error> {
     let pixmap = take_snapshot(config.clone())?;
     let premultplied_colors = pixmap.pixels();
     let colors = premultplied_colors
