@@ -2,21 +2,47 @@ local path_utils = require("codesnap.utils.path")
 
 return {
   config = {
-    mac_window_bar = true,
-    title = "CodeSnap.nvim",
-    code_font_family = "CaskaydiaCove Nerd Font",
-    watermark_font_family = "Pacifico",
-    watermark = "CodeSnap.nvim",
-    bg_theme = "default",
-    breadcrumbs_separator = "/",
-    has_breadcrumbs = false,
-    has_line_number = false,
-    show_workspace = false,
-    min_width = 0,
-    bg_x_padding = 122,
-    bg_y_padding = 82,
-    save_path = path_utils.get_default_save_path(),
+    window = {
+      mac_window_bar = true,
+      shadow = 20,
+      margin = {
+        x = 82,
+        y = 82,
+      },
+      border = {
+        color = "#ffffff30",
+      },
+    },
+    code = {
+      font_family = "CaskaydiaCove Nerd Font",
+      theme = "candy",
+    },
+    watermark = {
+      content = "CodeSnap",
+      font_family = "Pacifico",
+      color = "#ffffff",
+    },
+    scale_factor = 3,
+    background = {
+      start = {
+        x = 0,
+        y = 0,
+      },
+      ["end"] = {
+        x = "max",
+        y = 0,
+      },
+      stops = {
+        {
+          position = 0,
+          color = "#6bcba5",
+        },
+        {
+          position = 1,
+          color = "#caf4c2",
+        },
+      },
+    },
   },
   cwd = path_utils.back(path_utils.back(debug.getinfo(1, "S").source:sub(2):match("(.*[/\\])"))),
-  preview_switch = true,
 }

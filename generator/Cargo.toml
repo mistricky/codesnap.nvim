@@ -7,7 +7,7 @@ edition = "2021"
 crate-type = ["cdylib"]
 
 [dependencies]
-codesnap = "0.7.1"
+codesnap = "0.7.2"
 mlua = { version = "0.10.0", features = ["module", "luajit", "serialize"] }
 serde = { version = "1.0.204", features = ["derive"] }
 

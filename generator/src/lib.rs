@@ -1,5 +1,7 @@
 mod snapshot_config;
 
+use std::{ffi::OsStr, path::Path};
+
 use codesnap::snapshot::{image_snapshot::ImageSnapshot, snapshot_data::SnapshotData};
 use mlua::prelude::*;
 use snapshot_config::SnapshotConfigLua;
@@ -22,11 +24,21 @@ impl From<String> for SnapshotType {
 }
 
 impl SnapshotType {
-    fn snapshot_data(&self, image_snapshot: ImageSnapshot) -> LuaResult<SnapshotData> {
+    fn snapshot_data(
+        &self,
+        image_snapshot: ImageSnapshot,
+        is_raw: bool,
+    ) -> LuaResult<SnapshotData> {
         let data = match self {
-            SnapshotType::Png => image_snapshot.png_data(),
-            SnapshotType::Svg => todo!(),
-            SnapshotType::Html => todo!(),
+            SnapshotType::Png => {
+                if is_raw {
+                    image_snapshot.raw_data()
+                } else {
+                    image_snapshot.png_data()
+                }
+            }
+            SnapshotType::Svg => image_snapshot.svg_data(),
+            SnapshotType::Html => image_snapshot.html_data(),
         }
         .map_err(|_| mlua::Error::RuntimeError("Failed to generate snapshot data".to_string()))?;
 
@@ -34,29 +46,55 @@ impl SnapshotType {
     }
 }
 
-fn save(
-    _: &Lua,
-    (snapshot_type, path, config): (String, String, SnapshotConfigLua),
-) -> LuaResult<()> {
-    let image_snapshot = config
+fn create_image_snapshot_by_config(config: &SnapshotConfigLua) -> LuaResult<ImageSnapshot> {
+    config
         .0
         .create_snapshot()
-        .map_err(|_| mlua::Error::RuntimeError("Failed to create snapshot".to_string()))?;
-    let snapshot_type: SnapshotType = snapshot_type.into();
+        .map_err(|_| mlua::Error::RuntimeError("Failed to create image snapshot".to_string()))
+}
 
-    snapshot_type
-        .snapshot_data(image_snapshot)?
+fn save(_: &Lua, (path, config): (String, SnapshotConfigLua)) -> LuaResult<()> {
+    let snapshot_type: SnapshotType = Path::new(&path)
+        .extension()
+        .and_then(OsStr::to_str)
+        .ok_or_else(|| mlua::Error::RuntimeError("Invalid file extension".to_string()))?
+        .to_string()
+        .into();
+
+    SnapshotType::from(snapshot_type)
+        .snapshot_data(create_image_snapshot_by_config(&config)?, false)?
         .save(&path)
         .map_err(|_| mlua::Error::RuntimeError(format!("Failed to save snapshot data to {}", path)))
 }
 
-fn copy_to_clipboard(_: &Lua, snapshot_type: SnapshotType) {}
+fn copy(_: &Lua, (snapshot_type, config): (String, SnapshotConfigLua)) -> LuaResult<()> {
+    SnapshotType::from(snapshot_type)
+        .snapshot_data(create_image_snapshot_by_config(&config)?, true)?
+        .copy()
+        .map_err(|_| mlua::Error::RuntimeError("Failed to copy snapshot to clipboard".to_string()))
+}
+
+fn copy_ascii(_: &Lua, config: SnapshotConfigLua) -> LuaResult<()> {
+    config
+        .0
+        .create_ascii_snapshot()
+        .raw_data()
+        .map_err(|_| mlua::Error::RuntimeError("Failed to generate ASCII snapshot".to_string()))?
+        .copy()
+        .map_err(|_| {
+            mlua::Error::RuntimeError("Failed to copy ASCII snapshot to clipboard".to_string())
+        })?;
+
+    Ok(())
+}
 
 #[mlua::lua_module(skip_memory_check)]
-fn codesnap_generator(lua: &Lua) -> LuaResult<LuaTable> {
+fn generator(lua: &Lua) -> LuaResult<LuaTable> {
     let exports = lua.create_table()?;
 
     exports.set("save", lua.create_function(save)?)?;
+    exports.set("copy", lua.create_function(copy)?)?;
+    exports.set("copy_ascii", lua.create_function(copy_ascii)?)?;
 
     Ok(exports)
 }
