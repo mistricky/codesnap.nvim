@@ -2,6 +2,20 @@ local string_utils = require("codesnap.utils.string")
 local platform_utils = require("codesnap.utils.platform")
 local path_utils = {}
 
+function path_utils.join(separator, ...)
+  local args = { ... }
+
+  return table.concat(args, separator)
+end
+
+function path_utils.dir_name()
+  return debug.getinfo(1).source:match("@?(.*/)")
+end
+
+function path_utils.with_dir_name(path)
+  return path_utils.dir_name() .. path
+end
+
 function path_utils.get_escaped_cwd()
   local cwd = vim.fn.getcwd()
 
