@@ -250,9 +250,9 @@ dependencies = [
 
 [[package]]
 name = "codesnap"
-version = "0.7.1"
+version = "0.7.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "969705c26569d1cc4ba1f77a6bf904108403d57f4e7c6de074508c2b14e26d73"
+checksum = "14c21b08e3ff00129f07650e6f607193f2688003035e400ec2417b762cdf9ba8"
 dependencies = [
  "anyhow",
  "arboard",
