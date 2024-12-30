@@ -185,11 +185,18 @@ require("codesnap").setup({
   -- The save_path must be ends with .png, unless when you specified a directory path,
   -- CodeSnap will append an auto-generated filename to the specified directory path
   -- For example:
+  --
   -- save_path = "~/Pictures"
-  -- parsed: "~/Pictures/CodeSnap_y-m-d_at_h:m:s.png"
+  -- parsed: "~/Pictures/CodeSnap_y-m-d_at_h:m:s.png" -- auto-generated filename
+  --
   -- save_path = "~/Pictures/foo.png"
   -- parsed: "~/Pictures/foo.png"
-  save_path = ...
+  --
+  -- save_path = "~/Pictures"
+  -- filename_date_pattern = "CodeSnap_%Y%m%d-%H%M%S.png"
+  -- parsed: "~/Pictures/CodeSnap_241230-160634.png"
+  save_path = ...,
+  filename_date_pattern = ..., -- <optional>
 })
 ```
 
@@ -408,7 +415,8 @@ There is a default config:
     min_width = 0,
     bg_x_padding = 122,
     bg_y_padding = 82,
-    save_path = os.getenv("XDG_PICTURES_DIR") or (os.getenv("HOME").. "/Pictures")
+    save_path = os.getenv("XDG_PICTURES_DIR") or (os.getenv("HOME").. "/Pictures"),
+    filename_date_pattern = "CodeSnap_%Y-%m-%d_at_%H:%M:%S.png",
 }
 ```
 
