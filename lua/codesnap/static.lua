@@ -16,6 +16,7 @@ return {
     bg_x_padding = 122,
     bg_y_padding = 82,
     save_path = path_utils.get_default_save_path(),
+    filename_date_pattern = "CodeSnap_%Y-%m-%d_at_%H:%M:%S.png",
   },
   cwd = path_utils.back(path_utils.back(debug.getinfo(1, "S").source:sub(2):match("(.*[/\\])"))),
   preview_switch = true,
