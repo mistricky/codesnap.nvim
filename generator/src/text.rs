@@ -20,6 +20,7 @@ impl FontRenderer {
         let mut font_system = FontSystem::new();
 
         font_system.db_mut().load_fonts_dir(fonts_folder);
+        font_system.db_mut().load_system_fonts();
 
         let metrics = Metrics::new(font_size, line_height).scale(scale_factor.clone());
 
