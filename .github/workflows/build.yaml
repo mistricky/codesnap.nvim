@@ -19,7 +19,7 @@ jobs:
       matrix:
         platform:
           - os_name: linux-x86_64
-            os: ubuntu-20.04
+            os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
             origin_dylib_suffix: so
             dest_dylib_suffix: so
