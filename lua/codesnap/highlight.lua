@@ -40,15 +40,15 @@ function highlight_module.create_highlight_selector_window(cb_name, code)
   vim.api.nvim_buf_set_option(bufnr, "filetype", vim.bo.filetype)
   vim.api.nvim_buf_set_keymap(bufnr, "n", "q", ":q<CR>", {})
   vim.api.nvim_buf_set_keymap(bufnr, "", "<ESC>", ":q<CR>", {})
-  vim.api.nvim_buf_set_keymap(
-    bufnr,
-    "v",
+  vim.keymap.set(
+    { "v", "n" },
     "<CR>",
     ":lua require('codesnap.highlight').call_cb_with_parsed_config('"
       .. cb_name
       .. "', require('codesnap.utils.visual').get_start_line_number(), require('codesnap.utils.visual').get_end_line_number())<CR>",
-    { silent = true }
+    { silent = true, buffer = bufnr }
   )
+
   vim.api.nvim_set_current_win(window_id)
 end
 
