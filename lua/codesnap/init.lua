@@ -43,7 +43,6 @@ function main.save_snapshot_with_config(config)
   end
 
   require("generator").save_snapshot(config)
-  vim.cmd("delmarks <>")
   ---@diagnostic disable-next-line: need-check-nil
   vim.notify("Save snapshot in " .. config.save_path .. " successfully")
 end
