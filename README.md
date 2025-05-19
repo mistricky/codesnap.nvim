@@ -205,7 +205,7 @@ CodeSnapSaveHighlight # Take code snapshot with highlights code blocks and save 
 ```
 
 #### How to use
-For take a code snapshot with highlights code blocks and save it somewhere. First you need to select code which you want to snapshot, then enter the command `CodeSnapSaveHighlight` to open a window show you the selected code which from previous step, now you can select code which you want to highlight, finally press the Enter key, CodeSnap will generate a snapshot with highlight blocks and save it in save_path.
+For take a code snapshot with highlights code blocks and save it somewhere. First you need to select code which you want to snapshot, then enter the command `CodeSnapSaveHighlight` to open a window show you the selected code which from previous step, now you can select code which you want to highlight _(if any - you can use these without actually highlighting anything)_, finally press the Enter key, CodeSnap will generate a snapshot with highlight blocks and save it in save_path.
 
 Here is an example video:
 
