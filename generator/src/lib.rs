@@ -53,8 +53,8 @@ fn create_image_snapshot_by_config(config: &SnapshotConfigLua) -> LuaResult<Imag
         .map_err(|_| mlua::Error::RuntimeError("Failed to create image snapshot".to_string()))
 }
 
-fn save(_: &Lua, (path, config): (String, SnapshotConfigLua)) -> LuaResult<()> {
-    let snapshot_type: SnapshotType = Path::new(&path)
+fn save(_: &Lua, (file_path, config): (String, SnapshotConfigLua)) -> LuaResult<()> {
+    let snapshot_type: SnapshotType = Path::new(&file_path)
         .extension()
         .and_then(OsStr::to_str)
         .ok_or_else(|| mlua::Error::RuntimeError("Invalid file extension".to_string()))?
@@ -63,23 +63,33 @@ fn save(_: &Lua, (path, config): (String, SnapshotConfigLua)) -> LuaResult<()> {
 
     SnapshotType::from(snapshot_type)
         .snapshot_data(create_image_snapshot_by_config(&config)?, false)?
-        .save(&path)
-        .map_err(|_| mlua::Error::RuntimeError(format!("Failed to save snapshot data to {}", path)))
+        .save(&file_path)
+        .map_err(|_| {
+            mlua::Error::RuntimeError(format!("Failed to save snapshot data to {}", file_path))
+        })
 }
 
-fn copy(_: &Lua, (snapshot_type, config): (String, SnapshotConfigLua)) -> LuaResult<()> {
-    SnapshotType::from(snapshot_type)
-        .snapshot_data(create_image_snapshot_by_config(&config)?, true)?
+fn copy(_: &Lua, config: SnapshotConfigLua) -> LuaResult<()> {
+    create_image_snapshot_by_config(&config)?
+        .raw_data()
+        .map_err(|_| {
+            mlua::Error::RuntimeError(format!("Failed to generate snapshot data for clipboard"))
+        })?
         .copy()
-        .map_err(|_| mlua::Error::RuntimeError("Failed to copy snapshot to clipboard".to_string()))
+        .map_err(|_| {
+            mlua::Error::RuntimeError("Failed to copy snapshot data to clipboard".to_string())
+        })
 }
 
 fn copy_ascii(_: &Lua, config: SnapshotConfigLua) -> LuaResult<()> {
     config
         .0
         .create_ascii_snapshot()
+        .map_err(|_| mlua::Error::RuntimeError("Failed to create ASCII snapshot".to_string()))?
         .raw_data()
-        .map_err(|_| mlua::Error::RuntimeError("Failed to generate ASCII snapshot".to_string()))?
+        .map_err(|_| {
+            mlua::Error::RuntimeError("Failed to generate ASCII snapshot data".to_string())
+        })?
         .copy()
         .map_err(|_| {
             mlua::Error::RuntimeError("Failed to copy ASCII snapshot to clipboard".to_string())
