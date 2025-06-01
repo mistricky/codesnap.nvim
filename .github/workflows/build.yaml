@@ -1,11 +1,10 @@
-name: Build 
+name: Build
 
 on:
- push:
-    paths:
-      project.toml
+  push:
+    paths: project.toml
     branches:
-      - main 
+      - main
 
 permissions:
   contents: write
@@ -36,6 +35,12 @@ jobs:
             origin_dylib_suffix: dylib
             dest_dylib_suffix: so
 
+          - os_name: windows-x86_64
+            os: windows-latest
+            target: x86_64-pc-windows-msvc
+            origin_dylib_suffix: dll
+            dest_dylib_suffix: dll
+
         toolchain:
           - stable
     steps:
@@ -51,16 +56,9 @@ jobs:
           args: "--release"
 
       - name: Rename dynamic lib
-        run: cp -rf generator/target/${{ matrix.platform.target }}/release/libgenerator.${{ matrix.platform.origin_dylib_suffix }} lua/${{ matrix.platform.os_name }}generator.${{ matrix.platform.dest_dylib_suffix }}
+        run: cp -rf generator/target/${{ matrix.platform.target }}/release/libgenerator.${{ matrix.platform.origin_dylib_suffix }} lua/${{ matrix.platform.os_name }}_generator.${{ matrix.platform.dest_dylib_suffix }}
 
-      - name: Commit changes
-        uses: EndBug/add-and-commit@v7
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
         with:
-          message: '[Update] generator link library on ${{ matrix.platform.os_name }}'
-          pull_strategy: 'NO-PULL'
-          push: false
-
-      - name: Push changes
-        run: |
-          git pull --rebase
-          git push
+          path: lua/${{ matrix.platform.os_name }}_generator.${{ matrix.platform.dest_dylib_suffix }}
