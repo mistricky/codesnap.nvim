@@ -35,12 +35,10 @@ function main.save(save_path)
 end
 
 -- Copy snapshot into clipboard
---- @param type? string
-function main.copy(type)
-  local snapshot_type = type == nil and "png" or type
+function main.copy()
   local generator = require("generator")
 
-  generator.copy(snapshot_type, config_module.get_config())
+  generator.copy(config_module.get_config())
   vim.cmd("delmarks <>")
   vim.notify("The snapshot is copied into clipboard successfully!")
 end

@@ -5,6 +5,12 @@ local static = require("codesnap.static")
 local table_utils = require("codesnap.utils.table")
 local config_module = {}
 
+local function get_file_path(show_workspace)
+  local relative_path = path_utils.get_relative_path()
+
+  return show_workspace and path_utils.get_workspace() .. "/" .. relative_path or relative_path
+end
+
 function config_module.get_config()
   local code = visual_utils.get_selected_text()
   local start_line_number = visual_utils.get_start_line_number()
@@ -14,16 +20,14 @@ function config_module.get_config()
     return
   end
 
-  local config = table_utils.assign(static.config, {
-    code = {
-      content = code,
-      file_path = vim.fn.expand("%:p"),
-      line_number = {
-        start_number = start_line_number,
-        color = "#495162",
-      },
-    },
-    -- file_path = static.config.has_breadcrumbs and get_file_path(static.config.show_workspace) or "",
+  local code_content = {
+    content = code,
+    start_line_number = start_line_number,
+    file_path = get_file_path(static.config.show_workspace),
+  }
+
+  local config = table_utils.assign(static.config.snapshot_config, {
+    content = code_content,
     -- start_line_number = static.config.has_line_number and start_line_number or nil,
   })
 

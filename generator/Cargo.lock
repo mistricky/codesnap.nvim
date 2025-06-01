@@ -331,9 +331,9 @@ dependencies = [
 
 [[package]]
 name = "codesnap"
-version = "0.12.5"
+version = "0.12.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1b8bf58f00b7b42ef1a6494913800a5b6dd860767df740582810ff7d64e8023b"
+checksum = "aabd09ee631414e8f646d5cc82c467940facb42f3b7183450851ecb6e4cfed9b"
 dependencies = [
  "ansi_term",
  "anyhow",
@@ -346,9 +346,7 @@ dependencies = [
  "derive_builder",
  "hyperpolyglot_fork",
  "include_dir",
- "lazy_static",
  "mime_guess",
- "once_cell",
  "regex",
  "reqwest",
  "rgb",
