@@ -1,8 +1,10 @@
 name: Build
 
 on:
-  push:
-    paths: project.toml
+  workflow_run:
+    workflows: [release]
+    types:
+      - completed
 
 permissions:
   contents: write
