@@ -3,8 +3,6 @@ name: Build
 on:
   push:
     paths: project.toml
-    branches:
-      - main
 
 permissions:
   contents: write
