@@ -13,7 +13,9 @@ local main = {
 }
 
 -- Prepare the path of the Rust module
--- Concat lib?.extension and ?.extension to package.cpath
+-- Try to fetch pre-built library first, then fallback to development build
+local generator_path = module.generator_file("generator")
+-- Concat lib?.extension and ?.extension to package.cpath  
 package.cpath = path_utils.join(";", package.cpath, module.generator_file("?"), module.generator_file("lib?"))
 
 function main.setup(config)
