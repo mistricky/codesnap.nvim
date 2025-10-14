@@ -48,7 +48,7 @@ jobs:
         id: tag_version
         uses: mathieudutour/github-tag-action@v6.1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.PAT }}
           custom_tag: ${{ steps.read_toml.outputs.value }}
 
       - name: Check if the tag is prerelease tag
@@ -65,5 +65,6 @@ jobs:
         with:
           tag: ${{ steps.tag_version.outputs.new_tag }}
           name: Release ${{ steps.tag_version.outputs.new_tag }}
+          token: ${{ secrets.PAT }}
           generateReleaseNotes: true
           prerelease: ${{ env.is_prerelease }}
