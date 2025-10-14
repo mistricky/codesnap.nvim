@@ -50,11 +50,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install OpenSSL dev package
+      - name: Install OpenSSL dependencies
         if: startsWith(matrix.platform.target, 'aarch64-unknown-linux-gnu')
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libssl-dev pkg-config
+        run: sudo apt-get update && sudo apt-get install -y libssl-dev pkg-config
+
+      - name: Set OPENSSL_DIR
+        run: echo "OPENSSL_DIR=/usr/lib/ssl" >> $GITHUB_ENV
 
       - name: Build link lib
         uses: houseabsolute/actions-rust-cross@v0
@@ -64,6 +65,10 @@ jobs:
           target: ${{ matrix.platform.target }}
           toolchain: ${{ matrix.toolchain }}
           args: "--release"
+
+      - name: List files
+        shell: bash
+        run: ls -R generator/target/${{ matrix.platform.target }}/release/
 
       - name: Rename dynamic lib
         shell: bash

@@ -32,17 +32,17 @@ jobs:
       # - name: Replace template
       #   run: python3 scripts/replace-template.py
 
-      - name: Commit changes
-        uses: EndBug/add-and-commit@v7
-        with:
-          message: "[Release] ${{ steps.read_toml.outputs.value }}"
-          pull_strategy: "NO-PULL"
-          push: false
-
-      - name: Push changes
-        run: |
-          git pull --rebase
-          git push
+      # - name: Commit changes
+      #   uses: EndBug/add-and-commit@v7
+      #   with:
+      #     message: "[Release] ${{ steps.read_toml.outputs.value }}"
+      #     pull_strategy: "NO-PULL"
+      #     push: false
+      #
+      # - name: Push changes
+      #   run: |
+      #     git pull --rebase
+      #     git push
 
       - name: Bump version and push tag
         id: tag_version
