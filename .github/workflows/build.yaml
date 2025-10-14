@@ -83,7 +83,6 @@ jobs:
   upload-to-release:
     needs: build
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Download all artifacts
         uses: actions/download-artifact@v4
