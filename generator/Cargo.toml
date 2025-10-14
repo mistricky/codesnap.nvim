@@ -10,4 +10,6 @@ crate-type = ["cdylib"]
 codesnap = { version = "0.12.9", features = ["full"] }
 mlua = { version = "0.10.0", features = ["module", "luajit", "serialize"] }
 serde = { version = "1.0.204", features = ["derive"] }
+# Force vendored OpenSSL for cross-compilation
+openssl = { version = "0.10", features = ["vendored"] }
 
