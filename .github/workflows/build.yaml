@@ -50,12 +50,28 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install OpenSSL dependencies
-        if: startsWith(matrix.platform.target, 'aarch64-unknown-linux-gnu')
-        run: sudo apt-get update && sudo apt-get install -y libssl-dev pkg-config
+      - name: Install dependencies for Linux builds
+        if: contains(matrix.platform.target, 'linux')
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libssl-dev pkg-config
+          # For cross-compilation
+          if [[ "${{ matrix.platform.target }}" == "aarch64-unknown-linux-gnu" ]]; then
+            sudo apt-get install -y gcc-aarch64-linux-gnu
+          fi
 
-      - name: Set OPENSSL_DIR
-        run: echo "OPENSSL_DIR=/usr/lib/ssl" >> $GITHUB_ENV
+      - name: Set environment variables for OpenSSL
+        if: contains(matrix.platform.target, 'linux')
+        run: |
+          echo "OPENSSL_DIR=/usr" >> $GITHUB_ENV
+          echo "OPENSSL_LIB_DIR=/usr/lib/x86_64-linux-gnu" >> $GITHUB_ENV
+          echo "OPENSSL_INCLUDE_DIR=/usr/include" >> $GITHUB_ENV
+          echo "PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig" >> $GITHUB_ENV
+          # For cross-compilation to aarch64
+          if [[ "${{ matrix.platform.target }}" == "aarch64-unknown-linux-gnu" ]]; then
+            echo "PKG_CONFIG_SYSROOT_DIR=/" >> $GITHUB_ENV
+            echo "PKG_CONFIG_ALLOW_CROSS=1" >> $GITHUB_ENV
+          fi
 
       - name: Build link lib
         uses: houseabsolute/actions-rust-cross@v0
@@ -72,7 +88,7 @@ jobs:
 
       - name: Rename dynamic lib
         shell: bash
-        run: cp -rf generator/target/${{ matrix.platform.target }}/release/libgenerator.${{ matrix.platform.origin_dylib_suffix }} lua/${{ matrix.platform.os_name }}_generator.${{ matrix.platform.dest_dylib_suffix }}
+        run: cp -rf generator/target/${{ matrix.platform.target }}/release/${{ startsWith(matrix.platform.target, 'x86_64-pc-windows-msvc') && 'generator' || 'libgenerator' }}.${{ matrix.platform.origin_dylib_suffix }} lua/${{ matrix.platform.os_name }}_generator.${{ matrix.platform.dest_dylib_suffix }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
