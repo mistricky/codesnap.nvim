@@ -1,6 +1,6 @@
 [project]
 name = "codesnap.nvim"
-version = "2.0.0-beta.8"
+version = "2.0.0-beta.9"
 description = "📸 Snapshot plugin that can make pretty code snapshots with real-time previews for Neovim"
 author = "Mist"
 email = "mist.zzh@gmail.com"
