@@ -2,6 +2,11 @@ local path_utils = require("codesnap.utils.path")
 
 return {
   config = {
+    diff_config = {
+      add_color = "#98C37960",
+      delete_color = "#E06C7550",
+    },
+    highlight_color = "#ffffff20",
     show_workspace = true,
     snapshot_config = {
       theme = "candy",

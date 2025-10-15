@@ -25,6 +25,18 @@ vim.api.nvim_create_user_command("CodeSnap", take_snapshot(codesnap.copy), { nar
 
 vim.api.nvim_create_user_command("CodeSnapASCII", take_snapshot(codesnap.copy_ascii), { nargs = "*", range = "%" })
 
+vim.api.nvim_create_user_command(
+  "CodeSnapHighlight",
+  take_snapshot(codesnap.copy_highlight),
+  { nargs = "*", range = "%" }
+)
+
+vim.api.nvim_create_user_command(
+  "CodeSnapHighlightSave",
+  take_snapshot(codesnap.save_highlight),
+  { nargs = "*", range = "%" }
+)
+
 -- vim.api.nvim_create_user_command("CodeSnap", take_snapshot(codesnap.copy_into_clipboard), { nargs = "*", range = "%" })
 --
 -- vim.api.nvim_create_user_command("CodeSnapSave", take_snapshot(codesnap.save_snapshot), { nargs = "*", range = "%" })
