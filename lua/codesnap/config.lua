@@ -14,7 +14,7 @@ end
 
 function config_module.get_config()
   local code = visual_utils.get_selected_text()
-  local start_line_number = visual_utils.get_start_line_number()
+  local start_line_number = static.config.show_line_number and visual_utils.get_start_line_number() or nil
 
   if string_utils.is_str_empty(code) then
     error("No code is selected", 0)
@@ -24,27 +24,14 @@ function config_module.get_config()
   local code_content = {
     content = code,
     start_line_number = start_line_number,
-    highlight_lines = {
-      { 1, 2, static.config.diff_config.add_color },
-      {
-        3,
-        static.config.diff_config.delete_color,
-      },
-      {
-        4,
-        static.config.highlight_color,
-      },
-    },
     file_path = get_file_path(static.config.show_workspace),
   }
 
   local config = table_utils.assign(static.config.snapshot_config, {
     content = code_content,
     theme = module.load_generator(true).parse_code_theme(static.config.snapshot_config.theme),
-    -- start_line_number = static.config.has_line_number and start_line_number or nil,
   })
 
-  -- config.save_path = parse_save_path(config.save_path)
   return config
 end
 
