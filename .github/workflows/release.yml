@@ -2,7 +2,8 @@ name: Release
 
 on:
   push:
-    paths: project.toml
+    tags:
+      - "v*"
 
 permissions:
   contents: write
@@ -13,48 +14,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          ref: ${{ github.ref }}
-
-      - name: Setup python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: Read version from project config
-        id: read_toml
-        uses: SebRollen/toml-action@v1.0.2
-        with:
-          file: project.toml
-          field: project.version
-
-      # - name: Replace template
-      #   run: python3 scripts/replace-template.py
-
-      # - name: Commit changes
-      #   uses: EndBug/add-and-commit@v7
-      #   with:
-      #     message: "[Release] ${{ steps.read_toml.outputs.value }}"
-      #     pull_strategy: "NO-PULL"
-      #     push: false
-      #
-      # - name: Push changes
-      #   run: |
-      #     git pull --rebase
-      #     git push
-
-      - name: Bump version and push tag
-        id: tag_version
-        uses: mathieudutour/github-tag-action@v6.1
-        with:
-          github_token: ${{ secrets.PAT }}
-          custom_tag: ${{ steps.read_toml.outputs.value }}
 
       - name: Check if the tag is prerelease tag
         id: is_prerelease
         run: |
-          if [[ "${{ steps.read_toml.outputs.value }}" == *"-"* ]]; then
+          if [[ "${{ github.ref_name }}" == *"-"* ]]; then
             echo "is_prerelease=true" >> $GITHUB_ENV
           else
             echo "is_prerelease=false" >> $GITHUB_ENV
@@ -63,8 +27,7 @@ jobs:
       - name: Create a GitHub release
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ steps.tag_version.outputs.new_tag }}
-          name: Release ${{ steps.tag_version.outputs.new_tag }}
+          name: Release ${{ github.ref_name }}
           token: ${{ secrets.PAT }}
           generateReleaseNotes: true
           prerelease: ${{ env.is_prerelease }}
