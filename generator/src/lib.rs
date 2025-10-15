@@ -61,7 +61,7 @@ fn save(_: &Lua, (file_path, config): (String, SnapshotConfigLua)) -> LuaResult<
         .to_string()
         .into();
 
-    SnapshotType::from(snapshot_type)
+    snapshot_type
         .snapshot_data(create_image_snapshot_by_config(&config)?, false)?
         .save(&file_path)
         .map_err(|_| {
@@ -73,7 +73,7 @@ fn copy(_: &Lua, config: SnapshotConfigLua) -> LuaResult<()> {
     create_image_snapshot_by_config(&config)?
         .raw_data()
         .map_err(|_| {
-            mlua::Error::RuntimeError(format!("Failed to generate snapshot data for clipboard"))
+            mlua::Error::RuntimeError("Failed to generate snapshot data for clipboard".to_string())
         })?
         .copy()
         .map_err(|_| {
