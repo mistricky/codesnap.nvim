@@ -2,6 +2,7 @@ local path_utils = require("codesnap.utils.path")
 
 return {
   config = {
+    show_line_number = true,
     diff_config = {
       add_color = "#98C37960",
       delete_color = "#E06C7550",
