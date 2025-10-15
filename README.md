@@ -1,5 +1,4 @@
-![image](https://github.com/mistricky/codesnap.nvim/assets/22574136/9fc40afc-cff8-4e18-a04f-e931d32a1fb7)
-
+<img width="1819" height="1788" alt="cover" src="https://github.com/user-attachments/assets/25547efa-e1ad-4fb5-a8fa-b5dad8217de1" />
 
 
 <p align="center">
