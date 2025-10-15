@@ -12,4 +12,19 @@ function platform_utils.match_os(matches_table)
 	return fn()
 end
 
+-- Check if running on Windows
+function platform_utils.is_windows()
+	return current_os_name == "Windows_NT"
+end
+
+-- Check if running on macOS
+function platform_utils.is_macos()
+	return current_os_name == "Darwin"
+end
+
+-- Check if running on Linux
+function platform_utils.is_linux()
+	return current_os_name == "Linux"
+end
+
 return platform_utils
