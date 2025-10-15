@@ -23,7 +23,13 @@ function module.get_lib_extension()
 end
 
 -- Get the path of the the generator file
-function module.generator_file_path()
+function module.generator_file_path(is_debug)
+  if is_debug then
+    local filename = platform.is_windows() and "generator" or "libgenerator"
+
+    return path_utils.join(sep, RUST_BUILD_DIR, filename .. "." .. module.get_lib_extension())
+  end
+
   -- First try to use pre-built library from libs directory
   local ok, lib_path = pcall(fetch.ensure_lib)
 
@@ -34,15 +40,19 @@ function module.generator_file_path()
     return lib_path
   end
 
-  local filename = platform.is_windows() and "generator" or "libgenerator"
-
-  return path_utils.join(sep, RUST_BUILD_DIR, filename .. "." .. module.get_lib_extension())
+  error("Failed to load the generator library. Please ensure it is built correctly.")
 end
 
-function module.load_generator()
-  local generator_path = module.generator_file_path()
+function module.load_generator(is_debug)
+  local generator_path = module.generator_file_path(is_debug)
 
   package.cpath = path_utils.join(";", package.cpath, generator_path)
+
+  if module.generator == nil then
+    module.generator = require("generator")
+  end
+
+  return module.generator
 end
 
 return module
