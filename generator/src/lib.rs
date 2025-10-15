@@ -2,7 +2,10 @@ mod snapshot_config;
 
 use std::{ffi::OsStr, path::Path};
 
-use codesnap::snapshot::{image_snapshot::ImageSnapshot, snapshot_data::SnapshotData};
+use codesnap::{
+    snapshot::{image_snapshot::ImageSnapshot, snapshot_data::SnapshotData},
+    themes,
+};
 use mlua::prelude::*;
 use snapshot_config::SnapshotConfigLua;
 
@@ -50,7 +53,7 @@ fn create_image_snapshot_by_config(config: &SnapshotConfigLua) -> LuaResult<Imag
     config
         .0
         .create_snapshot()
-        .map_err(|_| mlua::Error::RuntimeError("Failed to create image snapshot".to_string()))
+        .map_err(|e| mlua::Error::RuntimeError(format!("Failed to create snapshot: {}", e)))
 }
 
 fn save(_: &Lua, (file_path, config): (String, SnapshotConfigLua)) -> LuaResult<()> {
@@ -98,6 +101,17 @@ fn copy_ascii(_: &Lua, config: SnapshotConfigLua) -> LuaResult<()> {
     Ok(())
 }
 
+fn parse_code_theme(_: &Lua, code_theme: String) -> LuaResult<String> {
+    let rt = tokio::runtime::Runtime::new()
+        .map_err(|e| mlua::Error::RuntimeError(format!("Failed to create Tokio runtime: {}", e)))?;
+
+    rt.block_on(async {
+        themes::parse_code_theme(&code_theme)
+            .await
+            .map_err(|e| mlua::Error::RuntimeError(format!("Failed to parse code theme: {}", e)))
+    })
+}
+
 #[mlua::lua_module(skip_memory_check)]
 fn generator(lua: &Lua) -> LuaResult<LuaTable> {
     let exports = lua.create_table()?;
@@ -105,6 +119,7 @@ fn generator(lua: &Lua) -> LuaResult<LuaTable> {
     exports.set("save", lua.create_function(save)?)?;
     exports.set("copy", lua.create_function(copy)?)?;
     exports.set("copy_ascii", lua.create_function(copy_ascii)?)?;
+    exports.set("parse_code_theme", lua.create_function(parse_code_theme)?)?;
 
     Ok(exports)
 }
