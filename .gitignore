@@ -20,3 +20,4 @@ node_modules
 # build
 output.css
 *.so
+lua/libs
