@@ -28,8 +28,6 @@ local function get_platform_lib_name()
 
   if os_name == "windows" then
     extension = "dll"
-  elseif os_name == "mac" then
-    extension = "dylib"
   end
 
   return string.format("%s-%s_generator.%s", os_name, arch, extension)
