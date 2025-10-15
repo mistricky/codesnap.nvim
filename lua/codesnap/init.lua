@@ -8,28 +8,28 @@ local config_module = require("codesnap.config")
 local highlight_module = require("codesnap.highlight")
 
 local main = {
-  cwd = static.cwd,
-  highlight_mode_config = nil,
+	cwd = static.cwd,
+	highlight_mode_config = nil,
 }
 
 -- Prepare the path of the Rust module
 -- Try to fetch pre-built library first, then fallback to development build
-local generator_path = module.generator_file("generator")
--- Concat lib?.extension and ?.extension to package.cpath  
+local generator_path = module.generator_file("libgenerator")
+-- Concat lib?.extension and ?.extension to package.cpath
 package.cpath = path_utils.join(";", package.cpath, module.generator_file("?"), module.generator_file("lib?"))
 
 function main.setup(config)
-  static.config = table_utils.merge_config(static.config, config == nil and {} or config)
+	static.config = table_utils.merge_config(static.config, config == nil and {} or config)
 end
 
 -- Save snapshot to specified save_path
 --- @param save_path string
 function main.save(save_path)
-  local generator = require("generator")
+	local generator = require("generator")
 
-  if save_path == nil then
-    error("Save path is not specified", 0)
-  end
+	if save_path == nil then
+		error("Save path is not specified", 0)
+	end
 
   local matched_extension = string.match(static.config.save_path, "%.(.+)$")
 
@@ -44,20 +44,20 @@ end
 
 -- Copy snapshot into clipboard
 function main.copy()
-  local generator = require("generator")
+	local generator = require("generator")
 
-  generator.copy(config_module.get_config())
-  vim.cmd("delmarks <>")
-  vim.notify("The snapshot is copied into clipboard successfully!")
+	generator.copy(config_module.get_config())
+	vim.cmd("delmarks <>")
+	vim.notify("The snapshot is copied into clipboard successfully!")
 end
 
 -- Generate ASCII code snapshot and copy it into clipboard
 function main.copy_ascii()
-  local generator = require("generator")
+	local generator = require("generator")
 
-  generator.copy_ascii(config_module.get_config())
-  vim.cmd("delmarks <>")
-  vim.notify("The ASCII code snapshot is copied into clipboard successfully!")
+	generator.copy_ascii(config_module.get_config())
+	vim.cmd("delmarks <>")
+	vim.notify("The ASCII code snapshot is copied into clipboard successfully!")
 end
 
 -- function main.copy_into_clipboard_with_config(config)
