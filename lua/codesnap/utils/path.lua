@@ -3,42 +3,42 @@ local platform_utils = require("codesnap.utils.platform")
 local path_utils = {}
 
 function path_utils.join(separator, ...)
-  local args = { ... }
+	local args = { ... }
 
-  return table.concat(args, separator)
+	return table.concat(args, separator)
 end
 
 function path_utils.dir_name()
-  return debug.getinfo(1).source:match("@?(.*/)")
+	return debug.getinfo(1).source:match("@?(.*/)")
 end
 
 function path_utils.with_dir_name(path)
-  return path_utils.dir_name() .. path
+	return path_utils.dir_name() .. path
 end
 
 function path_utils.get_escaped_cwd()
-  local cwd = vim.fn.getcwd()
+	local cwd = vim.fn.getcwd()
 
-  return string_utils.escape(cwd)
+	return string_utils.escape(cwd)
 end
 
 function path_utils.back(path)
-  local parsed_path, _ = path:gsub("/[^\\/]+/?$", "")
+	local parsed_path, _ = path:gsub("/[^\\/]+/?$", "")
 
-  return parsed_path
+	return parsed_path
 end
 
 function path_utils.get_workspace()
-  local cwd = vim.fn.getcwd()
-  local _, _, workspace = string.find(cwd, "/([^/]+)$")
+	local cwd = vim.fn.getcwd()
+	local _, _, workspace = string.find(cwd, "/([^/]+)$")
 
-  return workspace == nil and "" or workspace
+	return workspace == nil and "" or workspace
 end
 
 function path_utils.get_relative_path()
-  local full_file_path = vim.fn.expand("%:p")
+	local full_file_path = vim.fn.expand("%:p")
 
-  return full_file_path:gsub(path_utils.get_escaped_cwd(), ""):sub(2)
+	return full_file_path:gsub(path_utils.get_escaped_cwd(), ""):sub(2)
 end
 
 -- Get default save path by OS
@@ -46,16 +46,16 @@ end
 -- if mac use ~/Pictures
 -- if windows use FOLDERID_Pictures (If support is added back)
 function path_utils.get_default_save_path()
-  local home_picture_folder = os.getenv("HOME") .. "/Pictures"
+	local home_picture_folder = os.getenv("HOME") .. "/Pictures"
 
-  return platform_utils.match_os({
-    Darwin = function()
-      return home_picture_folder
-    end,
-    Linux = function()
-      return os.getenv("XDG_PICTURES_DIR") or home_picture_folder
-    end,
-  })
+	return platform_utils.match_os({
+		Darwin = function()
+			return home_picture_folder
+		end,
+		Linux = function()
+			return os.getenv("XDG_PICTURES_DIR") or home_picture_folder
+		end,
+	})
 end
 
 return path_utils
