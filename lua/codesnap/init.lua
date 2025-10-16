@@ -6,7 +6,7 @@ local modal = require("codesnap.modal")
 
 -- Prepare the path of the Rust module
 -- Try to fetch pre-built library first, then fallback to development build
-local generator = module.load_generator(true)
+local generator = module.load_generator()
 
 local main = {
   cwd = static.cwd,
