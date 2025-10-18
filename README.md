@@ -68,6 +68,9 @@
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## 🚣Migration
+
+### Upgrade from v0.x to v1
+
 If you have installed v0.x before, this chapter will show you what break changes version v1.x introduced.
 
 - The `CodeSnapPreviewOn` command is not supported, if you prefer live-preview, you can pin `CodeSnap.nvim` version to `v0.0.11` to continue using this command.
@@ -76,96 +79,65 @@ If you have installed v0.x before, this chapter will show you what break changes
 
 v1.x has a different architecture and better performance than v0.x, and v1.x can generate screenshots directly without an open browser. We recommend you upgrade to v1.x for a better experience.
 
-## ✨Features
-- 🤩 Beautiful code snap template
-- 😎 Custom watermark and window style
-- 💻 Beautiful Mac-style title bar
-- 🤖 Generate snapshots using only a single command
-- 🍞 Breadcrumbs for display file path
-- 🌊 More beautiful background theme
-- 🔢 Support for display line number make sharing code snapshot easier
-- 🔆 Highlight specific lines of code
-- 🖨️ Generate ASCII art code snapshots
+### Upgrade from v1 to v2
+
+CodeSnap.nvim v2 bring a lot of new features and improvements, the most important change is that we rewrote the screenshot generator using [CodeSnap](https://github.com/codesnap-rs/codesnap), this library makes CodeSnap.nvim faster and more stable than before.
+
+And there is no need to setup Rust environment to compile CodeSnap.nvim anymore, we precompiled the `generator` shared file for common platforms:
+
+- x86_64-unknown-linux-gnu
+- aarch64-unknown-linux-gnu
+- x86_64-apple-darwin
+- aarch64-apple-darwin
+- windows-x86_64-msvc
+
+For most cases, you can use CodeSnap.nvim out-of-box without any additional setup. 🍵
+
+Configuration is **completely different** between v1 and v2, which is following [config.rs](https://github.com/codesnap-rs/codesnap/blob/main/core/src/config.rs) in CodeSnap. Which means you can use same configuration in both CodeSnap CLI and CodeSnap.nvim. Click [here]() see what 
+current config looks like.
+
+#### Windows Support
+We are excited to announce that CodeSnap.nvim now supports Windows! 🎉, but we don't have enough time to test it on Windows, so if you find any issues on Windows, please let us know by creating an issue.
 
 ## Prerequirements
 - Neovim 0.9.0+
 
-## Install
+## Installation
 We recommend using [Lazy.nvim](https://github.com/folke/lazy.nvim) to install CodeSnap.nvim, but you can still use another plugin manager you prefer.
 
 **Lazy.nvim**
 ```lua
-{ "mistricky/codesnap.nvim", build = "make" },
+{ "mistricky/codesnap.nvim" }
 ```
 **Packer**
 ```lua
-use {'mistricky/codesnap.nvim', run = 'make'}
+use {'mistricky/codesnap.nvim'}
 ```
 
 **Vim-Plug**
 ```lua
-Plug 'mistricky/codesnap.nvim', { 'do': 'make' }
+Plug 'mistricky/codesnap.nvim' 
 ```
 
-It's worth mentioning that the screenshot feature is implemented by a module called `generator` written in Rust, when `make` the project, the CodeSnap.nvim will mount a precompiled cross-compile `generator` shared file into the plugin that depends on what OS you are using. 
+> Maybe you are CodeSnap.nvim v1 user, you may notice that we remove the `build` option in v2, because we don't need to compile the Rust code anymore, we precompiled the `generator` shared file for common platforms, you can find the precompiled files in [releases](https://github.com/mistricky/codesnap.nvim/releases) page. So when you first install v2, CodeSnap.nvim will download the precompiled file automatically, it may take a few seconds to download the file, please be patient.
 
-We precompiled the following targets:
-- x86_64-unknown-linux-gnu
-- x86_64-apple-darwin
-- aarch64-apple-darwin
 
-If your platform is in the above list, you can just run `make` after the plugin is installed like the above examples do, CodeSnap.nvim will automatically mount the shared file into the plugin. This means you don't need any Rust utils to compile manually from source.
+## Keymappings
+TODO
 
-### Compile from source
-You need to install Rust development environment before compiling from source, you can refer [Install Rust](https://www.rust-lang.org/tools/install) for more detail.
+## ✨Features
 
-Please keep in mind, cross-compile to these platforms only helps a portion of users to have out-of-box experience, if your platform is not in the above targets list, you still need to compile from source using `make build_generator`, for instance using Lazy:
+### Consume Snapshot
+There are two ways to consume the snapshot you took using CodeSnap.nvim:
 
-```lua
-{ "mistricky/codesnap.nvim", build = "make build_generator" },
+#### Copy into clipboard
+Copy the snapshot directly into clipboard, then you can paste it anywhere you want.
+
+Run `CodeSnap` command, CodeSnap.nvim will generate a snapshot of the currently selected code and write it into clipboard.
+
 ```
-
-We always recommend you to compile CodeSnap.nvim from `source` instead of using the precompiled shared file, because the correctness and consistency of compiling from source are always higher than cross-compiling.
-
-### Compile on ARM
-If you try to compile CodeSnap.nvim on ARM architecture, you may need to install additional dependencies to compile it, thanks @matteocavestri mentioned in https://github.com/mistricky/codesnap.nvim/issues/53#issuecomment-2032088162
-
-```shell
-export CC=gcc
-sudo dnf install libuv libuv-devel # On RHEL based systems
-sudo apt-get install libtool libuv1-dev # On Debian based systems
+CodeSnap
 ```
-
-### Keymappings
-If you use `Lazy.nvim` as your package manager, here are some examples show you how to configure keymappings for CodeSnap:
-```lua
-{
-  "mistricky/codesnap.nvim",
-  build = "make build_generator",
-  keys = {
-    { "<leader>cc", "<cmd>CodeSnap<cr>", mode = "x", desc = "Save selected code snapshot into clipboard" },
-    { "<leader>cs", "<cmd>CodeSnapSave<cr>", mode = "x", desc = "Save selected code snapshot in ~/Pictures" },
-  },
-  opts = {
-    save_path = "~/Pictures",
-    has_breadcrumbs = true,
-    bg_theme = "bamboo",
-  },
-}
-```
-
-### Windows Support
-Unfortunately, CodeSnap does not support Windows yet, but version `v0.0.x` is working fine on Windows. If you want to use CodeSnap on Windows, we recommend you pin the version to `0.0.11` to use CodeSnap, follow to [0.0.11 Document](https://github.com/mistricky/codesnap.nvim/tree/v0.0.11) for more detail.
-
-## Usage 
-`CodeSnap.nvim` provides the following two ways to take snapshots of currently selected code
-
-### Copy into the clipboard
-To take a beautiful snapshot use CodeSnap.nvim, you can just use `CodeSnap` command to generate a snapshot of the current selected code, then the `CodeSnap.nvim` will write the snapshot into the clipboard, and you can paste it anywhere you want.
-
-
-
-https://github.com/mistricky/codesnap.nvim/assets/22574136/99be72db-57d7-4839-91d0-2a9dfb1901ac
 
 #### Copy into clipboard on Linux Wayland
 Copy screenshots directly into the clipboard is cool, however, it doesn't work well on wl-clipboard, because the wl-clipboard can't paste the content which come from exited processes. As Hyprland document say:
@@ -176,23 +148,41 @@ Copy screenshots directly into the clipboard is cool, however, it doesn't work w
 
 If you using CodeSnap.nvim on wl-clipboard, you can refer [wl-clip-persist](https://github.com/Linus789/wl-clip-persist), it reads all the clipboard data into memory and then overwrites the clipboard with the data from our memory to persist copied data.
 
-### Save the snapshot
+#### Save the snapshot
+Save the snapshot into a file, you can specify the path where you want to save it
 
-Of course, you can use `CodeSnapSave` command to save the snapshot to path where you defined it in `config.save_path`
-```lua
-require("codesnap").setup({
-  -- The save_path must be ends with .png, unless when you specified a directory path,
-  -- CodeSnap will append an auto-generated filename to the specified directory path
-  -- For example:
-  -- save_path = "~/Pictures"
-  -- parsed: "~/Pictures/CodeSnap_y-m-d_at_h:m:s.png"
-  -- save_path = "~/Pictures/foo.png"
-  -- parsed: "~/Pictures/foo.png"
-  save_path = ...
-})
+Run `CodeSnapSave` command, CodeSnap.nvim will generate a snapshot of the currently selected code and save it in the path you specified in config.
+
+CodeSnap.nvim supports saving snapshot in `PNG`, `SVG` and `HTML` format, you can specify the file extension in the path you provided, for example:
+
+```shell
+CodeSnapSave /path/to/your/snapshot.png
+CodeSnapSave /path/to/your/snapshot.svg
+CodeSnapSave /path/to/your/snapshot.html
 ```
 
-https://github.com/mistricky/codesnap.nvim/assets/22574136/69b27e77-3dce-4bc3-8516-89ce636fe02d
+### ASCII snapshot
+
+CodeSnap.nvim also supports taking ASCII art snapshot, you can use `CodeSnapASCII` command to take a snapshot in ASCII format and copy it into clipboard.
+
+This feature is not useful for most cases, but it's FUN and lightweight, if you want to paste your code in somewhere like comment,  ASCII snapshot may be a good choice.
+
+```lua
+╭────────────────────────────────────────────────────────────────╮
+│ codesnap.nvim/lua/codesnap/config.lua                          │
+│────────────────────────────────────────────────────────────────│
+│ 24 local code_content = {                                      │
+│ 25   content = code,                                           │
+│ 26   start_line_number = start_line_number,                    │
+│ 27   file_path = get_file_path(static.config.show_workspace),  │
+│ 28 }                                                           │
+╰────────────────────────────────────────────────────────────────╯
+```
+
+As you can see, the ASCII snapshot is just a plain text, without any background, line number, watermark, etc. But it still has key information like code content, line number and file path, which can be useful if someone want to know where the code is from.
+
+Really hope you like this feature! 🤗
+
 
 ### Highlight code block
 
@@ -206,183 +196,206 @@ CodeSnapSaveHighlight # Take code snapshot with highlights code blocks and save 
 #### How to use
 For take a code snapshot with highlights code blocks and save it somewhere. First you need to select code which you want to snapshot, then enter the command `CodeSnapSaveHighlight` to open a window show you the selected code which from previous step, now you can select code which you want to highlight _(if any - you can use these without actually highlighting anything)_, finally press the Enter key, CodeSnap will generate a snapshot with highlight blocks and save it in save_path.
 
-Here is an example video:
-
-https://github.com/mistricky/codesnap.nvim/assets/22574136/bea0bf6c-8fc9-4d09-9cab-4e1e6f47899c
-
-
-### Take ASCII snapshot
-Run `CodeSnapASCII`, CodeSnap will generate a "code snapshot" in ASCII format and then copy it into clipboard automatically, it's really cool and lightweight, if you want to share your code in somewhere like Markdown document, even you can enjoy the code highlighting which provided by Markdown parser. Here is an usage video:
+![Highlight Demo](/doc/highlight_demo.png)
 
 
 
-https://github.com/mistricky/codesnap.nvim/assets/22574136/91bc3d96-7dbd-4e1c-9224-95428c7cca48
+### Breadcrumbs
+Breadcrumbs are really useful tool to display the current snapshot file path, you can enable it by setting `breadcrumbs.enable` to true:
 
-
-
-
-### Specify language extension
-In some scenarios, CodeSnap.nvim cannot auto-detect what language syntax should used to highlight code, for example, shell script can have no extension, they specify interpreters using shebang.
-
-CodeSnap.nvim won't read the whole content of the file, thus cannot detect what language syntax is this, in this case, you can specify extension explicitly, for instance:
-
+```lua
+require("codesnap").setup({
+	-- ...
+	snapshot_config = {
+    -- ...
+		code_config = {
+			breadcrumbs = {
+				enable = true,
+				separator = "/",
+				color = "#80848b",
+				font_family = "CaskaydiaCove Nerd Font",
+      }
+		}
+	}
+})
 ```
-CodeSnapSave sh
-CodeSnap sh
-```
+
+Once you enable breadcrumbs, CodeSnap will display the current file path on the top of the snapshot, like this:
+![Breadcrumbs Demo](/doc/breadcrumbs_demo.png)
 
 
-## Breadcrumbs
-Breadcrumbs are something to display the current snapshot file path, you can open it through config `has_breadcrumbs`:
+### Line number
+Line number is another useful tool to display the current line number of the code, you can enable it by setting `show_line_number` to true:
+
 ```lua
 require("codesnap").setup({
   -- ...
-  has_breadcrumbs = true
+  show_line_number = true
 })
 ```
-The breadcrumbs look like:
-![image](https://github.com/mistricky/codesnap.nvim/assets/22574136/23274faa-36a9-4d41-88a5-e48c44b4d5bf)
 
-### Show workspace in breadcrumbs
-Breadcrumbs hide the workspace name by default, if you want to display workspace in breadcrumbs, you can just set `show_workspace` as true.
+![Line Number Demo](/doc/line_number_demo.png)
+
+
+### Watermark
+You can set your own watermark by setting `watermark.content` to your own watermark content.
+
 ```lua
 require("codesnap").setup({
   -- ...
-  has_breadcrumbs = true
-  show_workspace = true
+  watermark = {
+    content = "CodeSnap.nvim",
+    font_family = "Pacifico",
+    color = "#ffffff",
+  }
 })
 ```
 
-### Custom path separator
-The CodeSnap.nvim uses `/` as the separator of the file path by default, of course, you can specify any symbol you prefer as the custom separator:
+![Watermark Demo](/doc/watermark_demo.png)
+
+### Custom theme
+For CodeSnap.nvim, theme is primarily defined by two parts:
+- The background theme
+- The code theme
+
+Custom background theme is easy to understand, which is defined by `Background` enum:
+
+```rust
+pub enum Background {
+    Solid(String),
+    Gradient(LinearGradient),
+}
+```
+
+As you can see, there have two types of background theme:
+- Solid(String): A solid color background
+- Gradient(LinearGradient): A gradient background
+
+If you prefer solid background, you can just leave it as a solid color string, for example:
+
 ```lua
-require("codesnap").setup({
-  -- ...
-  has_breadcrumbs = true
-  breadcrumbs_separator = "👉"
-})
+background = "#FFFFFF"
 ```
 
-![image](https://github.com/mistricky/codesnap.nvim/assets/22574136/84b80d0f-1467-4bdf-9cbd-aede868f93aa)
+Above code will generate a solid white background.
 
+![Cutom background white](/doc/custom_background_solid.png)
 
-## Line number
-We also support displaying line number, you can set `has_line_number` to true to display line number.
+CodeSnap.nvim use gradient background by default, you can specify the gradient colors by setting `background.stops` to a table of colors, for example:
+
 ```lua
-require("codesnap").setup({
-  // ...
-	has_line_number = true,
-})
+"background": {
+    "start": {
+      "x": 0,
+      "y": 0
+    },
+    "end": {
+      "x": "max",
+      "y": "max"
+    },
+    "stops": [
+      {
+        "position": 0,
+        "color": "#EBECB2"
+      },
+      {
+        "position": 0.28,
+        "color": "#F3B0F7"
+      },
+      {
+        "position": 0.73,
+        "color": "#92B5F0"
+      },
+      {
+        "position": 0.94,
+        "color": "#AEF0F8"
+      }
+    ]
+}
 ```
 
-![image](https://github.com/mistricky/codesnap.nvim/assets/22574136/3a5999b1-bb2a-4646-8d69-609be1d28140)
+![Custom background gradient](/doc/custom_background_gradient.png)
 
+#### Custom code theme
 
-## Custom background
-The `CodeSnap.nvim` comes with many beautiful backgrounds preset, you can set any background you like by setting `bg_theme` to its name, just like:
+For code theme, it's a little bit complex than background theme, you may notice that there only have one config to specify the code theme, which is `theme`, which is a string that represents the code theme name.
+
 ```lua
-require("codesnap").setup({
-  -- The "default" background is one you see at the beginning of the README
-  bg_theme = "default"
-})
+snapshot_config = {
+  theme = "candy",
+}
 ```
-<table>
-  <tr>
-    <th>bamboo</th>
-    <th>sea</th>
-  </tr>
-  <tr>
-    <td>
-      <img src="https://github.com/mistricky/codesnap.nvim/assets/22574136/ce3a387b-61a5-42ba-8f71-1b4949f5e148" width="650" />
-    </td>
-    <td>
-      <img src="https://github.com/mistricky/codesnap.nvim/assets/22574136/122790b6-6365-402c-806a-dfc78dabbc06" width="650" />
-    </td>
-  </tr>
 
-  <tr>
-    <th>peach</th>
-    <th>grape</th>
-  </tr>
-  <tr>
-    <td>
-      <img src="https://github.com/mistricky/codesnap.nvim/assets/22574136/c0ec9dc1-cd8b-463e-9f2d-ab2e1e3a9831" width="650" />
-    </td>
-    <td>
-      <img src="https://github.com/mistricky/codesnap.nvim/assets/22574136/b573786b-70ed-4006-89c7-20bed115c9cc" width="650" />
-    </td>
-  </tr>
+Above code will use the "candy" theme as the code theme.
 
+"candy" is a built-in theme name, so you can just use it directly.
 
-  <tr>
-    <th>dusk</th>
-        <th>summer</th>
-  </tr>
-  <tr>
-    <td>
-      <img src="https://github.com/mistricky/codesnap.nvim/assets/22574136/e3bb5222-542d-4c32-b78b-8cf4695feec9" width="650" />
-    </td>
-    <td>
-      <img src="https://github.com/mistricky/codesnap.nvim/assets/22574136/98ced31a-091b-4ed8-9bd6-bb5b502a7db2" width="650" />
-    </td>
-  </tr>
-</table>
+CodeSnap.nvim use [syntect](https://github.com/trishume/syntect) as code theme engine, which supports Sublime Text theme format, if you want to use your own theme, follow the steps below:
 
-### Solid color background
-If you prefer solid color background, you can set `bg_color` to your preferred color. For example:
+1. Specify `themes_folders` to the path of your own theme files, for example:
 ```lua
-require("codesnap").setup({
-  -- ...
-  bg_color = "#535c68"
-})
+snapshot_config = {
+  themes_folders = {
+    "~/.config/codesnap/themes",
+  },
+}
 ```
 
-![CodeSnap](https://github.com/mistricky/codesnap.nvim/assets/22574136/a600c2e4-4c60-4ec0-b2fc-3b41481048dc)
+2. Put your own theme files in the path you specified, for example:
+```
+~/.config/codesnap/themes/my_theme.tmTheme
+```
 
-### Customize background padding
-CodeSnap allows you to customize the padding of background using `bg_x_padding`, `bg_y_padding` and `bg_padding`, the default value is:
+3. Use your own theme by setting `theme` to the name of your own theme, for example:
 ```lua
-require("codesnap").setup({
-  bg_x_padding = 122,
-  bg_y_padding = 82,
-  bg_padding = nil
-})
+theme = "my_theme",
 ```
 
-If you want to hide background, you can set `bg_padding` to `0` in your config:
-```lua
-require("codesnap").setup({
-  -- ...
-  bg_padding = 0
-})
+That's all, now you can use your own theme to take code snapshots.
+
+But you may notice that it's not so easy to use theme you want to use, and if you are VSCode user before, you may know that VSCode has a lot of themes, and you can just search and install the theme you want to use.
+
+Fortunately, CodeSnap.nvim has a built-in theme parser which can convert VSCode theme format to Sublime Text theme format, for example, we want to use the "One Hunter" theme from VSCode (which also is the demo theme in README), we just need to few steps to use it:
+
+1. Construct a "Asset URL", which is a URL that points to the theme file, for example:
+```shell
+# The prefix "vercel@" is the theme name, you can use any name you want, but it must be provided and unique.
+vercel@https://raw.githubusercontent.com/Railly/one-hunter-vscode/refs/heads/main/themes/OneHunter-Vercel-color-theme.json
 ```
 
-## Watermark
-Watermark is something that makes screenshots more personalized, but if you don't like watermark just set it as an empty string to hide it.
+2. Use the "Asset URL" to set `theme` in config, for example:
 ```lua
-require("codesnap").setup({
-  -- ...
-  watermark = ""
-})
+theme = "vercel@https://raw.githubusercontent.com/Railly/one-hunter-vscode/refs/heads/main/themes/OneHunter-Vercel-color-theme.json",
 ```
+
+That's all, now you can use the "One Hunter" theme to take code snapshots.
+
+###  More beautiful themes
+The benefit of using "Asset URL" is that you can easily share and store your snapshot config without refer any external resources.
+
+CodeSnap.nvim offers greater flexibility for you to craft your own snapshot theme, you can share your own theme on [Awesome CodeSnap](https://github.com/codesnap-rs/awesome-codesnap?tab=readme-ov-file)
+
+We are looking forward to your amazing snapshot theme! 🤗
 
 ## Commands
 ```shell
 CodeSnap # Take a snapshot of the currently selected code and copy the snapshot into the clipboard
 
-CodeSnapSave # Save the snapshot of the currently selected code and save it on the disk
+CodeSnapSave <path> # Save the snapshot of the currently selected code and save it on the disk
 
 CodeSnapASCII # Take a code snapshot in ASCII format
+
+CodeSnapHighlight # Take code snapshot with highlights code blocks and copy it into the clipboard
 ```
 **Lua**
 ```lua
 local codesnap <const> = require("codesnap")
 
 -- Take a snapshot of the currently selected code and copy the snapshot into the clipboard
-codesnap.copy_into_clipboard()
+codesnap.copy()
 
 -- Save the snapshot of the currently selected code and save it on the disk
-codesnap.save_snapshot()
+codesnap.save(path)
 ```
 
 ## Configuration
@@ -394,22 +407,80 @@ require("codesnap").setup({...})
 There is a default config:
 ```lua
 {
-    mac_window_bar = true,
-    title = "CodeSnap.nvim",
-    code_font_family = "CaskaydiaCove Nerd Font",
-    watermark_font_family = "Pacifico",
-    watermark = "CodeSnap.nvim",
-    bg_theme = "default",
-    breadcrumbs_separator = "/",
-    has_breadcrumbs = false,
-    has_line_number = false,
-    show_workspace = false,
-    min_width = 0,
-    bg_x_padding = 122,
-    bg_y_padding = 82,
-    save_path = os.getenv("XDG_PICTURES_DIR") or (os.getenv("HOME").. "/Pictures")
+  show_line_number = true,
+  highlight_color = "#ffffff20",
+  show_workspace = true,
+  snapshot_config = {
+    theme = "candy",
+    window = {
+      mac_window_bar = true,
+      shadow = {
+        radius = 20,
+        color = "#00000040",
+      },
+      margin = {
+        x = 82,
+        y = 82,
+      },
+      border = {
+        width = 1,
+        color = "#ffffff30",
+      },
+      title_config = {
+        color = "#ffffff",
+        font_family = "Pacifico",
+      },
+    },
+    themes_folders = {},
+    fonts_folders = {},
+    line_number_color = "#495162",
+    command_output_config = {
+      prompt = "❯",
+      font_family = "CaskaydiaCove Nerd Font",
+      prompt_color = "#F78FB3",
+      command_color = "#98C379",
+      string_arg_color = "#ff0000",
+    },
+    code_config = {
+      font_family = "CaskaydiaCove Nerd Font",
+      breadcrumbs = {
+        enable = true,
+        separator = "/",
+        color = "#80848b",
+        font_family = "CaskaydiaCove Nerd Font",
+      },
+    },
+    watermark = {
+      content = "CodeSnap.nvim",
+      font_family = "Pacifico",
+      color = "#ffffff",
+    },
+    background = {
+      start = {
+        x = 0,
+        y = 0,
+      },
+      ["end"] = {
+        x = "max",
+        y = 0,
+      },
+      stops = {
+        {
+          position = 0,
+          color = "#6bcba5",
+        },
+        {
+          position = 1,
+          color = "#caf4c2",
+        },
+      },
+    },
+  },
 }
 ```
+
+Actually, these config are come from the [CodeSnap](https://github.com/codesnap-rs/codesnap) library, you can refer to the [CodeSnap](https://github.com/codesnap-rs/codesnap) documentation to learn more about the configuration.
+
 
 ## Contribution
 CodeSnap.nvim is a project that will be maintained for the long term, and we always accepts new contributors, please feel free to submit PR & issues.
