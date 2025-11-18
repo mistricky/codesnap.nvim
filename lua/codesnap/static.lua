@@ -29,6 +29,7 @@ return {
           color = "#ffffff",
           font_family = "Pacifico",
         },
+        radius = 12,
       },
       themes_folders = {},
       fonts_folders = {},
