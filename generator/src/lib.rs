@@ -60,7 +60,7 @@ fn save(_: &Lua, (file_path, config): (String, SnapshotConfigLua)) -> LuaResult<
     let snapshot_type: SnapshotType = Path::new(&file_path)
         .extension()
         .and_then(OsStr::to_str)
-        .ok_or_else(|| mlua::Error::RuntimeError("Invalid file extension".to_string()))?
+        .unwrap_or("png")
         .to_string()
         .into();
 
