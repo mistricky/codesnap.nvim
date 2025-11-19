@@ -316,6 +316,13 @@ CodeSnap.nvim use gradient background by default, you can specify the gradient c
 
 ![Custom background gradient](/doc/custom_background_gradient.png)
 
+Or you prefer transparent background, for example:
+```lua
+background = "#00000000",
+```
+
+![Transparent background](/doc/transparent_demo.png)
+
 #### Custom code theme
 
 For code theme, it's a little bit complex than background theme, you may notice that there only have one config to specify the code theme, which is `theme`, which is a string that represents the code theme name.
