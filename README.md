@@ -107,7 +107,7 @@ We recommend using [Lazy.nvim](https://github.com/folke/lazy.nvim) to install Co
 
 **Lazy.nvim**
 ```lua
-{ "mistricky/codesnap.nvim", tag = "v2.0.0-beta.17" }
+{ "mistricky/codesnap.nvim", tag = "v2.0.0" }
 ```
 
 > Maybe you are CodeSnap.nvim v1 user, you may notice that we remove the `build` option in v2, because we don't need to compile the Rust code anymore, we precompiled the `generator` shared file for common platforms, you can find the precompiled files in [releases](https://github.com/mistricky/codesnap.nvim/releases) page. So when you first install v2, CodeSnap.nvim will download the precompiled file automatically, it may take a few seconds to download the file, please be patient.
