@@ -275,31 +275,31 @@ Above code will generate a solid white background.
 CodeSnap.nvim use gradient background by default, you can specify the gradient colors by setting `background.stops` to a table of colors, for example:
 
 ```lua
-"background": {
-    "start": {
-      "x": 0,
-      "y": 0
+background = {
+    start = {
+      x = 0,
+      y = 0
     },
-    "end": {
-      "x": "max",
-      "y": "max"
+    end = {
+      x = "max",
+      y = "max"
     },
-    "stops": [
+    stops = [
       {
-        "position": 0,
-        "color": "#EBECB2"
+        position = 0,
+        color = "#EBECB2"
       },
       {
-        "position": 0.28,
-        "color": "#F3B0F7"
+        position = 0.28,
+        color = "#F3B0F7"
       },
       {
-        "position": 0.73,
-        "color": "#92B5F0"
+        position = 0.73,
+        color = "#92B5F0"
       },
       {
-        "position": 0.94,
-        "color": "#AEF0F8"
+        position = 0.94,
+        color = "#AEF0F8"
       }
     ]
 }
