@@ -3,6 +3,7 @@ local table_utils = require("codesnap.utils.table")
 local module = require("codesnap.module")
 local config_module = require("codesnap.config")
 local modal = require("codesnap.modal")
+local path = require("codesnap.path")
 
 -- Prepare the path of the Rust module
 -- Try to fetch pre-built library first, then fallback to development build
@@ -15,6 +16,9 @@ local main = {
 
 function main.setup(config)
   static.config = table_utils.merge_config(static.config, config == nil and {} or config)
+  if static.config.snapshot_config then
+    path.expand_paths_in_config(static.config.snapshot_config)
+  end
 end
 
 -- Save snapshot to specified save_path

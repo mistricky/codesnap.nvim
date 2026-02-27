@@ -35,6 +35,11 @@ function table_utils.merge_config(t1, t2)
       t1[k] = t2[k]
     end
   end
+  for k, v in pairs(t2) do
+    if t1[k] == nil and v ~= nil then
+      t1[k] = v
+    end
+  end
 
   return t1
 end
