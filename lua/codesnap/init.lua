@@ -28,15 +28,15 @@ function main.save(save_path)
     error("Save path is not specified", 0)
   end
 
-  local matched_extension = string.match(static.config.save_path, "%.(.+)$")
+  local matched_extension = string.match(save_path, "%.(.+)$")
 
   if matched_extension ~= "png" and matched_extension ~= nil then
     error("The extension of save_path should be .png", 0)
   end
 
-  require("generator").save_snapshot(config)
-  ---@diagnostic disable-next-line: need-check-nil
-  vim.notify("Save snapshot in " .. config.save_path .. " successfully")
+  generator.save(save_path, config_module.get_config())
+  vim.cmd("delmarks <>")
+  vim.notify("Save snapshot in " .. save_path .. " successfully")
 end
 
 -- Copy snapshot into clipboard
