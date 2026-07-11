@@ -112,6 +112,35 @@ We recommend using [Lazy.nvim](https://github.com/folke/lazy.nvim) to install Co
 
 > Maybe you are CodeSnap.nvim v1 user, you may notice that we remove the `build` option in v2, because we don't need to compile the Rust code anymore, we precompiled the `generator` shared file for common platforms, you can find the precompiled files in [releases](https://github.com/mistricky/codesnap.nvim/releases) page. So when you first install v2, CodeSnap.nvim will download the precompiled file automatically, it may take a few seconds to download the file, please be patient.
 
+### Nix (flake)
+
+CodeSnap.nvim is already packaged in [nixpkgs](https://search.nixos.org/packages?query=codesnap-nvim) as `vimPlugins.codesnap-nvim` — for most Nix users that's the easiest way to install it.
+
+This flake is intended for when you'd rather **build from source** (e.g. to track `main`, a fork, or a specific commit). It builds the plugin together with the `generator` library from source, so there's no runtime download and everything is reproducible. This is handy for Home Manager or any Nix-based Neovim setup.
+
+Expose the plugin as a flake input:
+
+```nix
+{
+  inputs.codesnap.url = "github:mistricky/codesnap.nvim";
+}
+```
+
+Then use `codesnap.packages.${system}.default` as a start plugin. For example, with Home Manager:
+
+```nix
+programs.neovim = {
+  enable = true;
+  plugins = [inputs.codesnap.packages.${pkgs.system}.default];
+};
+```
+
+The flake also exposes:
+
+- `packages.${system}.generator` — just the Rust `generator` cdylib.
+- `checks.${system}.plugin-loads` — a headless-Neovim smoke test that loads the plugin and native library (`nix flake check`).
+- `devShells.${system}.default` — a Rust + stylua dev shell for hacking on the generator.
+
 
 ## Keymappings
 TODO
