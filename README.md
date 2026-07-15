@@ -97,9 +97,9 @@ Configuration is **completely different** between v1 and v2, which is following 
 current config looks like.
 
 #### Windows Support
-We are excited to announce that CodeSnap.nvim now supports Windows! 🎉, but we don't have enough time to test it on Windows, so if you find any issues on Windows, please let us know by creating an issue.
+We are excited to announce that CodeSnap.nvim now supports Windows! 🎉 It is less tested than it could be, so if you find any issues on Windows, please let us know by creating an issue.
 
-## Prerequirements
+## Prerequisites
 - Neovim 0.9.0+
 
 ## Installation
@@ -107,7 +107,7 @@ We recommend using [Lazy.nvim](https://github.com/folke/lazy.nvim) to install Co
 
 **Lazy.nvim**
 ```lua
-{ "mistricky/codesnap.nvim", tag = "v2.0.0" }
+{ "mistricky/codesnap.nvim", tag = "v2.0.5" }
 ```
 
 > Maybe you are CodeSnap.nvim v1 user, you may notice that we remove the `build` option in v2, because we don't need to compile the Rust code anymore, we precompiled the `generator` shared file for common platforms, you can find the precompiled files in [releases](https://github.com/mistricky/codesnap.nvim/releases) page. So when you first install v2, CodeSnap.nvim will download the precompiled file automatically, it may take a few seconds to download the file, please be patient.
