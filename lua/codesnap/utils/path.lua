@@ -20,7 +20,7 @@ function path_utils.dir_name()
   local src_path = debug.getinfo(1).source
   local retval = src_path:match(pattern)
 
-  -- if regex has no matches fails and you're on non-unix-style system (windows), try again w/Unix-Style path sep
+  -- if regex has no matches (fails) and you're on non-unix-style system (windows), try again w/Unix-Style path sep
   if (retval == nil) and (sep ~= fallback_sep) then
     local new_pattern = "@?(.*" .. vim.pesc(fallback_sep) .. ")"
     retval = src_path:match(new_pattern)
