@@ -46,10 +46,14 @@ end
 function module.load_generator(is_debug)
   local generator_path = module.generator_file_path(is_debug)
 
-  package.cpath = path_utils.join(";", package.cpath, generator_path)
-
   if module.generator == nil then
-    module.generator = require("generator")
+    local loader = package.loadlib(generator_path, "luaopen_generator")
+
+    if not loader then
+      error("Failed to load generator: " .. generator_path)
+    end
+
+    module.generator = loader()
   end
 
   return module.generator
