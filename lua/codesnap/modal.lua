@@ -21,13 +21,13 @@ function M.pop_modal(selected_text, filetype, callback)
 
   -- Set filetype for syntax highlighting if provided
   if filetype and filetype ~= "" then
-    vim.api.nvim_buf_set_option(buf, "filetype", filetype)
+    vim.api.nvim_set_option_value("filetype", filetype, { buf = buf })
   end
 
   -- Make the buffer read-only
-  vim.api.nvim_buf_set_option(buf, "modifiable", false)
-  vim.api.nvim_buf_set_option(buf, "buftype", "nofile")
-  vim.api.nvim_buf_set_option(buf, "readonly", true)
+  vim.api.nvim_set_option_value("modifiable", false, { buf = buf })
+  vim.api.nvim_set_option_value("buftype", "nofile", { buf = buf })
+  vim.api.nvim_set_option_value("readonly", true, { buf = buf })
 
   -- Calculate window size and position
   local width = 0
@@ -57,9 +57,9 @@ function M.pop_modal(selected_text, filetype, callback)
   })
 
   -- Set window options
-  vim.api.nvim_win_set_option(win, "cursorline", true)
-  vim.api.nvim_win_set_option(win, "number", true)
-  vim.api.nvim_win_set_option(win, "relativenumber", false)
+  vim.api.nvim_set_option_value("cursorline", true, { win = win })
+  vim.api.nvim_set_option_value("number", true, { win = win })
+  vim.api.nvim_set_option_value("relativenumber", false, { win = win })
 
   -- Ensure the window has focus
   vim.api.nvim_set_current_win(win)

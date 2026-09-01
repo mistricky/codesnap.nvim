@@ -1,6 +1,7 @@
 local platform_utils = {}
+local uv = vim.uv or vim.loop
 
-local current_os_name = vim.loop.os_uname().sysname
+local current_os_name = uv.os_uname().sysname
 
 function platform_utils.match_os(matches_table)
   local fn = matches_table[current_os_name]
