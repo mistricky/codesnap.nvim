@@ -1,7 +1,8 @@
 local fetch = {}
+local uv = vim.uv or vim.loop
 
 local function get_os_arch()
-  local uname = vim.loop.os_uname()
+  local uname = uv.os_uname()
   local os_name = uname.sysname:lower()
   local arch = uname.machine:lower()
 
