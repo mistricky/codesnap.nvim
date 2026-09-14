@@ -36,8 +36,8 @@ function highlight_module.create_highlight_selector_window(cb_name, code)
     title_pos = "center",
   })
 
-  vim.api.nvim_buf_set_option(bufnr, "modifiable", false)
-  vim.api.nvim_buf_set_option(bufnr, "filetype", vim.bo.filetype)
+  vim.api.nvim_set_option_value("modifiable", false, { buf = bufnr })
+  vim.api.nvim_set_option_value("filetype", vim.bo.filetype, { buf = bufnr })
   vim.api.nvim_buf_set_keymap(bufnr, "n", "q", ":q<CR>", {})
   vim.api.nvim_buf_set_keymap(bufnr, "", "<ESC>", ":q<CR>", {})
   vim.keymap.set(
